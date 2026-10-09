@@ -1,4 +1,4 @@
-<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13212A"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
+<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13212A"><meta name="apple-mobile-web-app-capable" content="yes"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
 /* Layout: o singură coloană de telefon, ecrane care se schimbă; microfonul rotund e centrul fiecărui exercițiu de vorbit */
 :root{
   --bg:#EEF2F1; --surface:#FFFFFF; --ink:#13212A; --muted:#5A6B72; --line:#D6DFDD;
@@ -117,6 +117,35 @@ textarea{min-height:130px;resize:vertical}
 .wchip.ok{background:var(--ok-soft);color:var(--ok)}
 .wchip.bad{background:var(--bad-soft);color:var(--bad);text-decoration:underline wavy}
 .heard{font-size:.9rem;color:var(--muted)}
+.ill{display:block;width:100%;max-width:230px;height:auto;margin:0 auto}
+.ill-s{width:44px;height:33px;flex:none}
+.ill .p,.ill-s .p{fill:none;stroke:var(--accent);stroke-width:18;stroke-linejoin:round}
+.ill .o,.ill-s .o{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.ill .f,.ill-s .f{fill:var(--accent-soft);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.ill .y,.ill-s .y{fill:var(--mark);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.ill .k,.ill-s .k{fill:var(--ink)}
+.ill .w,.ill-s .w{fill:var(--surface);stroke:var(--ink);stroke-width:2.5}
+.ill .r,.ill-s .r{fill:var(--bad);stroke:var(--ink);stroke-width:2}
+.ill .s,.ill-s .s{fill:var(--line);stroke:var(--ink);stroke-width:2.5}
+.ill .st,.ill-s .st{fill:none;stroke:var(--muted);stroke-width:5}
+.ill .beam,.ill-s .beam{fill:none;stroke:var(--bad);stroke-width:2.5;stroke-dasharray:6 4}
+.ill .tx,.ill-s .tx{font:800 15px var(--display);fill:#13212A;letter-spacing:.08em}
+.picbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;width:max-content;max-width:min(440px,calc(100% - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.95rem;line-height:1.35}
+.toast.lvl{background:var(--accent);color:var(--on-accent)}
+.toast.badge{border-left:6px solid var(--mark)}
+.rank{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;width:100%}
+.rank .top{display:flex;align-items:center;gap:12px}
+.rank .lvbadge{width:48px;height:48px;border-radius:12px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.3rem;flex:none}
+.xpbar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.xpbar span{display:block;height:100%;background:var(--mark)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.bdg{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+.bdg .med{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--mark);color:#13212A;font-weight:800;font-family:var(--display)}
+.bdg.locked{opacity:.5}
+.bdg.locked .med{background:var(--line);color:var(--muted)}
+.bdg b{font-size:.92rem;line-height:1.2}
+.bdg span{font-size:.78rem;color:var(--muted);line-height:1.25}
 .linkbtn{background:none;border:0;color:var(--accent);text-decoration:underline;padding:4px}
 /* list items */
 .list{display:flex;flex-direction:column;gap:8px}
@@ -1428,38 +1457,234 @@ crack|fisură|There is a crack in the wall.
 cure|a se întări (betonul)|Let the concrete cure for a week.
 plumb|la verticală|Check that the wall is plumb.
 zoning certificate|certificat de urbanism|We applied for the zoning certificate.`},
-{id:'water',g:'Construcții',t:'Apă și canalizare',d:'Rețele, branșamente, cămine, stații',raw:`sewer|canal, conductă de canalizare|The sewer runs under the road.
-sewerage system|sistem de canalizare|The village has no sewerage system.
+{id:'water',g:'Construcții',t:'Apă, canalizare și gaze',d:'De la lopată la procese-verbale, meserii, sudură, gaze',raw:`water|apă|We need water on site.
+drinking water|apă potabilă|The network supplies drinking water.
+pipe|țeavă|The pipe is ready for laying.
+sewer|canal, conductă de canalizare|The sewer runs under the road.
+sand|nisip|Order ten tonnes of sand.
+trench|șanț, tranșee|The trench is one metre wide.
+excavation|săpătură|The excavation starts tomorrow.
+dig|a săpa|We need to dig two metres deep.
+shovel|lopată|We need more shovels.
+spade|hârleț|Use the spade to clean the edges of the trench.
+pickaxe|târnăcop|Break the hard ground with a pickaxe.
+hammer|ciocan|Pass me the hammer, please.
+sledgehammer|baros|Use the sledgehammer to drive the pegs.
+wheelbarrow|roabă|Fill the wheelbarrow with sand.
+bucket|găleată|Bring a bucket of water.
+rake|greblă|Level the sand with a rake.
+crowbar|rangă|Lift the manhole cover with a crowbar.
+truck|camion|The truck brings the pipes tomorrow.
+dump truck|basculantă|The dump truck takes the soil away.
+dumper|dumper|The dumper carries sand along the trench.
+excavator|excavator|The excavator digs the trench.
+backhoe loader|buldoexcavator|The backhoe loader is on site.
+mini excavator|miniexcavator|Use the mini excavator in the yard.
+hard hat|cască de protecție|Always wear your hard hat.
+safety boots|bocanci de protecție|Safety boots are required on site.
+gloves|mănuși|Wear gloves when you handle the pipes.
+protective clothing|costum de protecție|Put on your protective clothing.
+high-visibility vest|vestă reflectorizantă|Put on your high-visibility vest.
+worker|muncitor|The workers start at seven.
+labourer|muncitor necalificat|We need two labourers for the trench.
+truck driver|șofer de camion|The truck driver brings the sand.
+machine operator|mecanic de utilaj, operator utilaj|The machine operator starts the excavator at seven.
+mechanic|mecanic|The mechanic repairs the roller.
+plumber|instalator|The plumber connects the water meter.
+pipe fitter|instalator de rețele, montator conducte|Two pipe fitters lay the pipes.
+drainlayer|instalator de canalizare|The drainlayer checks the slope of each pipe.
+gas fitter|instalator de gaze|Only an authorised gas fitter can work on the gas network.
+welder|sudor|The welder has a valid certificate.
+PE welder|sudor în polietilenă|The PE welder joins the pipes by electrofusion.
+steel welder|sudor în oțel|The steel welder repairs the old steel pipe.
+foreman|maistru|The foreman gives the tasks to the workers.
+section manager|șef de punct de lucru|The section manager organises the daily work.
+site manager|șef de șantier|The site manager checks the work every morning.
+project manager|manager de proiect|The project manager approves the schedule.
+contractor's representative|reprezentantul antreprenorului|The contractor's representative signs the report.
+site supervisor|diriginte de șantier|The site supervisor must approve this stage.
+technical execution manager|responsabil tehnic cu execuția (RTE)|The technical execution manager checks every stage.
+welding coordinator|responsabil tehnic cu sudura (RTS)|The welding coordinator checks the welding records.
+designer|proiectant|We asked the designer for a new drawing.
+polyethylene pipe|conductă de polietilenă|We use polyethylene pipe for drinking water.
+HDPE pipe|țeavă PEHD|We use HDPE pipe for drinking water.
+PVC pipe|conductă din PVC|The sewer is made of PVC pipe.
+corrugated pipe|țeavă corugată|Corrugated pipe is used for stormwater.
+pressure pipe|conductă de presiune|The water main is a pressure pipe.
+pipe section|tronson de conductă|This pipe section is fifty metres long.
+diameter|diametru|What is the diameter of the pipe?
+outer diameter|diametru exterior|The outer diameter is one hundred and ten millimetres.
+fitting|fiting|We need more fittings for the connection.
+elbow|cot|Install an elbow at the corner.
+90 degree elbow|cot la 90 de grade|Install a 90 degree elbow here.
+45 degree elbow|cot la 45 de grade|Use two 45 degree elbows instead of one.
+tee|teu|Use a tee for the branch.
+equal tee|teu egal|An equal tee has three outlets of the same size.
+reducing tee|teu redus|Use a reducing tee from 110 to 90.
+Y branch|ramificație în Y|Connect the side sewer with a Y branch.
+reducer|reducție|Put a reducer between the two pipes.
+coupling|mufă, manșon|Join the pipes with a coupling.
+double socket|mufă dublă PVC|Use a double socket to join two PVC pipes.
+end cap|dop de capăt|Close the pipe with an end cap.
+rubber seal ring|garnitură inelară de cauciuc|Check the rubber seal ring before joining.
+lubricant|lubrifiant|Put lubricant on the spigot before you push it in.
+injection moulded fitting|fiting injectat|These are injection moulded polyethylene fittings.
+electrofusion coupling|manșon de electrofuziune|Weld it with an electrofusion coupling.
+electrofusion elbow|cot de electrofuziune|We need a 110 electrofusion elbow.
+electrofusion tee|teu de electrofuziune|Install an electrofusion tee for the hydrant.
+electrofusion machine|aparat de sudură prin electrofuziune|Connect the electrofusion machine to the generator.
+butt fusion|sudură cap la cap|HDPE pipes are joined by butt fusion.
+butt fusion machine|aparat de sudură cap la cap|The butt fusion machine heats both pipe ends.
+compression fitting|fiting de compresiune|We use compression fittings for small diameters.
+tapping saddle|colier de branșament|Install a tapping saddle on the main.
+flange adapter|adaptor de flanșă|Connect the pipe to the valve with a flange adapter.
+gasket|garnitură|Replace the old gasket.
+lay|a poza (conducta)|We laid two hundred metres of pipe today.
+pipe laying|pozarea conductei|Pipe laying starts after the bedding is ready.
+bedding|pat de pozare|Lay the pipe on sand bedding.
+sand bedding|pat de nisip|Put ten centimetres of sand bedding.
+pipe surround|învelire cu nisip a conductei|Cover the pipe with a sand surround.
+trench width|lățimea șanțului|The trench width is eighty centimetres.
+trench depth|adâncimea șanțului|The trench depth is one and a half metres.
+cover depth|adâncime de acoperire|The minimum cover depth is one metre.
+backfill|a umple la loc săpătura|Backfill the trench in layers.
+backfill material|material de umplutură|Use clean backfill material without stones.
+topsoil|strat vegetal|Keep the topsoil separate.
+excess soil|pământ excedentar|The excess soil goes to the landfill.
+spoil heap|depozit de pământ lângă șanț|Keep the spoil heap one metre from the trench.
+haul away|a transporta (pământul)|The trucks haul away the excess soil.
+layer|strat|Compact each layer.
+compaction|compactare|Compaction is done in layers of thirty centimetres.
+compact|a compacta|Compact each layer of soil.
+plate compactor|placă compactoare|Use the plate compactor in the trench.
+rammer|mai compactor|Use the rammer next to the manhole.
+roller|cilindru compactor|The roller compacts the asphalt.
+reinstatement|aducere la starea inițială|Reinstatement of the road is included in the price.
+asphalt|asfalt|We cut the asphalt before digging.
+road cutter|mașină de tăiat asfalt|Cut the road with the road cutter.
+warning tape|bandă de avertizare|Lay the warning tape above the pipe.
+sewer warning tape|bandă de avertizare pentru canalizare|The sewer warning tape is brown.
+gas warning tape|bandă de avertizare pentru gaz|The gas warning tape is yellow.
+electrical warning tape|bandă de avertizare electrică|The electrical warning tape is red.
+detection wire|fir trasor|Lay a detection wire with plastic pipes.
+slope|pantă|The slope is two percent.
+gradient|pantă|The sewer needs a minimum gradient.
+setting out|trasare|The setting out was done yesterday.
+axis|axul conductei|The surveyor marked the axis of the pipe.
+peg|țăruș|Put a peg every twenty metres.
+string line|sfoară de trasare|Pull a string line along the trench.
+tape measure|ruletă|Use the tape measure.
+spirit level|nivelă cu bulă|Check it with the spirit level.
+laser level|nivelă laser|The laser level shows the slope.
+pipe laser|laser de pantă pentru canalizare|The pipe laser sets the slope inside the pipe.
+rotating laser|nivelă laser rotativă|Set up the rotating laser next to the trench.
+optical level|nivelă optică|We checked the levels with an optical level.
+levelling staff|miră|Hold the levelling staff straight.
+datum point|reper de nivel|All levels start from the datum point.
+ground level|cota terenului|The ground level is two hundred metres.
+invert level|cota radierului|Check the invert level at each manhole.
+surveyor|topograf|The surveyor marked the axis.
+manhole|cămin de vizitare|The manhole is two metres deep.
+sewer manhole|cămin de canalizare menajeră|The sewer manhole is made of concrete rings.
+manhole cover|capac de cămin|Put the manhole cover back.
+manhole ring|inel de cămin|Lift the manhole ring with the excavator.
+manhole cone|con de cămin|Place the manhole cone on the last ring.
+manhole base|baza căminului|The manhole base has two inlets.
+inspection chamber|cămin de racord|Install an inspection chamber at the property line.
+valve chamber|cămin de vane|The valve chamber is at the crossroads.
+meter chamber|cămin de apometru|The meter chamber is next to the fence.
+water meter|apometru|The water meter is in the meter chamber.
+service connection|branșament de apă|Each house needs a service connection.
+house connection|racord de canalizare|We built fifty house connections.
+water main|conductă principală de apă|The water main burst last night.
+gravity sewer|canalizare gravitațională|A gravity sewer needs a constant slope.
+force main|conductă de refulare|The pumping station pushes sewage into the force main.
+sewage|ape uzate menajere|Sewage flows to the treatment plant.
 wastewater|ape uzate|Wastewater goes to the treatment plant.
 stormwater|ape pluviale|Stormwater is collected separately.
-water supply|alimentare cu apă|The new water supply network is ready.
-water main|conductă principală de apă|The water main burst last night.
-distribution network|rețea de distribuție|We extended the distribution network.
-service connection|branșament|Each house needs a service connection.
-house connection|racord de canalizare|We built fifty house connections.
-manhole|cămin de vizitare|The manhole is two metres deep.
-manhole cover|capac de cămin|Put the manhole cover back.
-inspection chamber|cămin de racord|Install an inspection chamber at the property line.
-water meter|apometru|The water meter is in the meter chamber.
-meter chamber|cămin de apometru|The meter chamber is next to the fence.
 fire hydrant|hidrant|The fire hydrant is painted red.
-valve|vană, robinet|Close the valve before you start.
+above ground hydrant|hidrant suprateran|We installed an above ground hydrant.
+underground hydrant|hidrant subteran|The underground hydrant is under a small cover.
+valve|vană|Close the valve before you start.
 gate valve|vană cu sertar|Open the gate valve slowly.
+knife gate valve|vană cuțit|A knife gate valve is used for sewage.
+butterfly valve|vană fluture|The pumping station has two butterfly valves.
+check valve|clapetă de reținere|The check valve stops the backflow.
+air valve|ventil de aerisire|Install an air valve at the highest point.
+valve key|cheie de manevră pentru vane|Bring the valve key to close the main.
+valve box|capac de protecție pentru vană|The valve box is level with the road.
 pumping station|stație de pompare|The pumping station sends wastewater uphill.
 treatment plant|stație de epurare|The treatment plant cleans the wastewater.
-water tower|castel de apă|The water tower is fifty metres high.
-reservoir|rezervor|The reservoir holds five hundred cubic metres.
-trench|tranșee, șanț|The trench is one metre wide.
-bedding|pat de pozare|Lay the pipe on sand bedding.
-gradient|pantă|The sewer needs a minimum gradient.
-flow|debit|The flow is too low.
-pressure test|probă de presiune|The pressure test lasted two hours.
-leak|pierdere de apă|We found a leak near the valve.
-blockage|înfundare|There is a blockage in the sewer.
-CCTV inspection|inspecție video|The CCTV inspection showed a crack.
-relining|cămășuire (relining)|We repaired the old pipe by relining.
+water pump|pompă de apă|Start the water pump.
+submersible pump|pompă submersibilă|Put a submersible pump in the trench.
 dewatering|epuizment|We need dewatering because of groundwater.
-groundwater|apă freatică|The groundwater level is high.`},
+groundwater|apă freatică|The groundwater level is high.
+vacuum truck|vidanjă|Call the vacuum truck to clean the manhole.
+pressure test|probă de presiune|The pressure test lasted two hours.
+test pressure|presiune de probă|The test pressure is ten bar.
+pressure gauge|manometru|Read the pressure gauge every ten minutes.
+tightness test|probă de etanșeitate|The sewer passed the tightness test.
+inflatable plug|obturator pneumatic|Insert the inflatable plug before the test.
+mechanical plug|obturator mecanic|We used a mechanical plug during the repair.
+flushing|spălarea rețelei|Flushing removes dirt from the new pipe.
+disinfection|dezinfecție|Disinfection is done before we connect the houses.
+water sample|probă de apă|The laboratory checks the water sample.
+CCTV inspection|inspecție video|The CCTV inspection showed a crack.
+leak|pierdere de apă|We found a leak near the valve.
+pipe burst|spargere de conductă|There was a pipe burst on Main Street.
+repair clamp|colier de reparație|Fix the leak with a repair clamp.
+blockage|înfundare|There is a blockage in the sewer.
+relining|cămășuire (relining)|We repaired the old pipe by relining.
+site organisation|organizare de șantier|The site organisation includes a container and a fence.
+site container|container de șantier|The site container is our office.
+site fence|împrejmuire de șantier|Close the site fence every evening.
+inventory|inventar|We check the inventory every Friday.
+delivery note|aviz de însoțire a mărfii|Sign the delivery note when the pipes arrive.
+invoice|factură|Please send the invoice by email.
+drawing|planșă, desen tehnic|Check the dimensions on the drawing.
+detailed design|proiect tehnic de execuție|Follow the detailed design.
+work schedule|grafic de execuție|We are two days ahead of the work schedule.
+daily report|raport zilnic|Send me the daily report every evening.
+timesheet|foaie de pontaj|Fill in the timesheet for each worker.
+site diary|jurnal de șantier|Write it in the site diary.
+welding record|fișă de sudură|Fill in a welding record for every joint.
+welder certificate|autorizație de sudor|The welder certificate must be valid.
+pipe coil|colac de țeavă|HDPE pipe up to 110 comes in coils.
+pipe length|bară de țeavă|PVC pipes come in six metre lengths.
+pipe scraper|răzuitor pentru țeavă|Scrape the pipe surface before electrofusion.
+alignment clamp|dispozitiv de aliniere|Fix both pipes in the alignment clamp.
+heating plate|oglindă de sudură|The heating plate must be clean before welding.
+weld bead|cordon de sudură|Check the weld bead after butt fusion.
+degree of compaction|grad de compactare|The degree of compaction must be ninety eight percent.
+compaction test|determinarea gradului de compactare|The laboratory does a compaction test on each layer.
+plate load test|încercare cu placa|The plate load test showed good results.
+thrust block|masiv de ancoraj|Pour a thrust block at each bend.
+casing pipe|tub de protecție|Put the water pipe inside a casing pipe under the road.
+road crossing|subtraversare de drum|The road crossing is done by drilling.
+horizontal directional drilling|foraj orizontal dirijat|We crossed the river by horizontal directional drilling.
+water hammer|lovitură de berbec|Close the valves slowly to avoid water hammer.
+flow rate|debit|The flow rate is five litres per second.
+natural gas|gaze naturale|The village will get natural gas next year.
+gas pipeline|conductă de gaze|The gas pipeline runs along the road.
+gas service connection|branșament de gaz|Each house needs a gas service connection.
+medium pressure|presiune medie|This is a medium pressure gas network.
+low pressure|presiune redusă|Inside the house the gas is at low pressure.
+pressure regulator|regulator de presiune|The pressure regulator is next to the gas meter.
+gas meter|contor de gaz|The gas meter is on the wall of the house.
+gas riser|coloană de branșament gaz|The gas riser goes up the wall.
+insulating joint|îmbinare electroizolantă|Install an insulating joint on the steel riser.
+gas leak|scăpare de gaz|In case of a gas leak, evacuate the area.
+cathodic protection|protecție catodică|Steel pipes need cathodic protection.
+longitudinal profile|profil longitudinal|Check the slope on the longitudinal profile.
+cross section|secțiune transversală|The cross section shows the trench and the bedding.
+quality certificate|certificat de calitate|Every delivery comes with a quality certificate.
+certificate of conformity|certificat de conformitate|The pipes come with a certificate of conformity.
+material acceptance report|proces-verbal de recepție a materialelor|Sign the material acceptance report.
+setting out report|proces-verbal de trasare|The setting out report is signed by the site supervisor.
+pipe laying report|proces-verbal de pozare|We need a pipe laying report for each section.
+covered works report|proces-verbal de lucrări ascunse|Sign the covered works report before backfilling.
+pressure test report|proces-verbal de probă de presiune|Attach the pressure test report to the file.
+as-built drawings|planuri as-built|We must deliver the as-built drawings.`},
 {id:'pipes',g:'Construcții',t:'Țevi și fitinguri',d:'Materiale, îmbinări, armături',raw:`pipe|țeavă|The pipe is two hundred millimetres in diameter.
 pipeline|conductă|The pipeline is three kilometres long.
 diameter|diametru|What is the diameter of the pipe?
@@ -1763,7 +1988,7 @@ const SPEAK={
 
 /* ================= STARE ================= */
 const KEY='speakup_v1';
-const fresh=()=>({name:'',level:null,startLevel:null,style:null,learned:{},sessions:{},weekly:[],streak:0,lastDay:null,pron:0,pronDone:{},textsDone:{},grammar:{},today:null,custom:[],customTopics:[]});
+const fresh=()=>({name:'',level:null,startLevel:null,style:null,learned:{},sessions:{},weekly:[],streak:0,lastDay:null,pron:0,pronDone:{},textsDone:{},grammar:{},today:null,custom:[],customTopics:[],xp:0,badges:{},picBest:0,updated:0});
 let st=fresh();
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s)st=Object.assign(fresh(),s)}catch(e){}
 function attachTopic(t){if(!TOPICS.find(x=>x.id===t.id)){TOPICS.push(t);TW[t.id]=TW[t.id]||[]}}
@@ -1773,7 +1998,69 @@ function attachWord(w){
  else if(ok&&WORDS[w.lv])WORDS[w.lv].push(real);
  return ok}
 (st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);
-function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+/* Puncte pentru ce ai făcut înainte să existe sistemul de puncte */
+if(!st.xpInit){st.xp=(st.xp||0)+Object.keys(st.learned||{}).length*10+(st.pron||0)*2+Object.keys(st.sessions||{}).length*20+(st.placement?20:0);st.xpInit=1}
+/* Salvare: local imediat + în contul Claude (când aplicația e deschisă în Claude) */
+let cloudRef=null,cloudBusy=false,cloudDirty=false,cloudTimer=null;
+function save(){st.updated=Date.now();try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}if(cloudRef){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudSave,2500)}}
+async function cloudSave(){if(!cloudRef)return;if(cloudBusy){cloudDirty=true;return}cloudBusy=true;
+ try{await cloudRef.set({json:JSON.stringify(st),updated:st.updated||Date.now()})}catch(e){if(e&&['not_granted','revoked','capability_disabled','capability_removed','invalid_argument'].includes(e.code))cloudRef=null}
+ cloudBusy=false;if(cloudDirty){cloudDirty=false;cloudSave()}}
+function applyState(obj){st=Object.assign(fresh(),obj);(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}if(cloudRef)cloudSave()}
+async function cloudInit(){
+ try{if(!(window.claude&&claude.use))return;const[db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!user)return;
+  const id=await user.id();if(!id)return;const ref=db.doc('data/users/'+id+'/progress');const snap=await ref.get();cloudRef=ref;
+  let r=null;try{const d=snap.exists?snap.data():null;r=d&&d.json?JSON.parse(d.json):null}catch(e){}
+  if(r&&(r.updated||0)>(st.updated||0)){st=Object.assign(fresh(),r);(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}toast('Progresul tău a fost readus din cont.');go('home')}
+  else if(st.name)cloudSave();
+ }catch(e){cloudRef=null}}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+/* Cod de salvare: tot progresul într-un text care se poate copia și lipi oriunde */
+const exportCode=()=>'SPEAKUP1:'+btoa(unescape(encodeURIComponent(JSON.stringify(st))));
+function importCode(c){c=String(c||'').trim();if(!c.startsWith('SPEAKUP1:'))throw new Error('format');const o=JSON.parse(decodeURIComponent(escape(atob(c.slice(9)))));if(!o||typeof o!=='object'||!('learned' in o))throw new Error('format');o.updated=Date.now();applyState(o)}
+
+/* Notificări scurte */
+let toastQ=[],toastOn=false;
+function toast(msg,kind=''){toastQ.push([msg,kind]);if(!toastOn)nextToast()}
+function nextToast(){const it=toastQ.shift();if(!it){toastOn=false;return}toastOn=true;let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.setAttribute('role','status');document.body.appendChild(el)}
+ el.className='toast '+it[1];el.innerHTML=it[0];el.hidden=false;setTimeout(()=>{el.hidden=true;setTimeout(nextToast,250)},3600)}
+
+/* Grade și puncte (XP) */
+const RANKS=['Ucenic','Ajutor','Muncitor','Muncitor calificat','Instalator','Șef de echipă','Maistru','Tehnician','Șef punct de lucru','Șef de șantier','Inginer de șantier','Diriginte de șantier','Manager de proiect','Director tehnic','Vorbitor fluent'];
+const lvlNeed=n=>Math.round(60*n*n+40*n);/* XP total pentru a ajunge la nivelul n+1 */
+function levelInfo(xp=st.xp||0){let n=0;while(xp>=lvlNeed(n+1))n++;const from=lvlNeed(n),to=lvlNeed(n+1);return{n:n+1,name:RANKS[Math.min(n,RANKS.length-1)]+(n>=RANKS.length?' '+(n-RANKS.length+2):''),from,to,pct:(xp-from)/(to-from)}}
+function addXP(n){if(!n)return;const before=levelInfo().n;st.xp=(st.xp||0)+n;const now=levelInfo();save();
+ if(now.n>before)toast(`<b>Nivel nou: ${now.n}</b><br>Ai urcat la gradul de ${esc(now.name)}!`,'lvl');checkBadges()}
+/* Insigne */
+const BADGES=[
+ {id:'placement',t:'Nivel stabilit',d:'Ai făcut testul de nivel',ok:()=>!!st.placement},
+ {id:'first',t:'Prima zi pe șantier',d:'Prima sesiune terminată',ok:()=>Object.keys(st.sessions).length>=1},
+ {id:'s3',t:'Trei zile la rând',d:'3 zile consecutive',ok:()=>st.streak>=3},
+ {id:'s7',t:'O săptămână fără pauză',d:'7 zile consecutive',ok:()=>st.streak>=7},
+ {id:'s30',t:'O lună întreagă',d:'30 de zile consecutive',ok:()=>st.streak>=30},
+ {id:'w50',t:'50 de cuvinte',d:'Ai învățat 50 de cuvinte',ok:()=>learnedCount()>=50},
+ {id:'w100',t:'100 de cuvinte',d:'Ai învățat 100 de cuvinte',ok:()=>learnedCount()>=100},
+ {id:'w250',t:'250 de cuvinte',d:'Ai învățat 250 de cuvinte',ok:()=>learnedCount()>=250},
+ {id:'w500',t:'500 de cuvinte',d:'Ai învățat 500 de cuvinte',ok:()=>learnedCount()>=500},
+ {id:'w1000',t:'1.000 de cuvinte',d:'Ai învățat 1.000 de cuvinte',ok:()=>learnedCount()>=1000},
+ {id:'p50',t:'Pronunție curată',d:'50 de pronunții corecte',ok:()=>(st.pron||0)>=50},
+ {id:'p250',t:'Accent de profesionist',d:'250 de pronunții corecte',ok:()=>(st.pron||0)>=250},
+ {id:'p1000',t:'Vorbitor nativ (aproape)',d:'1.000 de pronunții corecte',ok:()=>(st.pron||0)>=1000},
+ {id:'water',t:'Expert apă-canal',d:'Toți termenii de apă și canalizare',ok:()=>topicDone('water')},
+ {id:'pipes',t:'Maestrul fitingurilor',d:'Toți termenii de țevi și fitinguri',ok:()=>topicDone('pipes')},
+ {id:'safety',t:'Siguranța pe primul loc',d:'Toți termenii de siguranță',ok:()=>topicDone('safety')},
+ {id:'topic1',t:'Primul domeniu complet',d:'Termină orice domeniu',ok:()=>TOPICS.some(t=>topicDone(t.id))},
+ {id:'week13',t:'Nota 10 la test',d:'Cel puțin 13/15 la testul săptămânal',ok:()=>st.weekly.some(h=>h.score>=13)},
+ {id:'text1',t:'Din memorie',d:'Primul text spus din memorie',ok:()=>Object.keys(st.textsDone).length>=1},
+ {id:'textall',t:'Povestitor',d:'Toate textele spuse din memorie',ok:()=>TEXTS.every(t=>st.textsDone[t.id])},
+ {id:'gram',t:'Gramatică la zi',d:'Toate lecțiile cu minim 4/5',ok:()=>GRAMMAR.every(g=>(st.grammar[g.id]||0)>=4)},
+ {id:'pic',t:'Ochi de inginer',d:'10 din 10 la jocul cu imagini',ok:()=>(st.picBest||0)>=10},
+ {id:'lvl5',t:'Instalator',d:'Ai ajuns la nivelul 5',ok:()=>levelInfo().n>=5},
+ {id:'lvl10',t:'Șef de șantier',d:'Ai ajuns la nivelul 10',ok:()=>levelInfo().n>=10}
+];
+function topicDone(id){const ws=TW[id]||[];return ws.length>0&&ws.every(w=>st.learned[w.en])}
+function checkBadges(){st.badges=st.badges||{};let got=[];for(const b of BADGES){if(!st.badges[b.id]&&b.ok()){st.badges[b.id]=today();got.push(b)}}
+ if(got.length){save();got.forEach(b=>toast(`<b>Insignă nouă: ${esc(b.t)}</b><br>${esc(b.d)}`,'badge'))}}
 function dstr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const today=()=>dstr(new Date());
 const daysAgo=s=>Math.round((new Date(today())-new Date(s))/864e5);
@@ -1804,6 +2091,44 @@ const IC={
  chart:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
  wave:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 7v10M21 12h0"/></svg>'
 };
+
+/* ================= DESENE (pentru jocul cu imagini) ================= */
+const PIC={
+'pipe':'<ellipse class="f" cx="20" cy="45" rx="6" ry="13"/><path class="f" d="M20 32h78v26H20z"/><ellipse class="w" cx="98" cy="45" rx="6" ry="13"/><ellipse class="o" cx="98" cy="45" rx="3" ry="8"/>',
+'90 degree elbow':'<path class="p" d="M8 30H52a28 28 0 0 1 28 28V86"/><path class="o" d="M8 20v20M70 86h20"/>',
+'45 degree elbow':'<path class="p" d="M8 62H50L92 20"/><path class="o" d="M8 52v20M85 13l14 14"/>',
+'tee':'<path class="p" d="M8 34H112M60 34V86"/><path class="o" d="M8 24v20M112 24v20M50 86h20"/>',
+'Y branch':'<path class="p" d="M8 62H112M50 62L90 22"/><path class="o" d="M8 52v20M112 52v20M83 15l14 14"/>',
+'reducer':'<path class="f" d="M10 24h42l18 13v16l-18 13H10z"/><path class="f" d="M70 37h40v16H70z"/>',
+'end cap':'<path class="p" d="M6 45H50"/><path class="f" d="M45 27h30a18 18 0 0 1 0 36H45z"/>',
+'coupling':'<path class="p" d="M4 45h40M76 45h40"/><rect class="f" x="36" y="25" width="48" height="40" rx="6"/><path class="o" d="M48 25v40M72 25v40"/>',
+'electrofusion coupling':'<path class="p" d="M4 50h40M76 50h40"/><rect class="f" x="34" y="30" width="52" height="40" rx="6"/><rect class="k" x="42" y="18" width="7" height="13"/><rect class="k" x="71" y="18" width="7" height="13"/><path class="o" d="M44 40l6 20M54 40l6 20M64 40l6 20"/>',
+'manhole cover':'<circle class="f" cx="60" cy="45" r="38"/><circle class="o" cx="60" cy="45" r="29"/><path class="o" d="M40 33h40M36 45h48M40 57h40"/>',
+'manhole':'<path class="p" d="M4 74h32M84 74h32"/><path class="f" d="M34 22h52v62H34z"/><path class="o" d="M34 42h52M34 62h52M4 22h28M88 22h28"/><path class="k" d="M30 18h60v6H30z"/>',
+'excavator':'<rect class="k" x="8" y="66" width="64" height="16" rx="8"/><circle class="w" cx="18" cy="74" r="4"/><circle class="w" cx="62" cy="74" r="4"/><rect class="y" x="12" y="44" width="50" height="22" rx="3"/><rect class="f" x="38" y="26" width="22" height="18" rx="2"/><path class="o" style="stroke-width:7" d="M60 50L86 20L106 46"/><path class="y" d="M98 46h16l-5 16H96z"/>',
+'dump truck':'<path class="y" d="M8 28l62-8 4 36H12z"/><path class="f" d="M76 32h20l12 14v16H76z"/><path class="o" d="M82 37h12l7 9H82z"/><path class="o" d="M6 62h104"/><circle class="k" cx="28" cy="68" r="10"/><circle class="k" cx="92" cy="68" r="10"/><circle class="w" cx="28" cy="68" r="3"/><circle class="w" cx="92" cy="68" r="3"/>',
+'roller':'<rect class="y" x="34" y="38" width="62" height="24" rx="3"/><path class="f" d="M64 14h26v24H64z"/><path class="o" style="stroke-width:5" d="M60 14h34"/><circle class="k" cx="88" cy="70" r="14"/><circle class="y" cx="28" cy="62" r="22"/><path class="o" d="M8 56h40M8 68h40"/>',
+'plate compactor':'<path class="o" style="stroke-width:5" d="M64 52L102 18M96 12l12 12"/><rect class="y" x="20" y="44" width="48" height="28" rx="4"/><rect class="f" x="28" y="30" width="30" height="16" rx="3"/><rect class="k" x="12" y="72" width="64" height="9" rx="2"/>',
+'wheelbarrow':'<path class="o" style="stroke-width:4" d="M60 50L110 38M62 58l8 24M44 58l-2 22"/><path class="y" d="M12 32h66l-10 28H26z"/><circle class="k" cx="24" cy="72" r="11"/><circle class="w" cx="24" cy="72" r="3"/>',
+'shovel':'<path class="o" style="stroke-width:6" d="M26 12L74 60"/><path class="o" style="stroke-width:6" d="M16 14l14-12"/><path class="f" d="M70 50l16-6 24 26c4 7-3 15-11 12L72 60z"/>',
+'hammer':'<path class="o" style="stroke-width:9" d="M30 84L70 34"/><rect class="k" x="50" y="14" width="46" height="18" rx="3" transform="rotate(38 73 23)"/>',
+'hard hat':'<path class="y" d="M24 60a36 36 0 0 1 72 0z"/><path class="y" d="M10 60h100v10H10z"/><path class="o" d="M60 25v35M46 30v30M74 30v30"/>',
+'safety boots':'<path class="f" d="M30 10h30v42l34 10c8 2 12 8 12 14H26z"/><path class="k" d="M24 76h84v9H24z"/><path class="o" d="M30 22h30M30 32h30M30 42h30"/>',
+'high-visibility vest':'<path class="y" d="M30 10l14 6c4 10 28 10 32 0l14-6 10 22-8 6v44H28V38l-8-6z"/><path class="st" d="M28 58h64M28 70h64"/><path class="o" d="M60 24v58"/>',
+'warning tape':'<path class="y" d="M4 30q28-14 56 0t56 0v26q-28 14-56 0t-56 0z"/><text x="60" y="49" text-anchor="middle" class="tx">CAUTION</text>',
+'gate valve':'<path class="p" d="M4 64h112"/><rect class="f" x="40" y="46" width="40" height="36" rx="6"/><path class="o" style="stroke-width:5" d="M40 48v32M80 48v32M60 46V20"/><ellipse class="r" cx="60" cy="16" rx="26" ry="7"/>',
+'butterfly valve':'<path class="p" d="M4 64h112"/><rect class="f" x="51" y="40" width="18" height="46" rx="3"/><path class="o" style="stroke-width:6" d="M60 40V22h44"/>',
+'fire hydrant':'<rect class="r" x="28" y="42" width="16" height="13"/><rect class="r" x="76" y="42" width="16" height="13"/><path class="r" d="M44 30h32v50H44z"/><path class="r" d="M40 32a20 18 0 0 1 40 0z"/><rect class="k" x="56" y="6" width="8" height="10"/><rect class="k" x="34" y="78" width="52" height="8"/>',
+'rotating laser':'<path class="beam" d="M70 17H116M50 17H4"/><path class="o" style="stroke-width:4" d="M60 50L36 86M60 50l24 36M60 50v36"/><rect class="y" x="44" y="24" width="32" height="26" rx="4"/><rect class="f" x="52" y="10" width="16" height="14" rx="3"/>',
+'levelling staff':'<rect class="w" x="48" y="4" width="24" height="82"/><path class="r" d="M48 8h14v4H48zM48 16h8v4h-8zM48 24h14v4H48zM58 32h14v4H58zM48 40h14v4H48zM48 48h8v4h-8zM48 56h14v4H48zM58 64h14v4H58zM48 72h14v4H48z"/>',
+'trench':'<rect class="s" x="4" y="20" width="112" height="66"/><rect class="w" x="34" y="20" width="52" height="44"/><rect class="y" x="34" y="56" width="52" height="30"/><circle class="f" cx="60" cy="68" r="11"/><path class="beam" d="M34 42h52"/>',
+'sand':'<path class="y" d="M8 82c14-42 34-58 52-58s38 16 52 58z"/><path class="o" style="stroke-width:5" d="M40 62h.1M58 46h.1M76 62h.1M50 74h.1M72 76h.1M62 60h.1"/>',
+'bucket':'<path class="o" d="M30 32a30 22 0 0 1 60 0"/><path class="f" d="M28 32h64l-9 52H37z"/><path class="o" d="M30 44h60"/>',
+'pickaxe':'<path class="o" style="stroke-width:7" d="M60 26v60"/><path class="k" d="M10 34q50-30 100 0l-4 7q-46-22-92 0z"/>',
+'tape measure':'<path class="f" d="M64 62h50v11H64z"/><path class="o" d="M74 62v5M84 62v5M94 62v5M104 62v5"/><rect class="y" x="12" y="22" width="54" height="54" rx="12"/><circle class="o" cx="39" cy="49" r="11"/>',
+'pressure gauge':'<rect class="k" x="54" y="70" width="12" height="16"/><circle class="f" cx="60" cy="40" r="32"/><path class="o" d="M38 52l4-3M34 38h5M42 22l3 4M60 14v5M78 22l-3 4M86 38h-5"/><path class="o" style="stroke-width:4" d="M60 40L78 26"/><circle class="k" cx="60" cy="40" r="4"/>'
+};
+const pic=(en,cls='ill')=>PIC[en]?`<svg class="${cls}" viewBox="0 0 120 90" role="img" aria-label="imagine">${PIC[en]}</svg>`:'';
 
 /* ================= VOCE ================= */
 let voice=null,voices=[];
@@ -1845,7 +2170,7 @@ function pron(el,target,{onPass,hideText=false,hint=''}={}){
    ${hideText&&!pass?'':`<div class="wchips">${r.words.map(w=>`<span class="wchip ${w.ok?'ok':'bad'}">${esc(w.w)}</span>`).join('')}</div>`}
    <div class="verdict ${pass?'ok':'bad'}">${pass?'Corect! '+Math.round(r.score*100)+'%':unclear?'Cuvintele sunt bune, dar pronunția nu e destul de clară. Mai spune o dată, mai rar.':'Încă nu. '+Math.round(r.score*100)+'% — ascultă din nou și repetă.'}</div>
    ${mode==='kb'?'<div class="small muted">Verificare aproximativă: tastatura corectează singură cuvintele, deci e mai îngăduitoare decât microfonul aplicației.</div>':''}`;
-  if(pass&&!passed){passed=true;st.pron=(st.pron||0)+1;save();onPass&&onPass()}
+  if(pass&&!passed){passed=true;st.pron=(st.pron||0)+1;addXP(2);onPass&&onPass()}
   else if(!pass&&tries>=5){const b=document.createElement('button');b.className='linkbtn';b.textContent='Treci peste (revii la el mai târziu)';b.onclick=()=>{if(!passed){passed=true;onPass&&onPass(true)}};res.appendChild(b)}
  }
  function typed(){
@@ -1974,7 +2299,7 @@ R.placement=()=>{
   const wrongSet=new Set(wrong);LEVELS.forEach(l=>per[l]=0);wrapped.forEach(q=>{if(!wrongSet.has(q))per[q.lv]++});
   let lv='A1';for(const l of LEVELS){if(per[l]>=3)lv=l;else break}
   if(score>=18)lv='C1';else if(score>=14&&LEVELS.indexOf(lv)<3)lv='B2';else if(score>=10&&LEVELS.indexOf(lv)<2)lv='B1';else if(score>=6&&LEVELS.indexOf(lv)<1)lv='A2';
-  st.level=lv;st.startLevel=lv;st.placement={date:today(),score,per};save();
+  st.level=lv;st.startLevel=lv;st.placement={date:today(),score,per};save();setTimeout(()=>addXP(20),300);
   const m2=screen('Rezultatul tău',`<div class="card"><div class="eyebrow">Nivelul tău estimat</div><div class="big">${lv}</div><h2>${LNAME[lv]}</h2>
    <div class="levels">${LEVELS.map(l=>`<div class="${l===lv?'on':''}">${l}<small>${per[l]}/4</small></div>`).join('')}</div>
    <p class="muted">Ai răspuns corect la ${score} din 20. Cuvintele zilnice pornesc de la nivelul ${lv}. Poți schimba oricând din Progres.</p></div>
@@ -1993,7 +2318,7 @@ R.styleTest=()=>{
  const m=screen('Cum înveți tu','<div class="card" id="q"></div>');const card=m.querySelector('#q');
  const keys=['V','A','S','K'];const pick=STYLEQ.map(()=>null);const orders=STYLEQ.map(()=>shuffle([0,1,2,3]));let i=0;
  function step(){
-  if(i>=STYLEQ.length){const cnt={V:0,A:0,S:0,K:0};pick.forEach(k=>cnt[keys[k]]++);st.style=cnt;save();go('styleResult');return}
+  if(i>=STYLEQ.length){const cnt={V:0,A:0,S:0,K:0};pick.forEach(k=>cnt[keys[k]]++);st.style=cnt;save();go('styleResult');addXP(10);return}
   const [q,opts]=STYLEQ[i];
   card.innerHTML=`<div class="prog"><span style="width:${i/STYLEQ.length*100}%"></span></div><div class="qn">${i+1} din ${STYLEQ.length}</div><div class="qp">${q}</div><div class="opts">${orders[i].map(k=>`<button class="opt ${pick[i]===k?'mine':''}" data-k="${k}">${opts[k]}</button>`).join('')}</div>
    ${i>0?'<div class="tnav"><button class="btn ghost" data-a="prev">← Înapoi</button></div>':''}`;
@@ -2026,6 +2351,7 @@ R.home=()=>{
  <div class="hello"><div class="eyebrow">${LNAME[st.level]} · ${st.level}</div><h1>Salut, ${esc(st.name)}!</h1></div>
  ${(!SR)?`<div class="banner">Browserul acesta nu are recunoaștere vocală. Pentru pronunție folosește microfonul tastaturii sau deschide aplicația în Chrome.</div>`:''}
  <div class="stats"><div class="stat"><b>${streak}</b><span>zile la rând</span></div><div class="stat"><b>${learnedCount()}</b><span>cuvinte învățate</span></div><div class="stat"><b>${st.pron||0}</b><span>pronunții corecte</span></div></div>
+ ${(()=>{const L=levelInfo();const nb=Object.keys(st.badges||{}).length;return`<button class="rank" data-go="rewards"><div class="top"><span class="lvbadge">${L.n}</span><span class="t" style="flex:1;min-width:0"><span class="eyebrow">Gradul tău</span><b style="display:block;font-family:var(--display);font-size:1.15rem">${esc(L.name)}</b></span><span class="small muted">${nb} insigne</span></div><div class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></div><span class="small muted">${st.xp||0} XP · încă ${L.to-(st.xp||0)} XP până la nivelul ${L.n+1}</span></button>`})()}
  <div class="card today"><div class="eyebrow" style="color:inherit;opacity:.8">Sesiunea de azi</div>
   <h2>${doneToday?'Gata pe azi. Bravo!':t?`Ai ajuns la cuvântul ${Math.min(t.idx+1,10)} din 10`:'10 cuvinte noi te așteaptă'}</h2>
   <div class="dots" aria-label="Ultimele 7 zile">${weekDots().map(o=>`<i class="${o?'on':''}"></i>`).join('')}</div>
@@ -2074,7 +2400,7 @@ R.dailyLearn=()=>{
  const tt=t.src&&t.src!=='general'?(TOPICS.find(x=>x.id===t.src)||{}).t:'Cuvinte noi';
  const m=screen(esc(tt||'Cuvinte noi'),`<div class="prog"><span style="width:${t.idx/t.words.length*100}%"></span></div>
   <div class="card"><div class="row" style="justify-content:space-between;align-items:center"><span class="counter">${t.idx+1} / ${t.words.length}</span><span class="lv">${esc(tag(w))}</span></div>
-   <div class="word">${esc(w.en)}</div><div class="tr">${esc(w.ro)}</div>
+   ${PIC[w.en]?`<div class="picbox">${pic(w.en)}</div>`:''}<div class="word">${esc(w.en)}</div><div class="tr">${esc(w.ro)}</div>
    <div class="ex">${esc(w.ex)}</div>
    <div class="row"><button class="btn ghost" id="pex">${IC.spk} Propoziția</button><button class="btn ghost" id="pexs">${IC.slow} Rar</button></div></div>
   <div class="card" id="pr"></div>
@@ -2099,7 +2425,7 @@ R.dailyQuiz=()=>{
   const d=today();t.words.forEach(en=>{if(!st.learned[en])st.learned[en]={d}});
   st.sessions[d]=Math.max(st.sessions[d]||0,score);
   if(st.lastDay!==d){st.streak=(st.lastDay&&daysAgo(st.lastDay)===1)?st.streak+1:1;st.lastDay=d}
-  t.phase='done';save();const n=ws.length,r=score/n;const fromTopic=t.src&&t.src!=='general';
+  t.phase='done';save();const n=ws.length,r=score/n;setTimeout(()=>addXP(n*10+score*2+20),300);const fromTopic=t.src&&t.src!=='general';
   screen('Sesiune terminată',`<div class="card"><div class="eyebrow">Verificare</div><div class="big">${score}/${n}</div><h2>${r>=.8?'Excelent!':r>=.5?'Bine, mai exersează puțin.':'Repetă cuvintele în jocuri.'}</h2>
    <p class="muted">Ai ${learnedCount()} cuvinte învățate. Serie: ${st.streak} ${st.streak===1?'zi':'zile'} la rând.</p></div>
    ${fromTopic?`<button class="btn wide" data-go="topic" data-arg="${esc(t.src)}">Înapoi la domeniu</button>`:''}
@@ -2111,7 +2437,7 @@ R.review=()=>{
  if(pool.length<4){screen('Recapitulare','<div class="card"><p>Ai nevoie de cel puțin 4 cuvinte învățate pentru recapitulare.</p><button class="btn" data-go="daily">Sesiunea zilnică</button></div>');return}
  const ws=shuffle(pool).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
  const m=screen('Recapitulare','<div class="card" id="q"></div>');
- runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i%4])),(s)=>{screen('Recapitulare',`<div class="card"><div class="big">${s}/${ws.length}</div><p class="muted">Recapitularea zilnică fixează cuvintele în memoria de lungă durată.</p></div><button class="btn wide" data-go="review">Încă o rundă</button><button class="btn ghost wide" data-go="home">Acasă</button>`)});
+ runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i%4])),(s)=>{addXP(s*2);screen('Recapitulare',`<div class="card"><div class="big">${s}/${ws.length}</div><p class="muted">Recapitularea zilnică fixează cuvintele în memoria de lungă durată.</p></div><button class="btn wide" data-go="review">Încă o rundă</button><button class="btn ghost wide" data-go="home">Acasă</button>`)});
 };
 
 /* ---------- Domenii ---------- */
@@ -2137,7 +2463,7 @@ R.topic=id=>{
   ${left?`<button class="btn wide" id="learn">Învață ${Math.min(10,left)} cuvinte noi</button>`:s.n?'<div class="verdict ok">Ai învățat toate cuvintele de aici.</div>':''}
   ${s.n>=4?`<button class="btn ghost wide" id="tst">Test pe domeniu</button>`:''}
   <div id="gen"></div></div>
-  ${s.n?`<div class="card"><div class="eyebrow">Toate cuvintele · apasă ca să auzi</div><div class="list">${ws.map((w,i)=>`<button class="li" data-i="${i}"><span class="tick ${st.learned[w.en]?'done':''}">${st.learned[w.en]?'✓':''}</span><span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div></div>`:''}`);
+  ${s.n?`<div class="card"><div class="eyebrow">Toate cuvintele · apasă ca să auzi</div><div class="list">${ws.map((w,i)=>`<button class="li" data-i="${i}"><span class="tick ${st.learned[w.en]?'done':''}">${st.learned[w.en]?'✓':''}</span>${pic(w.en,'ill-s')}<span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div></div>`:''}`);
  const lb=m.querySelector('#learn');if(lb)lb.onclick=()=>startSession(id);
  const tb=m.querySelector('#tst');if(tb)tb.onclick=()=>topicTest(id);
  m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>say(ws[+b.dataset.i].en));
@@ -2148,7 +2474,7 @@ function topicTest(id){
  const pool=shuffle(learned.length>=4?learned:ws).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
  const m=screen(esc(t.t),'<div class="card" id="q"></div>');
  runQuiz(m.querySelector('#q'),pool.map((w,i)=>qWord(w,modes[i%4])),s=>{
-  screen(esc(t.t),`<div class="card"><div class="eyebrow">Test pe domeniu</div><div class="big">${s}/${pool.length}</div><p class="muted">${learned.length>=4?'Din cuvintele învățate aici.':'Din toate cuvintele domeniului: unele nu le-ai învățat încă.'}</p></div>
+  addXP(s*2);screen(esc(t.t),`<div class="card"><div class="eyebrow">Test pe domeniu</div><div class="big">${s}/${pool.length}</div><p class="muted">${learned.length>=4?'Din cuvintele învățate aici.':'Din toate cuvintele domeniului: unele nu le-ai învățat încă.'}</p></div>
    <button class="btn wide" data-go="topic" data-arg="${esc(id)}">Înapoi la domeniu</button>`)});
 }
 function genButton(host,ctx,onDone){
@@ -2190,7 +2516,7 @@ R.pronDrill=id=>{
  const m=screen(c.t,`<div class="note">${c.tip}</div><div class="prog"><span id="pg" style="width:0"></span></div><div class="card" id="pr"></div><button class="btn wide" id="nx" disabled>Pronunță corect ca să continui</button>`);
  const nx=m.querySelector('#nx');
  function step(){
-  if(i>=c.items.length){st.pronDone[c.id]=today();save();screen(c.t,`<div class="card"><h2>Ai trecut toate cele ${c.items.length} exerciții!</h2><p class="muted">Repetă mâine încă o dată. Sunetele se fixează prin repetiție zilnică.</p></div><button class="btn wide" data-go="pronList">Alt exercițiu</button>`);return}
+  if(i>=c.items.length){st.pronDone[c.id]=today();save();setTimeout(()=>addXP(15),300);screen(c.t,`<div class="card"><h2>Ai trecut toate cele ${c.items.length} exerciții!</h2><p class="muted">Repetă mâine încă o dată. Sunetele se fixează prin repetiție zilnică.</p></div><button class="btn wide" data-go="pronList">Alt exercițiu</button>`);return}
   m.querySelector('#pg').style.width=(i/c.items.length*100)+'%';nx.disabled=true;nx.textContent='Pronunță corect ca să continui';
   pron(m.querySelector('#pr'),c.items[i],{onPass:()=>{nx.disabled=false;nx.textContent=i+1<c.items.length?'Următorul':'Termină';nx.focus()}});
   setTimeout(()=>say(c.items[i]),250);
@@ -2218,7 +2544,7 @@ function textDrill(tx,memory){
  const m=screen(tx.t,`<div class="eyebrow">${memory?'Pasul 3 · Din memorie':'Pasul 2 · Repetă'}</div><div class="prog"><span id="pg"></span></div><div class="card" id="pr"></div><button class="btn wide" id="nx" disabled>Spune corect ca să continui</button>`);
  const nx=m.querySelector('#nx');
  function step(){
-  if(i>=tx.lines.length){if(memory)st.textsDone[tx.id]=today();save();
+  if(i>=tx.lines.length){if(memory)st.textsDone[tx.id]=today();save();setTimeout(()=>addXP(memory?30:10),300);
    screen(tx.t,`<div class="card"><h2>${memory?'Ai spus tot textul din memorie!':'Ai repetat tot textul.'}</h2><p class="muted">${memory?'Spune-l încă o dată mâine, fără să te uiți.':'Acum încearcă din memorie.'}</p></div>${memory?'':`<button class="btn wide" id="mm">Pasul 3 · Din memorie</button>`}<button class="btn ghost wide" data-go="texts">Alte texte</button>`);
    const mm=document.getElementById('mm');if(mm)mm.onclick=()=>textDrill(tx,true);return}
   m.querySelector('#pg').style.width=(i/tx.lines.length*100)+'%';nx.disabled=true;nx.textContent='Spune corect ca să continui';
@@ -2262,7 +2588,7 @@ R.speak=()=>{
   if(!sampleFn){out.innerHTML=`<h3>Ai spus ${words} cuvinte</h3><p class="muted">Corectarea automată funcționează când aplicația e deschisă în Claude. Până atunci, citește-ți răspunsul cu voce tare de două ori.</p>`;return}
   out.innerHTML='<h3>Corectura</h3><div class="ai muted">Mă gândesc…</div>';const box=out.querySelector('.ai');
   const prompt=`Ești profesor de engleză pentru un vorbitor de română, nivel ${lv}. Elevul a răspuns ORAL (transcriere automată, ignoră lipsa punctuației și majusculele) la întrebarea: "${topic}".\n\nRăspunsul elevului:\n"""${a.slice(0,3000)}"""\n\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nCUVINTE NOI DE FOLOSIT:\n- cuvânt englezesc = traducere (3 cuvinte potrivite nivelului)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
-  try{const r=await sampleFn(prompt,{cache:false,modelTier:'default',onText:({text})=>{box.classList.remove('muted');box.textContent=text}});box.textContent=r.text;
+  try{const r=await sampleFn(prompt,{cache:false,modelTier:'default',onText:({text})=>{box.classList.remove('muted');box.textContent=text}});box.textContent=r.text;addXP(15);
    const mt=r.text.match(/VERSIUNEA CORECTĂ:\s*\n([\s\S]*?)\n\s*GREȘELI/);if(mt){const b=document.createElement('button');b.className='btn ghost';b.innerHTML=IC.spk+' Ascultă versiunea corectă';const fixed=mt[1].trim();b.onclick=()=>say(fixed);out.appendChild(b)}}
   catch(e){box.textContent=e.text||'';const msg={not_granted:'Corectarea nu a fost permisă. Poți exersa în continuare citind cu voce tare.',rate_limited:'Prea multe cereri acum. Încearcă din nou peste câteva minute.',sampling_disabled:'Corectarea nu e disponibilă pentru acest cont.'}[e.code]||'Nu am putut corecta acum. Încearcă din nou.';
    if(e.code!=='cancelled'){const p=document.createElement('p');p.className='muted';p.textContent=msg;out.appendChild(p)}}
@@ -2284,7 +2610,7 @@ R.gram=id=>{
   const fill=(p,c)=>{const parts=c==='(nimic)'?['']:c.split(' … ');let k=0;return p.replace(/___/g,()=>parts[k++]??'').replace(/\s+/g,' ').trim()};
   const qs=g.q.map(([p,c,o])=>mc(esc(p).replace(/___/g,'<b>___</b>'),c,o,{sayAfter:fill(p,c)}));
   runQuiz(m2.querySelector('#q'),qs,(s)=>{
-   st.grammar[g.id]=s;save();let k=0;
+   st.grammar[g.id]=s;save();addXP(s*3);let k=0;
    const m3=screen(g.t,`<div class="card"><div class="big">${s}/5</div><p class="muted">${s>=4?'Foarte bine.':'Recitește regula și mai încearcă o dată.'}</p></div>
     <div class="card"><h3>Acum spune exemplele cu voce tare</h3><div id="pr"></div></div><button class="btn wide" id="nx" disabled>Spune corect ca să continui</button>`);
    const nx=m3.querySelector('#nx');
@@ -2302,7 +2628,20 @@ R.games=()=>{
   <button class="tile" data-go="gMatch"><h3>Perechi</h3><p>Leagă cuvântul englezesc de traducere. Contra cronometru.</p></button>
   <button class="tile" data-go="gListen"><h3>Ascultă și alege</h3><p>Auzi cuvântul, alegi ce înseamnă.</p></button>
   <button class="tile" data-go="gBuild"><h3>Construiește propoziția</h3><p>Pune cuvintele în ordine, apoi o spui.</p></button>
-  <button class="tile" data-go="gDict"><h3>Dictare</h3><p>Auzi și scrii corect.</p></button></div>`);
+  <button class="tile" data-go="gDict"><h3>Dictare</h3><p>Auzi și scrii corect.</p></button>
+  <button class="tile flag" data-go="gPics" style="grid-column:1/-1">${pic('excavator','ill-s')}<h3>Ce vezi în imagine?</h3><p>Desene de pe șantier: țevi, fitinguri, utilaje, scule. Alegi cuvântul englezesc corect.</p></button></div>`);
+};
+R.gPics=()=>{
+ const keys=shuffle(Object.keys(PIC).filter(k=>W(k)));const pickK=keys.slice(0,10);
+ const qs=pickK.map(en=>mc(`<div class="picbox">${pic(en)}</div>Ce este în imagine?`,en,shuffle(keys.filter(k=>k!==en)).slice(0,3),{sayAfter:en}));
+ const m=screen('Ce vezi în imagine?','<div class="card" id="q"></div>');
+ runQuiz(m.querySelector('#q'),qs,(s)=>{if(s>(st.picBest||0)){st.picBest=s;save()}
+  screen('Ce vezi în imagine?',`<div class="card"><div class="big">${s}/${qs.length}</div><p class="muted">${s===qs.length?'Perfect! Ochi de inginer.':'Recordul tău: '+(st.picBest||s)+'/10.'}</p></div>
+   <div class="card"><h3>Toate desenele</h3><div class="list">${pickK.map(en=>{const w=W(en);return`<button class="li" data-say="${esc(en)}">${pic(en,'ill-s')}<span class="t"><b>${esc(en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`}).join('')}</div></div>
+   <button class="btn wide" data-go="gPics">Încă o rundă</button><button class="btn ghost wide" data-go="games">Alte jocuri</button>`);
+  document.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
+  setTimeout(()=>addXP(s*2),300);
+ });
 };
 R.gMatch=()=>{
  const ws=shuffle(gamePool()).slice(0,6);const L=shuffle(ws),Rr=shuffle(ws);let sel=null,left=6,miss=0;const t0=Date.now();
@@ -2312,13 +2651,13 @@ R.gMatch=()=>{
   if(b.dataset.s==='en'){m.querySelectorAll('[data-s=en]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b;say(b.dataset.w);return}
   if(!sel)return;
   if(sel.dataset.w===b.dataset.w){sel.classList.remove('sel');sel.classList.add('gone');b.classList.add('gone');sel.disabled=b.disabled=true;sel=null;left--;
-   if(!left){const s=Math.round((Date.now()-t0)/1000);m.querySelector('#res').innerHTML=`<div class="card"><h2>${s} secunde, ${miss} greșeli</h2><button class="btn wide" data-go="gMatch">Încă o rundă</button></div>`}}
+   if(!left){const s=Math.round((Date.now()-t0)/1000);addXP(Math.max(4,12-miss));m.querySelector('#res').innerHTML=`<div class="card"><h2>${s} secunde, ${miss} greșeli</h2><button class="btn wide" data-go="gMatch">Încă o rundă</button></div>`}}
   else{miss++;b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),500)}
  });
 };
 R.gListen=()=>{const ws=shuffle(gamePool()).slice(0,10);const m=screen('Ascultă și alege','<div class="card" id="q"></div>');runQuiz(m.querySelector('#q'),ws.map(w=>qWord(w,'listen')),s=>endGame('Ascultă și alege',s,ws.length,'gListen'))};
 R.gDict=()=>{const ws=shuffle(gamePool()).slice(0,10);const m=screen('Dictare','<div class="card" id="q"></div>');runQuiz(m.querySelector('#q'),ws.map(w=>qWord(w,'dict')),s=>endGame('Dictare',s,ws.length,'gDict'))};
-function endGame(t,s,n,again){screen(t,`<div class="card"><div class="big">${s}/${n}</div><p class="muted">${s/n>=.8?'Foarte bine!':'Mai joacă o rundă, se fixează.'}</p></div><button class="btn wide" data-go="${again}">Încă o rundă</button><button class="btn ghost wide" data-go="games">Alte jocuri</button>`)}
+function endGame(t,s,n,again){setTimeout(()=>addXP(s),300);screen(t,`<div class="card"><div class="big">${s}/${n}</div><p class="muted">${s/n>=.8?'Foarte bine!':'Mai joacă o rundă, se fixează.'}</p></div><button class="btn wide" data-go="${again}">Încă o rundă</button><button class="btn ghost wide" data-go="games">Alte jocuri</button>`)}
 R.gBuild=()=>{
  const ws=shuffle(gamePool()).slice(0,5);let i=0,ok=0;
  const m=screen('Construiește propoziția','<div class="card" id="g"></div>');const card=m.querySelector('#g');
@@ -2354,7 +2693,7 @@ R.weekly=()=>{
   const modes=['en2ro','listen','type'];const qs=pick.map((w,i)=>qWord(w,modes[Math.floor(i/5)]));
   const m2=screen('Test săptămânal','<div class="card" id="q"></div>');
   runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{
-   st.weekly.push({date:today(),score:s,n:15});save();
+   st.weekly.push({date:today(),score:s,n:15});save();setTimeout(()=>addXP(s*3),300);
    const wl=[...new Set(wrong.map(q=>q.answer!=null&&q.type==='type'?q.answer:(q.sayAfter||q.audio)).filter(Boolean))];
    screen('Rezultat test',`<div class="card"><div class="eyebrow">Testul săptămânii</div><div class="big">${s}/15</div><h2>${s>=13?'Excelent!':s>=9?'Bine.':'Mai repetă cuvintele săptămâna asta.'}</h2></div>
     ${wl.length?`<div class="card"><h3>De repetat</h3><div class="list">${wl.map(en=>{const w=W(en);return w?`<button class="li" data-say="${esc(w.en)}"><span class="tick">${IC.spk}</span><span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span></button>`:''}).join('')}</div></div>`:''}
@@ -2363,6 +2702,19 @@ R.weekly=()=>{
    document.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
   },{feedback:false});
  };
+};
+
+/* ---------- Recompense ---------- */
+R.rewards=()=>{
+ const L=levelInfo();checkBadges();const got=st.badges||{};
+ const m=screen('Grade și insigne',`<div class="card"><div class="eyebrow">Nivelul ${L.n}</div><h1>${esc(L.name)}</h1><div class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></div>
+  <p class="small muted">${st.xp||0} XP. Următorul grad: <b>${esc(levelInfo(L.to).name)}</b>, la ${L.to} XP.</p></div>
+ <div class="card"><h3>Cum câștigi puncte</h3><table class="tbl">
+  <tr><td>Cuvânt învățat</td><td style="text-align:right"><b>+10</b></td></tr><tr><td>Pronunție corectă</td><td style="text-align:right"><b>+2</b></td></tr>
+  <tr><td>Sesiune terminată</td><td style="text-align:right"><b>+20</b></td></tr><tr><td>Răspuns corect la test sau joc</td><td style="text-align:right"><b>+1…3</b></td></tr>
+  <tr><td>Text spus din memorie</td><td style="text-align:right"><b>+30</b></td></tr><tr><td>Vorbit liber cu corectură</td><td style="text-align:right"><b>+15</b></td></tr></table></div>
+ <div class="card"><h3>Grade</h3><div class="list">${RANKS.map((r,i)=>`<div class="li"><span class="tick ${L.n>i?'done':''}">${i+1}</span><span class="t"><b>${esc(r)}</b><span>de la ${lvlNeed(i)} XP</span></span></div>`).join('')}</div></div>
+ <div class="card"><h3>Insigne · ${Object.keys(got).length} din ${BADGES.length}</h3><div class="badges">${BADGES.map(b=>`<div class="bdg ${got[b.id]?'':'locked'}"><span class="med">${got[b.id]?'★':'?'}</span><b>${esc(b.t)}</b><span>${esc(b.d)}${got[b.id]?' · '+got[b.id]:''}</span></div>`).join('')}</div></div>`);
 };
 
 /* ---------- Microfon și voce ---------- */
@@ -2410,10 +2762,19 @@ R.progress=()=>{
  <div class="card"><div class="eyebrow">Domenii</div><div class="bars wide">${TOPICS.map(t=>{const s=topicStats(t.id);return`<div class="b"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.t)}</span><i><span style="width:${s.n?s.l/s.n*100:0}%;background:var(--ok)"></span></i><b>${s.l}</b></div>`}).join('')}</div></div>
  <div class="card"><div class="eyebrow">Stil de învățare</div><h3>${top?STYLES[top].n:'Necompletat'}</h3><div class="row"><button class="btn ghost" data-go="${top?'styleResult':'styleIntro'}">${top?'Vezi recomandările':'Fă testul'}</button>${top?'<button class="btn ghost" data-go="styleTest">Refă</button>':''}</div></div>
  <div class="card"><div class="eyebrow">Teste săptămânale</div>${st.weekly.length?`<table class="tbl">${st.weekly.slice().reverse().map(h=>`<tr><td>${h.date}</td><td style="text-align:right"><b>${h.score}/${h.n}</b></td></tr>`).join('')}</table>`:'<p class="muted">Niciun test încă.</p>'}</div>
+ <div class="card"><div class="eyebrow">Salvarea progresului</div>
+  <p class="small">${cloudRef?'<b>Salvare automată în contul tău Claude: activă.</b> Dacă închizi aplicația sau schimbi telefonul, progresul revine când o deschizi din nou în Claude.':'Progresul se salvează automat pe acest telefon, în browser. Ca să nu-l pierzi niciodată, păstrează un <b>cod de salvare</b>.'}</p>
+  <p class="small muted">Cu codul de salvare muți progresul între aplicația din Claude și cea din browser, sau pe alt telefon.</p>
+  <div class="row"><button class="btn ghost" id="exp">Arată codul de salvare</button><button class="btn ghost" id="imp">Restaurează din cod</button></div><div id="codebox"></div></div>
  <div class="card"><div class="eyebrow">Profil</div><p>Nume: <b>${esc(st.name)}</b></p><button class="btn ghost" id="rst">Șterge tot progresul</button><div id="cf"></div></div>`);
+ m.querySelector('#exp').onclick=()=>{const c=exportCode();const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codeout" readonly style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="cpc">Copiază codul</button><p class="small muted">Păstrează-l în Note sau trimite-l pe e-mail ție însuți.</p>`;const ta=cb.querySelector('#codeout');ta.value=c;
+  cb.querySelector('#cpc').onclick=()=>{const done=()=>cb.querySelector('#cpc').textContent='Copiat';try{navigator.clipboard.writeText(c).then(done,()=>{ta.select();done()})}catch(e){ta.select()}}};
+ m.querySelector('#imp').onclick=()=>{const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codein" placeholder="Lipește aici codul care începe cu SPEAKUP1:" style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="doimp">Restaurează progresul</button><div id="impres"></div>`;
+  cb.querySelector('#doimp').onclick=()=>{try{importCode(cb.querySelector('#codein').value);toast('Progresul a fost restaurat.');go('home')}catch(e){cb.querySelector('#impres').innerHTML='<div class="verdict bad">Codul nu e valid. Copiază-l complet, inclusiv începutul SPEAKUP1:</div>'}}};
  m.querySelector('#rst').onclick=()=>{m.querySelector('#cf').innerHTML=`<div class="confirm"><b>Sigur? Se șterg toate cuvintele, scorurile și seria de zile.</b><div class="row"><button class="btn ghost" id="no">Renunț</button><button class="btn" id="yes" style="background:var(--bad);color:#fff">Șterge</button></div></div>`;
   m.querySelector('#no').onclick=()=>m.querySelector('#cf').innerHTML='';m.querySelector('#yes').onclick=()=>{st=fresh();save();go('welcome')}};
 };
 
 go('home');
+cloudInit();
 </script></body></html>
