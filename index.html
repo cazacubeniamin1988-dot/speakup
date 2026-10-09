@@ -195,6 +195,16 @@ textarea{min-height:130px;resize:vertical}
 .diag .bub.badb circle{fill:var(--bad)}
 .diag .bub.good text,.diag .bub.badb text{fill:#fff}
 .after{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.av{border-radius:50%;background:var(--avc);color:#fff;display:inline-grid;place-items:center;font-family:var(--display);font-weight:800;flex:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--avc) 25%,transparent)}
+.av.plus{--avc:var(--line);color:var(--ink);width:64px;height:64px;font-size:30px;box-shadow:none;border:2px dashed var(--muted);background:transparent}
+.profgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.prof{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:var(--sh)}
+.prof b{font-family:var(--display);font-size:1.1rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prof span:not(.av){font-size:.8rem;color:var(--muted)}
+.prof.on{border-color:var(--mark);box-shadow:0 0 0 2px var(--mark) inset,var(--sh)}
+.prof.add{background:transparent;box-shadow:none;border-style:dashed}
+.hero .swp{position:absolute;top:18px;right:14px;background:none;border:0;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.7rem;font-weight:700;opacity:.95;z-index:1}
+.hero .rankbtn{padding-right:64px}
 .li.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .heard{font-size:.9rem;color:var(--muted)}
 .ill{display:block;width:100%;max-width:230px;height:auto;margin:0 auto}
@@ -2151,37 +2161,80 @@ const SPEAK={
 };
 
 /* ================= STARE ================= */
-const KEY='speakup_v1';
-const fresh=()=>({name:'',level:null,startLevel:null,style:null,learned:{},sessions:{},weekly:[],streak:0,lastDay:null,pron:0,pronDone:{},textsDone:{},grammar:{},today:null,custom:[],customTopics:[],xp:0,badges:{},picBest:0,updated:0});
-let st=fresh();
-try{const s=JSON.parse(localStorage.getItem(KEY));if(s)st=Object.assign(fresh(),s)}catch(e){}
+/* ================= PROFILURI ================= */
+/* Fiecare persoană are profilul ei: progres, nivel, puncte și insigne separate */
+const OLD_KEY='speakup_v1',PROF_KEY='benglish_profiles';
+const pkey=id=>'benglish_p_'+id;
+const fresh=()=>({name:'',level:null,startLevel:null,style:null,learned:{},sessions:{},weekly:[],streak:0,lastDay:null,pron:0,pronDone:{},textsDone:{},grammar:{},today:null,custom:[],customTopics:[],xp:0,badges:{},picBest:0,updated:0,xpInit:1});
+const AV_COLORS=['#2457E6','#F06A2E','#0E9F9A','#8A55D9','#D63A6A','#1F9D55','#E0A100','#14213D'];
+const newPid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
+let profs=lsGet(PROF_KEY);if(!profs||!Array.isArray(profs.list))profs={active:null,list:[]};
+/* Mutăm progresul din versiunea veche (un singur profil) */
+if(!profs.list.length){const old=lsGet(OLD_KEY);if(old&&old.name){const id=newPid();profs.list.push({id,name:old.name,color:0});profs.active=id;lsSet(pkey(id),old);lsSet(PROF_KEY,profs)}}
+if(profs.active&&!profs.list.find(x=>x.id===profs.active))profs.active=null;
+const saveProfs=()=>lsSet(PROF_KEY,profs);
+const curProf=()=>profs.list.find(x=>x.id===profs.active)||null;
+function normState(o){const x=Object.assign(fresh(),o||{});if(!x.xpInit){x.xp=(x.xp||0)+Object.keys(x.learned||{}).length*10+(x.pron||0)*2+Object.keys(x.sessions||{}).length*20+(x.placement?20:0);x.xpInit=1}return x}
+let st=profs.active?normState(lsGet(pkey(profs.active))):fresh();
 function attachTopic(t){if(!TOPICS.find(x=>x.id===t.id)){TOPICS.push(t);TW[t.id]=TW[t.id]||[]}}
 function attachWord(w){
  const ok=addWord(w);const real=W(w.en);
  if(w.tp){attachTopic(TOPICS.find(t=>t.id===w.tp)||{id:w.tp,g:'Subiectul tău',t:w.tp,d:''});if(!TW[w.tp].includes(real))TW[w.tp].push(real)}
  else if(ok&&WORDS[w.lv])WORDS[w.lv].push(real);
  return ok}
-(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);
-/* Puncte pentru ce ai făcut înainte să existe sistemul de puncte */
-if(!st.xpInit){st.xp=(st.xp||0)+Object.keys(st.learned||{}).length*10+(st.pron||0)*2+Object.keys(st.sessions||{}).length*20+(st.placement?20:0);st.xpInit=1}
+const attachCustom=()=>{(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord)};
+attachCustom();
 /* Salvare: local imediat + în contul Claude (când aplicația e deschisă în Claude) */
-let cloudRef=null,cloudBusy=false,cloudDirty=false,cloudTimer=null;
-function save(){st.updated=Date.now();try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}if(cloudRef){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudSave,2500)}}
-async function cloudSave(){if(!cloudRef)return;if(cloudBusy){cloudDirty=true;return}cloudBusy=true;
- try{await cloudRef.set({json:JSON.stringify(st),updated:st.updated||Date.now()})}catch(e){if(e&&['not_granted','revoked','capability_disabled','capability_removed','invalid_argument'].includes(e.code))cloudRef=null}
+let cloudDB=null,cloudUid=null,cloudBusy=false,cloudDirty=false,cloudTimer=null;
+const cloudOn=()=>!!(cloudDB&&cloudUid);
+function save(){
+ if(!profs.active)return;st.updated=Date.now();lsSet(pkey(profs.active),st);
+ const p=curProf();if(p&&st.name&&p.name!==st.name){p.name=st.name;saveProfs()}
+ if(cloudOn()){clearTimeout(cloudTimer);cloudTimer=setTimeout(cloudSave,2500)}}
+async function cloudSave(){if(!cloudOn()||!profs.active)return;if(cloudBusy){cloudDirty=true;return}cloudBusy=true;
+ try{await cloudDB.doc('data/users/'+cloudUid+'/p_'+profs.active).set({json:JSON.stringify(st),updated:st.updated||Date.now()});
+  await cloudDB.doc('data/users/'+cloudUid+'/profiles').set({json:JSON.stringify(profs.list),updated:Date.now()})}
+ catch(e){if(e&&['not_granted','revoked','capability_disabled','capability_removed','invalid_argument'].includes(e.code))cloudDB=null}
  cloudBusy=false;if(cloudDirty){cloudDirty=false;cloudSave()}}
-function applyState(obj){st=Object.assign(fresh(),obj);(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}if(cloudRef)cloudSave()}
+async function cloudDelete(id){if(!cloudOn())return;try{await cloudDB.doc('data/users/'+cloudUid+'/p_'+id).delete();await cloudDB.doc('data/users/'+cloudUid+'/profiles').set({json:JSON.stringify(profs.list),updated:Date.now()})}catch(e){}}
+function useProfile(id){
+ if(profs.active&&profs.active!==id)lsSet(pkey(profs.active),st);
+ profs.active=id;saveProfs();st=normState(lsGet(pkey(id)));attachCustom();
+}
+function applyState(obj){st=normState(obj);attachCustom();save();if(cloudOn())cloudSave()}
 async function cloudInit(){
  try{if(!(window.claude&&claude.use))return;const[db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!user)return;
-  const id=await user.id();if(!id)return;const ref=db.doc('data/users/'+id+'/progress');const snap=await ref.get();cloudRef=ref;
-  let r=null;try{const d=snap.exists?snap.data():null;r=d&&d.json?JSON.parse(d.json):null}catch(e){}
-  if(r&&(r.updated||0)>(st.updated||0)){st=Object.assign(fresh(),r);(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}toast('Progresul tău a fost readus din cont.');go('home')}
-  else if(st.name)cloudSave();
- }catch(e){cloudRef=null}}
+  const uid=await user.id();if(!uid)return;
+  const parse=snap=>{try{const d=snap.exists?snap.data():null;return d&&d.json?JSON.parse(d.json):null}catch(e){return null}};
+  const meta=parse(await db.doc('data/users/'+uid+'/profiles').get());
+  let changed=false;
+  if(Array.isArray(meta)){
+   for(const rp of meta){if(!rp||!rp.id)continue;let lp=profs.list.find(x=>x.id===rp.id);
+    const remote=parse(await db.doc('data/users/'+uid+'/p_'+rp.id).get());const local=lsGet(pkey(rp.id));
+    if(remote&&(!local||(remote.updated||0)>(local.updated||0))){lsSet(pkey(rp.id),remote);changed=true}
+    if(!lp){profs.list.push({id:rp.id,name:rp.name,color:rp.color||0});changed=true}}
+  }else{
+   /* versiunea veche: un singur document de progres */
+   const old=parse(await db.doc('data/users/'+uid+'/progress').get());
+   if(old&&old.name){let p=profs.list.find(x=>x.name===old.name)||profs.list[0];
+    if(!p){p={id:newPid(),name:old.name,color:0};profs.list.push(p);if(!profs.active)profs.active=p.id}
+    const local=lsGet(pkey(p.id));if(!local||(old.updated||0)>(local.updated||0)){lsSet(pkey(p.id),old);changed=true}}
+  }
+  cloudDB=db;cloudUid=uid;
+  if(changed){saveProfs();if(profs.active){st=normState(lsGet(pkey(profs.active)));attachCustom()}toast('Profilurile au fost readuse din contul tău.');go(profs.list.length>1&&!profs.active?'profiles':'home')}
+  if(profs.list.length){for(const p of profs.list){const x=lsGet(pkey(p.id));if(x)try{await db.doc('data/users/'+uid+'/p_'+p.id).set({json:JSON.stringify(x),updated:x.updated||Date.now()})}catch(e){}}
+   try{await db.doc('data/users/'+uid+'/profiles').set({json:JSON.stringify(profs.list),updated:Date.now()})}catch(e){}}
+ }catch(e){cloudDB=null}}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
-/* Cod de salvare: tot progresul într-un text care se poate copia și lipi oriunde */
+/* Cod de salvare: progresul unui profil într-un text care se poate copia și lipi oriunde */
 const exportCode=()=>'SPEAKUP1:'+btoa(unescape(encodeURIComponent(JSON.stringify(st))));
-function importCode(c){c=String(c||'').trim();if(!c.startsWith('SPEAKUP1:'))throw new Error('format');const o=JSON.parse(decodeURIComponent(escape(atob(c.slice(9)))));if(!o||typeof o!=='object'||!('learned' in o))throw new Error('format');o.updated=Date.now();applyState(o)}
+function decodeCode(c){c=String(c||'').trim().replace(/\s+/g,'');if(!c.startsWith('SPEAKUP1:'))throw new Error('format');const o=JSON.parse(decodeURIComponent(escape(atob(c.slice(9)))));if(!o||typeof o!=='object'||!('learned' in o))throw new Error('format');return o}
+function importCode(c){const o=decodeCode(c);o.updated=Date.now();applyState(o)}
+function importAsNewProfile(c){const o=decodeCode(c);o.updated=Date.now();const id=newPid();profs.list.push({id,name:o.name||'Profil',color:profs.list.length%AV_COLORS.length});lsSet(pkey(id),o);useProfile(id);saveProfs();if(cloudOn())cloudSave();return o}
+const initials=n=>String(n||'?').trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'?';
+const avatar=(p,size=56)=>`<span class="av" style="--avc:${AV_COLORS[(p.color||0)%AV_COLORS.length]};width:${size}px;height:${size}px;font-size:${Math.round(size*.38)}px">${esc(initials(p.name))}</span>`;
 
 /* Notificări scurte */
 let toastQ=[],toastOn=false;
@@ -2481,6 +2534,41 @@ let ignorePop=false;
 window.addEventListener('popstate',()=>{if(ignorePop){ignorePop=false;return}back(true)});
 const R={};
 
+/* ---------- Profiluri ---------- */
+function newProfile(){const id=newPid();profs.list.push({id,name:'',color:profs.list.length%AV_COLORS.length});useProfile(id);saveProfs();NAV.length=0;cur=null;go('welcome')}
+function openProfile(id){useProfile(id);NAV.length=0;cur=null;go(!st.name?'welcome':!st.level?'pickLevel':'home')}
+R.profiles=()=>{
+ const m=screen('Profiluri',`
+ <div class="hello"><div class="eyebrow">Benglish</div><h1>Cine învață azi?</h1><p class="muted">Fiecare are profilul lui, cu nivel, cuvinte, puncte și insigne separate.</p></div>
+ <div class="profgrid">${profs.list.map(p=>{const x=lsGet(pkey(p.id))||{};const L=levelInfo(x.xp||0);return `<button class="prof ${p.id===profs.active?'on':''}" data-p="${p.id}">${avatar(p,64)}<b>${esc(p.name||'Profil nou')}</b><span>${x.level?x.level+' · ':''}${esc(L.name)}</span><span>${Object.keys(x.learned||{}).length} cuvinte · ${x.xp||0} XP</span></button>`}).join('')}
+  <button class="prof add" id="add"><span class="av plus">+</span><b>Profil nou</b><span>Pentru altcineva</span></button></div>
+ <button class="btn ghost wide" data-go="restore">Am un cod de salvare</button>
+ ${profs.list.length?'<button class="linkbtn" id="manage">Redenumește sau șterge profiluri</button>':''}
+ <div id="mg"></div>`,{back:false});
+ m.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>openProfile(b.dataset.p));
+ m.querySelector('#add').onclick=newProfile;
+ const mb=m.querySelector('#manage');if(mb)mb.onclick=()=>{const mg=m.querySelector('#mg');
+  mg.innerHTML=`<div class="card"><h3>Profiluri</h3><div class="list">${profs.list.map(p=>`<div class="li" style="flex-wrap:wrap">${avatar(p,36)}<input type="text" id="pn_${p.id}" value="${esc(p.name)}" style="flex:1;min-width:120px"><button class="btn ghost" data-ren="${p.id}">Salvează</button><button class="btn ghost" data-del="${p.id}" style="color:var(--bad)">Șterge</button></div>`).join('')}</div><div id="delc"></div></div>`;
+  mg.querySelectorAll('[data-ren]').forEach(b=>b.onclick=()=>{const id=b.dataset.ren;const v=mg.querySelector('#pn_'+id).value.trim();if(!v)return;const p=profs.list.find(x=>x.id===id);p.name=v;const x=lsGet(pkey(id));if(x){x.name=v;x.updated=Date.now();lsSet(pkey(id),x)}if(id===profs.active)st.name=v;saveProfs();if(cloudOn()&&id===profs.active)cloudSave();toast('Nume salvat.');go('profiles')});
+  mg.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const id=b.dataset.del;const p=profs.list.find(x=>x.id===id);
+   mg.querySelector('#delc').innerHTML=`<div class="confirm"><b>Ștergi profilul ${esc(p.name||'fără nume')}? Tot progresul lui se pierde.</b><div class="row"><button class="btn ghost" id="dno">Renunț</button><button class="btn" id="dyes" style="background:var(--bad);color:#fff">Șterge profilul</button></div></div>`;
+   mg.querySelector('#dno').onclick=()=>mg.querySelector('#delc').innerHTML='';
+   mg.querySelector('#dyes').onclick=()=>{profs.list=profs.list.filter(x=>x.id!==id);try{localStorage.removeItem(pkey(id))}catch(e){}if(profs.active===id){profs.active=null;st=fresh()}saveProfs();cloudDelete(id);toast('Profil șters.');go('profiles')}})};
+};
+R.restore=()=>{
+ const m=screen('Restaurează din cod',`<div class="card"><h2>Ai progres în altă parte?</h2>
+  <p class="small">Codul de salvare se ia din aplicația unde ai deja progres: <b>Eu → Salvarea progresului → Arată codul de salvare → Copiază</b>. Apoi îl lipești aici.</p>
+  <div class="note small"><b>Pe iPhone:</b> aplicația pusă pe ecranul principal are memoria ei, separată de Safari. Dacă ai învățat în Safari, deschide adresa în Safari, copiază codul, apoi lipește-l aici, în aplicația de pe ecran.</div>
+  <textarea id="codein2" placeholder="Lipește aici codul care începe cu SPEAKUP1:" style="min-height:110px;font-size:.75rem"></textarea>
+  <button class="btn wide" id="go2">Restaurează ca profil</button><div id="r2"></div></div>`,{back:true});
+ m.querySelector('#go2').onclick=()=>{const v=m.querySelector('#codein2').value;
+  try{const o=decodeCode(v);
+   /* dacă profilul curent e gol (abia creat), îl folosim pe el */
+   const p=curProf();if(p&&!Object.keys(st.learned).length&&!st.level){o.updated=Date.now();applyState(o);p.name=o.name||p.name;saveProfs()}else importAsNewProfile(v);
+   toast(`Profilul ${esc(st.name)} a fost restaurat.`);NAV.length=0;cur=null;go('home')}
+  catch(e){m.querySelector('#r2').innerHTML='<div class="verdict bad">Codul nu e valid. Copiază-l complet, inclusiv începutul SPEAKUP1:</div>'}};
+};
+
 /* ---------- Bun venit ---------- */
 R.welcome=()=>{
  const m=screen('Benglish','',{back:false});
@@ -2489,7 +2577,10 @@ R.welcome=()=>{
   <div class="card"><label for="nm"><b>Cum te numești?</b></label><input type="text" id="nm" placeholder="Prenumele tău" autocomplete="given-name">
   <button class="btn wide" id="startp">Încep testul de nivel</button>
   <button class="linkbtn" id="skipp">Știu nivelul meu, aleg singur</button></div>
-  <p class="small muted">Ai nevoie de sonor pornit. Progresul se salvează pe acest dispozitiv.</p>`;
+  <p class="small muted">Ai nevoie de sonor pornit. Progresul se salvează în profilul tău.</p>
+  <button class="btn ghost wide" data-go="restore">Am deja progres: restaurez din cod</button>
+  ${profs.list.length>1?'<button class="linkbtn" id="toprof">Înapoi la profiluri</button>':''}`;
+ const tp=m.querySelector('#toprof');if(tp)tp.onclick=()=>{const p=curProf();if(p&&!st.name&&!Object.keys(st.learned).length){profs.list=profs.list.filter(x=>x.id!==p.id);try{localStorage.removeItem(pkey(p.id))}catch(e){}profs.active=null;saveProfs();st=fresh()}go('profiles')};
  const nm=m.querySelector('#nm');nm.value=st.name||'';
  m.querySelector('#startp').onclick=()=>{st.name=nm.value.trim()||'prietene';save();go('placement')};
  m.querySelector('#skipp').onclick=()=>{st.name=nm.value.trim()||'prietene';save();go('pickLevel')};
@@ -2555,6 +2646,7 @@ const tileW=(cls,goTo,arg,ico,title,desc,pill='')=>`<button class="tile wide ${c
 const ICD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
 const ICR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
 R.home=()=>{
+ if(!profs.active){go('profiles');return}
  if(!st.name){go('welcome');return}
  if(!st.level){go('pickLevel');return}
  const t=st.today&&st.today.date===today()?st.today:null;
@@ -2565,6 +2657,7 @@ R.home=()=>{
  const totalTerms=TOPICS.reduce((a,x)=>a+(TW[x.id]||[]).length,0);
  screen('Benglish',`
  <section class="hero">
+  <button class="swp" data-go="profiles" aria-label="Schimbă profilul" title="Schimbă profilul">${avatar(curProf()||{name:st.name},38)}<span>${profs.list.length>1?'Schimbă':'Profiluri'}</span></button>
   <button class="rankbtn" data-go="rewards"><span class="hi"><span class="lvbadge">${L.n}</span><span style="min-width:0"><span class="sub">${hi},</span><h1>${esc(st.name)}</h1><span class="sub">${esc(L.name)} · ${st.level} ${LNAME[st.level]}</span></span></span>
    <span class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></span><span class="sub small">${st.xp||0} XP · încă ${L.to-(st.xp||0)} până la nivelul ${L.n+1} · ${nb} insigne</span></button>
   <div class="hstats"><div class="hs"><b>${streak}</b><span>zile la rând</span></div><div class="hs"><b>${learnedCount()}</b><span>cuvinte</span></div><div class="hs"><b>${st.pron||0}</b><span>pronunții</span></div></div>
@@ -3286,7 +3379,10 @@ R.progress=()=>{
  const byLv=LEVELS.map(l=>[l,WORDS[l].filter(w=>st.learned[w.en]).length,WORDS[l].length]);
  const top=st.style?Object.keys(st.style).sort((a,b)=>st.style[b]-st.style[a])[0]:null;
  const L=levelInfo();
+ const P=curProf()||{name:st.name,color:0};
  const m=screen('Eu',`
+ <div class="card"><div class="row" style="align-items:center;flex-wrap:nowrap">${avatar(P,52)}<div style="flex:1;min-width:0"><div class="eyebrow">Profil</div><h2 style="overflow:hidden;text-overflow:ellipsis">${esc(st.name)}</h2></div></div>
+  <div class="row"><button class="btn" data-go="profiles">Schimbă profilul</button><button class="btn ghost" id="addp">+ Profil nou</button></div></div>
  <button class="hero" data-go="rewards" style="text-align:left;border:0"><span class="hi"><span class="lvbadge">${L.n}</span><span><span class="sub">Gradul tău</span><h1>${esc(L.name)}</h1><span class="sub">${st.xp||0} XP · ${Object.keys(st.badges||{}).length} insigne · vezi toate</span></span></span><span class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></span></button>
  <div class="card"><div class="eyebrow">Nivel</div><h2>${st.level} · ${LNAME[st.level]}</h2>${st.placement?`<p class="muted small">Test de nivel: ${st.placement.score}/20, pe ${st.placement.date}</p>`:''}
   <div class="row"><button class="btn ghost" data-go="placement">Refă testul de nivel</button><button class="btn ghost" data-go="pickLevel">Alege manual</button></div></div>
@@ -3296,18 +3392,20 @@ R.progress=()=>{
  <div class="card"><div class="eyebrow">Stil de învățare</div><h3>${top?STYLES[top].n:'Necompletat'}</h3><div class="row"><button class="btn ghost" data-go="${top?'styleResult':'styleIntro'}">${top?'Vezi recomandările':'Fă testul'}</button>${top?'<button class="btn ghost" data-go="styleTest">Refă</button>':''}</div></div>
  <div class="card"><div class="eyebrow">Teste săptămânale</div>${st.weekly.length?`<table class="tbl">${st.weekly.slice().reverse().map(h=>`<tr><td>${h.date}</td><td style="text-align:right"><b>${h.score}/${h.n}</b></td></tr>`).join('')}</table>`:'<p class="muted">Niciun test încă.</p>'}</div>
  <div class="card"><div class="eyebrow">Salvarea progresului</div>
-  <p class="small">${cloudRef?'<b>Salvare automată în contul tău Claude: activă.</b> Dacă închizi aplicația sau schimbi telefonul, progresul revine când o deschizi din nou în Claude.':'Progresul se salvează automat pe acest telefon, în browser. Ca să nu-l pierzi niciodată, păstrează un <b>cod de salvare</b>.'}</p>
-  <p class="small muted">Cu codul de salvare muți progresul între aplicația din Claude și cea din browser, sau pe alt telefon.</p>
-  <div class="row"><button class="btn ghost" id="exp">Arată codul de salvare</button><button class="btn ghost" id="imp">Restaurează din cod</button></div><div id="codebox"></div></div>
- <div class="card"><div class="eyebrow">Profil</div><p>Nume: <b>${esc(st.name)}</b></p><button class="btn ghost" id="rst">Șterge tot progresul</button><div id="cf"></div></div>`,{tab:'progress'});
+  <p class="small">${cloudOn()?'<b>Salvare automată în contul tău Claude: activă.</b> Dacă închizi aplicația sau schimbi telefonul, progresul revine când o deschizi din nou în Claude.':'Progresul se salvează automat pe acest telefon, în browser. Ca să nu-l pierzi niciodată, păstrează un <b>cod de salvare</b>.'}</p>
+  <p class="small muted">Cu codul de salvare muți progresul profilului <b>${esc(st.name)}</b> între aplicația din Claude, Safari, aplicația de pe ecranul principal sau alt telefon.</p>
+  <div class="row"><button class="btn ghost" id="exp">Arată codul de salvare</button><button class="btn ghost" id="imp">Restaurează în acest profil</button></div><div id="codebox"></div></div>
+ <div class="card"><div class="eyebrow">Zona periculoasă</div><button class="btn ghost" id="rst">Șterge progresul profilului ${esc(st.name)}</button><div id="cf"></div></div>`,{tab:'progress'});
+ m.querySelector('#addp').onclick=()=>newProfile();
  m.querySelector('#exp').onclick=()=>{const c=exportCode();const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codeout" readonly style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="cpc">Copiază codul</button><p class="small muted">Păstrează-l în Note sau trimite-l pe e-mail ție însuți.</p>`;const ta=cb.querySelector('#codeout');ta.value=c;
   cb.querySelector('#cpc').onclick=()=>{const done=()=>cb.querySelector('#cpc').textContent='Copiat';try{navigator.clipboard.writeText(c).then(done,()=>{ta.select();done()})}catch(e){ta.select()}}};
  m.querySelector('#imp').onclick=()=>{const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codein" placeholder="Lipește aici codul care începe cu SPEAKUP1:" style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="doimp">Restaurează progresul</button><div id="impres"></div>`;
   cb.querySelector('#doimp').onclick=()=>{try{importCode(cb.querySelector('#codein').value);toast('Progresul a fost restaurat.');go('home')}catch(e){cb.querySelector('#impres').innerHTML='<div class="verdict bad">Codul nu e valid. Copiază-l complet, inclusiv începutul SPEAKUP1:</div>'}}};
  m.querySelector('#rst').onclick=()=>{m.querySelector('#cf').innerHTML=`<div class="confirm"><b>Sigur? Se șterg toate cuvintele, scorurile și seria de zile.</b><div class="row"><button class="btn ghost" id="no">Renunț</button><button class="btn" id="yes" style="background:var(--bad);color:#fff">Șterge</button></div></div>`;
-  m.querySelector('#no').onclick=()=>m.querySelector('#cf').innerHTML='';m.querySelector('#yes').onclick=()=>{st=fresh();save();go('welcome')}};
+  m.querySelector('#no').onclick=()=>m.querySelector('#cf').innerHTML='';m.querySelector('#yes').onclick=()=>{const n=st.name;st=fresh();st.name=n;save();if(cloudOn())cloudSave();go('welcome')}};
 };
 
-go('home');
+if(profs.list.length===1&&!profs.active)useProfile(profs.list[0].id);
+go(profs.list.length===1&&profs.active?'home':'profiles');
 cloudInit();
 </script></body></html>
