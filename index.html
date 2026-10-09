@@ -1613,6 +1613,24 @@ check valve|clapetă de reținere|The check valve stops the backflow.
 air valve|ventil de aerisire|Install an air valve at the highest point.
 valve key|cheie de manevră pentru vane|Bring the valve key to close the main.
 valve box|capac de protecție pentru vană|The valve box is level with the road.
+water network|rețea de apă|The new water network is twelve kilometres long.
+sewer network|rețea de canalizare|The sewer network collects wastewater from every street.
+wastewater pumping station|stație de pompare a apelor uzate|The wastewater pumping station lifts the sewage to the treatment plant.
+drinking water pumping station|stație de pompare a apei potabile|The drinking water pumping station fills the water tower.
+booster station|stație de ridicare a presiunii|The booster station raises the pressure for the houses on the hill.
+wet well|bazinul stației de pompare|The pumps sit at the bottom of the wet well.
+inlet chamber|cămin de intrare în stație|The sewer enters the inlet chamber first.
+screen|grătar (sită)|The screen stops rags and plastic before the pumps.
+settling tank|decantor|The settling tank is in front of the pumping station.
+grit chamber|deznisipator|The grit chamber removes sand from the wastewater.
+duty pump|pompă activă|The duty pump runs and the other one waits.
+standby pump|pompă de rezervă|The standby pump starts if the duty pump fails.
+float switch|plutitor (senzor de nivel)|The float switch starts the pump when the level rises.
+level sensor|senzor de nivel|The level sensor sends the water level to the control panel.
+control panel|tablou de comandă|Check the alarms on the control panel.
+suction pipe|conductă de aspirație|The suction pipe takes water from the reservoir.
+discharge pipe|conductă de refulare a pompei|Each pump has its own discharge pipe.
+pressure main|conductă de refulare sub presiune|The pressure main goes up the hill to the next manhole.
 pumping station|stație de pompare|The pumping station sends wastewater uphill.
 treatment plant|stație de epurare|The treatment plant cleans the wastewater.
 water pump|pompă de apă|Start the water pump.
@@ -2387,8 +2405,8 @@ R.daily=()=>{
  startSession();
 };
 const topicNew=(id,n)=>(TW[id]||[]).filter(w=>!st.learned[w.en]).slice(0,n).map(w=>w.en);
-function startSession(src='general'){
- const ws=src==='general'?newWords(10):topicNew(src,10);
+function startSession(src='general',list=null){
+ const ws=list&&list.length?list:src==='general'?newWords(10):topicNew(src,10);
  if(!ws.length){
   const m=screen('Cuvinte noi',`<div class="card"><h2>Ai învățat toate cuvintele de aici!</h2><p class="muted">Pot genera cuvinte noi cu Claude, potrivite nivelului tău.</p><div id="gen"></div><button class="btn ghost" data-go="review">Recapitulare</button></div>`);
   genButton(m.querySelector('#gen'),src==='general'?{level:st.startLevel||st.level}:{topic:src},()=>startSession(src));return}
@@ -2463,11 +2481,51 @@ R.topic=id=>{
   ${left?`<button class="btn wide" id="learn">Învață ${Math.min(10,left)} cuvinte noi</button>`:s.n?'<div class="verdict ok">Ai învățat toate cuvintele de aici.</div>':''}
   ${s.n>=4?`<button class="btn ghost wide" id="tst">Test pe domeniu</button>`:''}
   <div id="gen"></div></div>
-  ${s.n?`<div class="card"><div class="eyebrow">Toate cuvintele · apasă ca să auzi</div><div class="list">${ws.map((w,i)=>`<button class="li" data-i="${i}"><span class="tick ${st.learned[w.en]?'done':''}">${st.learned[w.en]?'✓':''}</span>${pic(w.en,'ill-s')}<span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div></div>`:''}`);
+  ${s.n?`<div class="card"><div class="eyebrow">Toți termenii (${s.n})</div>
+   <input type="text" id="tsearch" placeholder="Caută în română sau engleză, de ex. diriginte" autocomplete="off">
+   <div class="row" style="align-items:center"><button class="btn ghost" id="selmode">Alege ce înveți</button><span class="small muted" id="selinfo">Apasă pe un termen ca să-l înveți și să-l exersezi.</span></div>
+   <div class="list" id="tlist"></div>
+   <div id="selbar" hidden style="position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px))"><button class="btn wide" id="sellearn" disabled>Învață termenii aleși</button></div></div>`:''}`);
  const lb=m.querySelector('#learn');if(lb)lb.onclick=()=>startSession(id);
  const tb=m.querySelector('#tst');if(tb)tb.onclick=()=>topicTest(id);
- m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>say(ws[+b.dataset.i].en));
  genButton(m.querySelector('#gen'),{topic:id},()=>go('topic',id));
+ if(!s.n)return;
+ let sel=false;const chosen=new Set();const list=m.querySelector('#tlist'),q=m.querySelector('#tsearch');
+ const fold=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+ function draw(){const f=fold(q.value.trim());
+  const items=ws.map((w,i)=>[w,i]).filter(([w])=>!f||fold(w.en+' '+w.ro).includes(f));
+  list.innerHTML=items.length?items.map(([w,i])=>{const on=chosen.has(w.en);return`<button class="li" data-i="${i}"><span class="tick ${sel?(on?'done':''):(st.learned[w.en]?'done':'')}">${sel?(on?'✓':''):(st.learned[w.en]?'✓':'')}</span>${pic(w.en,'ill-s')}<span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${sel?'':IC.spk}</button>`}).join(''):'<p class="muted small">Niciun termen găsit.</p>';
+  list.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const w=ws[+b.dataset.i];
+   if(sel){chosen.has(w.en)?chosen.delete(w.en):chosen.add(w.en);upd();draw()}else go('word',id+'::'+w.en)})}
+ function upd(){const n=chosen.size,b=m.querySelector('#sellearn');b.disabled=!n;b.textContent=n?`Învață termenii aleși (${n})`:'Alege cel puțin un termen'}
+ q.oninput=draw;
+ m.querySelector('#selmode').onclick=()=>{sel=!sel;chosen.clear();m.querySelector('#selbar').hidden=!sel;m.querySelector('#selmode').textContent=sel?'Renunță la alegere':'Alege ce înveți';
+  m.querySelector('#selinfo').textContent=sel?'Bifează termenii pe care vrei să-i înveți acum.':'Apasă pe un termen ca să-l înveți și să-l exersezi.';upd();draw()};
+ m.querySelector('#sellearn').onclick=()=>{if(chosen.size)startSession(id,[...chosen])};
+ draw();
+};
+/* Un singur termen: imagine, traducere, exemplu, pronunție, apoi „învățat” */
+R.word=arg=>{
+ const [id,en]=String(arg).split('::');const ws=TW[id]||[];const k=ws.findIndex(w=>w.en===en);const w=ws[k];if(!w){go('topic',id);return}
+ const prev=ws[k-1],next=ws[k+1];const t=TOPICS.find(x=>x.id===id);
+ const m=screen(esc(t?t.t:'Termen'),`<div class="card">
+  <div class="row" style="justify-content:space-between;align-items:center"><span class="counter">${k+1} / ${ws.length}</span>${st.learned[w.en]?'<span class="lv">Învățat</span>':''}</div>
+  ${PIC[w.en]?`<div class="picbox">${pic(w.en)}</div>`:''}<div class="word">${esc(w.en)}</div><div class="tr">${esc(w.ro)}</div>
+  <div class="ex">${esc(w.ex)}</div>
+  <div class="row"><button class="btn ghost" id="pex">${IC.spk} Exemplul</button><button class="btn ghost" id="pexs">${IC.slow} Rar</button></div></div>
+ <div class="card"><h3>1. Spune termenul</h3><div id="pr"></div></div>
+ <div class="card" id="c2" hidden><h3>2. Spune exemplul</h3><div id="pr2"></div></div>
+ <button class="btn wide" id="ok" ${st.learned[w.en]?'':'disabled'}>${st.learned[w.en]?'Învățat ✓':'Pronunță corect ca să-l marchezi învățat'}</button>
+ <div class="row">${prev?`<button class="btn ghost" data-go="word" data-arg="${esc(id+'::'+prev.en)}">← ${esc(prev.en)}</button>`:''}${next?`<button class="btn ghost" data-go="word" data-arg="${esc(id+'::'+next.en)}">${esc(next.en)} →</button>`:''}</div>
+ <button class="btn ghost wide" data-go="topic" data-arg="${esc(id)}">Înapoi la listă</button>`);
+ m.querySelector('#pex').onclick=()=>say(w.ex);m.querySelector('#pexs').onclick=()=>say(w.ex,.65);
+ setTimeout(()=>say(w.en),300);
+ const ok=m.querySelector('#ok');
+ const mark=()=>{if(!st.learned[w.en]){st.learned[w.en]={d:today()};save();addXP(10)}ok.disabled=true;ok.textContent='Învățat ✓'};
+ pron(m.querySelector('#pr'),w.en,{onPass:()=>{const c2=m.querySelector('#c2');c2.hidden=false;
+  pron(m.querySelector('#pr2'),w.ex,{onPass:mark});
+  if(!st.learned[w.en]){ok.disabled=false;ok.textContent='Marchează ca învățat'}}});
+ ok.onclick=mark;
 };
 function topicTest(id){
  const t=TOPICS.find(x=>x.id===id);const ws=TW[id];const learned=ws.filter(w=>st.learned[w.en]);
