@@ -133,6 +133,15 @@ textarea{min-height:130px;resize:vertical}
 .diag .el{fill:none;stroke:var(--bad);stroke-width:2}
 .diag .el.dash{stroke-dasharray:5 3}
 .diag .fence{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 3}
+.diag .hl>*{fill:transparent;stroke:none;cursor:pointer}
+.diag .hl.on>*{fill:color-mix(in srgb,var(--ok) 40%,transparent);stroke:var(--ok);stroke-width:3}
+.diag .hl.wrong>*{fill:color-mix(in srgb,var(--bad) 35%,transparent);stroke:var(--bad);stroke-width:3}
+.diag .okc{fill:var(--ok);stroke:var(--ink);stroke-width:1}
+.diag .lbl{font:600 10px var(--body);fill:var(--ink)}
+.diag .wat2{fill:color-mix(in srgb,var(--accent) 25%,var(--surface));stroke:var(--ink);stroke-width:2}
+.diag .air{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:4 3}
+.diag .sl{fill:none;stroke:#8a6436;stroke-width:3}
+.diag .bubl circle{fill:var(--surface);stroke:var(--accent);stroke-width:1}
 .diag .lead{fill:none;stroke:var(--ink);stroke-width:1}
 .diag .bub{cursor:pointer}
 .diag .bub circle{fill:var(--ink);stroke:var(--surface);stroke-width:1.5}
@@ -142,6 +151,7 @@ textarea{min-height:130px;resize:vertical}
 .diag .bub.good circle{fill:var(--ok)}
 .diag .bub.badb circle{fill:var(--bad)}
 .diag .bub.good text,.diag .bub.badb text{fill:#fff}
+.after{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .li.hl{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .heard{font-size:.9rem;color:var(--muted)}
 .ill{display:block;width:100%;max-width:230px;height:auto;margin:0 auto}
@@ -1682,6 +1692,48 @@ trench wall|peretele săpăturii|The trench wall is vertical and needs shoring.
 native soil|teren natural|The native soil here is clay.
 trench bottom level|cota fundului săpăturii|Check the trench bottom level before bedding.
 pipe crown|creștetul conductei|The cover depth is measured to the pipe crown.
+inlet|intrare|The inlet comes from the house.
+outlet|ieșire|The outlet goes to the street sewer.
+chamber body|corpul căminului|The chamber body is made of PVC.
+chamber base|baza căminului|The chamber base has an inlet and an outlet.
+cast iron cover|capac din fontă|Put a cast iron cover on the road.
+concrete collar|ramă de beton în jurul capacului|The cover is set in a concrete collar.
+support ring|inel de stare (inel de sprijin)|The chamber sits on a concrete support ring.
+inlet valve|robinet de intrare|Close the inlet valve before changing the meter.
+outlet valve|robinet de ieșire|The outlet valve is after the water meter.
+dismantling joint|piesă de montaj-demontaj|The dismantling joint lets us remove the valve.
+washout valve|robinet de golire|Open the washout valve to empty the pipe.
+main switch|întrerupător general|Turn off the main switch before you open the panel.
+surge protector|descărcător de supratensiune|The surge protector protects the panel from lightning.
+circuit breaker|siguranță automată|The circuit breaker tripped again.
+contactor|contactor|The contactor starts the pump motor.
+frequency converter|convertizor de frecvență|The frequency converter controls the pump speed.
+PLC|automat programabil (PLC)|The PLC starts and stops the pumps.
+level relay|releu de nivel|The level relay stops the pump when the level is low.
+phase monitoring relay|releu de control al fazelor|The phase monitoring relay protects the motor.
+terminal block|șir de cleme|Connect the cables to the terminal block.
+indicator light|lampă de semnalizare|The red indicator light means a fault.
+start button|buton de pornire|Press the start button.
+stop button|buton de oprire|Press the stop button to stop the pump.
+emergency stop|oprire de urgență|In danger, press the emergency stop.
+selector switch|comutator manual-automat|Turn the selector switch to automatic.
+cable gland|presetupă|Tighten the cable gland so water cannot enter.
+suction manifold|colector de aspirație|The three pumps take water from the suction manifold.
+discharge manifold|colector de refulare|The discharge manifold sends water to the network.
+pressure vessel|vas de presiune (hidrofor)|The pressure vessel keeps the pressure stable.
+flow meter|debitmetru|The flow meter shows thirty cubic metres per hour.
+primary clarifier|decantor primar|The primary clarifier removes the heavy solids.
+aeration tank|bazin de aerare|Bacteria clean the water in the aeration tank.
+aeration diffusers|difuzoare de aer|The aeration diffusers make small air bubbles.
+blower|suflantă|The blower sends air to the aeration tank.
+secondary clarifier|decantor secundar|The secondary clarifier separates the sludge.
+return sludge|nămol recirculat|The return sludge goes back to the aeration tank.
+sludge|nămol|The sludge is pumped to the dewatering unit.
+sludge dewatering|deshidratarea nămolului|Sludge dewatering reduces the volume.
+effluent|efluent (apă epurată)|The effluent is clean enough for the river.
+receiving river|emisar (râul receptor)|The treated water goes into the receiving river.
+reservoir|rezervor|The reservoir holds five hundred cubic metres.
+distribution network|rețea de distribuție|We extended the distribution network.
 pumping station|stație de pompare|The pumping station sends wastewater uphill.
 treatment plant|stație de epurare|The treatment plant cleans the wastewater.
 water pump|pompă de apă|Start the water pump.
@@ -2262,13 +2314,14 @@ function pron(el,target,{onPass,hideText=false,hint=''}={}){
 function mc(prompt,correct,others,extra={}){const o=shuffle([correct,...others]);return{type:'mc',prompt,options:o,answer:o.indexOf(correct),...extra}}
 function distract(w,n=3,field='ro'){const key=x=>x.tp||x.lv;const same=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)===key(w)));const rest=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)!==key(w)));const out=[];for(const x of [...same,...rest]){if(out.length>=n)break;if(!out.includes(x[field]))out.push(x[field])}return out}
 function qWord(w,mode){
- if(mode==='listen')return mc('Ce ai auzit? Alege traducerea.',w.ro,distract(w),{audio:w.en,kind:'Ascultare'});
- if(mode==='type')return{type:'type',kind:'Scriere',prompt:`Scrie în engleză: <b>${esc(w.ro)}</b>`,answer:w.en,sayAfter:w.en};
- if(mode==='en2roType')return{type:'typeRo',kind:'Traducere',prompt:`Scrie în română ce înseamnă <b>${esc(w.en)}</b>`,answer:w.ro,sayAfter:w.en};
- if(mode==='pron')return{type:'pron',kind:'Pronunție',prompt:`Pronunță corect: <b>${esc(w.en)}</b><div class="small muted">${esc(w.ro)}</div>`,target:w.en};
- if(mode==='dict')return{type:'type',kind:'Dictare',prompt:'Scrie ce auzi.',audio:w.en,answer:w.en,sayAfter:w.en};
- if(mode==='ro2en')return mc(`Cum se spune în engleză <b>${esc(w.ro)}</b>?`,w.en,distract(w,3,'en'),{sayAfter:w.en,kind:'Traducere'});
- return mc(`Ce înseamnă <b>${esc(w.en)}</b>?`,w.ro,distract(w),{sayAfter:w.en,kind:'Traducere'});
+ const base={en:w.en,ro:w.ro};
+ if(mode==='listen')return mc('Ce ai auzit? Alege traducerea.',w.ro,distract(w),{...base,audio:w.en,kind:'Ascultare'});
+ if(mode==='type')return{...base,type:'type',kind:'Scriere',prompt:`Scrie în engleză: <b>${esc(w.ro)}</b>`,answer:w.en,sayAfter:w.en};
+ if(mode==='en2roType')return{...base,type:'typeRo',kind:'Traducere',prompt:`Scrie în română ce înseamnă <b>${esc(w.en)}</b>`,answer:w.ro,sayAfter:w.en,hear:w.en};
+ if(mode==='pron')return{...base,type:'pron',kind:'Pronunție',prompt:`Pronunță corect: <b>${esc(w.en)}</b><div class="small muted">${esc(w.ro)}</div>`,target:w.en};
+ if(mode==='dict')return{...base,type:'type',kind:'Dictare',prompt:'Scrie ce auzi.',audio:w.en,answer:w.en,sayAfter:w.en};
+ if(mode==='ro2en')return mc(`Cum se spune în engleză <b>${esc(w.ro)}</b>?`,w.en,distract(w,3,'en'),{...base,sayAfter:w.en,kind:'Traducere'});
+ return mc(`Ce înseamnă <b>${esc(w.en)}</b>?`,w.ro,distract(w),{...base,sayAfter:w.en,hear:w.en,kind:'Traducere'});
 }
 /* Test amestecat: traducere, scriere, traducere scrisă, pronunție, ascultare */
 function mixQs(words,modes=['en2ro','type','en2roType','pron','listen','ro2en']){const ws=shuffle(words);return ws.map((w,i)=>qWord(w,modes[i%modes.length]))}
@@ -2322,20 +2375,23 @@ function runQuiz(host,qs,onDone,{feedback=true}={}){
   const q=qs[i];const typed=q.type==='type'||q.type==='typeRo';
   host.innerHTML=`<div class="prog"><span style="width:${i/qs.length*100}%"></span></div>
    <div class="row" style="justify-content:space-between"><span class="qn">Întrebarea ${i+1} din ${qs.length}</span>${q.kind?`<span class="lv">${q.kind}</span>`:''}</div>
-   ${q.audio?`<div><button class="btn ghost" data-a="aud">${IC.spk} Ascultă din nou</button></div>`:''}
+   ${q.audio?`<div><button class="btn ghost" data-a="aud">${IC.spk} Ascultă din nou</button></div>`:q.hear?`<div class="row"><button class="btn ghost" data-a="hear">${IC.spk} Ascultă pronunția</button><button class="btn ghost" data-a="hears">${IC.slow} Rar</button></div>`:''}
    <div class="qp">${q.prompt}</div>
    ${typed?`<form class="typef"><input type="text" id="qt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${q.type==='typeRo'?'Scrie în română':'Scrie în engleză'}"><button class="btn">Verifică</button></form>`
      :q.type==='pron'?`<div id="qpron"></div><button class="linkbtn" data-a="giveup">Nu reușesc acum, mai departe</button>`
      :`<div class="opts">${q.options.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div>`}
    <div class="fb" aria-live="polite"></div>`;
   if(q.audio){host.querySelector('[data-a=aud]').onclick=()=>say(q.audio);setTimeout(()=>say(q.audio),250)}
+  if(!q.audio&&q.hear){host.querySelector('[data-a=hear]').onclick=()=>say(q.hear);host.querySelector('[data-a=hears]').onclick=()=>say(q.hear,.6)}
   const fb=host.querySelector('.fb');let done=false;
   const finish=a=>{if(done)return;done=true;ans[i]=a;const ok=isOkQ(q,a);const ct=correctText(q);
    fb.innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':'Greșit'}</div>
     ${typed?(ok?`<div class="ra ok">${esc(a)}${norm(a)!==norm(ct)?' · forma completă: '+esc(ct):''}</div>`:`<div class="ra bad">Tu: ${esc(a)}</div><div class="ra ok">Corect: ${esc(ct)}</div>`):''}
     ${q.type==='pron'&&!ok?`<div class="ra ok">Corect: ${esc(ct)}</div>`:''}
+    ${q.en?`<div class="after"><button class="btn ghost" data-a="rep">${IC.spk} ${esc(q.en)}</button><button class="btn ghost" data-a="reps" aria-label="Rar">${IC.slow}</button><span>= <b>${esc(q.ro)}</b></span></div>`:q.sayAfter?`<div class="after"><button class="btn ghost" data-a="rep">${IC.spk} Ascultă din nou</button></div>`:''}
     <button class="btn wide" data-a="next">${i+1<qs.length?'Mai departe':'Vezi rezultatul'}</button>`;
    const gu=host.querySelector('[data-a=giveup]');if(gu)gu.remove();
+   const rp=fb.querySelector('[data-a=rep]');if(rp)rp.onclick=()=>say(q.en||q.sayAfter);const rs=fb.querySelector('[data-a=reps]');if(rs)rs.onclick=()=>say(q.en,.6);
    const n=fb.querySelector('[data-a=next]');n.onclick=()=>{stopVoice();i++;step()};n.focus({preventScroll:true});n.scrollIntoView({block:'nearest',behavior:'smooth'})};
   if(typed){const f=host.querySelector('form');setTimeout(()=>f.querySelector('input').focus(),60);
    f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');if(!inp.value.trim())return;inp.disabled=true;f.querySelector('button').disabled=true;finish(inp.value.trim());if(q.sayAfter)say(q.sayAfter)}}
@@ -2554,7 +2610,7 @@ R.review=()=>{
 function topicStats(id){const ws=TW[id]||[];return{n:ws.length,l:ws.filter(w=>st.learned[w.en]).length}}
 R.domains=()=>{
  const groups=[...new Set(TOPICS.map(t=>t.g))];
- const m=screen('Vocabular pe domenii',`<button class="domcard" data-go="diagrams"><div class="eyebrow">Nou</div><h2>Scheme cu termeni</h2><p class="small muted">Șanțul cu straturile și cotele, stația de pompare cu alimentarea electrică. Atingi și auzi fiecare element.</p></button>
+ const m=screen('Vocabular pe domenii',`<button class="domcard" data-go="diagrams"><div class="eyebrow">Nou</div><h2>Scheme cu termeni</h2><p class="small muted">Șanț, racord, cămin de apometru, cămin de vane, tablou de comandă, stații de pompare, stație de epurare. Atingi un element și se face verde.</p></button>
  <p class="muted">Cuvinte de specialitate, cu pronunție verificată, la fel ca sesiunea zilnică. Fiecare sesiune de domeniu contează și pentru seria de zile.</p>
  ${groups.map(g=>`<div class="eyebrow">${esc(g)}</div><div class="list">${TOPICS.filter(t=>t.g===g).map(t=>{const s=topicStats(t.id);return`<button class="li" data-go="topic" data-arg="${esc(t.id)}"><span class="t"><b>${esc(t.t)}</b><span>${esc(t.d||'')}${t.d?' · ':''}${s.l} din ${s.n} învățate</span></span><span class="mini"><i style="width:${s.n?s.l/s.n*100:0}%"></i></span></button>`}).join('')}</div>`).join('')}
  <div class="card"><div class="eyebrow">Subiectul tău</div><h3>Vrei alt domeniu?</h3><p class="small muted">Scrie orice subiect (de exemplu: instalații electrice, aeroport, medic, mașini) și Claude îți pregătește 10 cuvinte. Poți cere oricând încă 10.</p>
@@ -2573,7 +2629,7 @@ R.topic=id=>{
   <div class="prog"><span style="width:${s.n?s.l/s.n*100:0}%"></span></div><p class="small muted">${s.l} din ${s.n} cuvinte învățate</p>
   ${left?`<button class="btn wide" id="learn">Învață ${Math.min(10,left)} cuvinte noi</button>`:s.n?'<div class="verdict ok">Ai învățat toate cuvintele de aici.</div>':''}
   ${s.n?`<button class="btn ghost wide" id="tst">Exersează: scriere, traducere, pronunție, test</button>`:''}
-  ${id==='water'?'<button class="btn ghost wide" data-go="diagrams">Scheme cu termeni (șanț, stație de pompare)</button>':''}
+  ${id==='water'?'<button class="btn ghost wide" data-go="diagrams">Scheme cu termeni (8 scheme: șanț, cămine, stații, tablou)</button>':''}
   <div id="gen"></div></div>
   ${s.n?`<div class="card"><div class="eyebrow">Toți termenii (${s.n})</div>
    <input type="text" id="tsearch" placeholder="Caută în română sau engleză, de ex. diriginte" autocomplete="off">
@@ -2730,14 +2786,16 @@ function findTerms(text){const t=' '+norm(text)+' ';const found=[];const seen=ne
  let rest=t;for(const w of terms){const k=' '+norm(w.en)+' ';if(rest.includes(k)&&!seen.has(w.en)){seen.add(w.en);found.push(w);rest=rest.split(k).join(' | ')}}
  return found}
 R.speak=arg=>{
- const site=arg!=='general';const lv=st.level||'A2';
- const list=site?SITE_TOPICS:[...(SPEAK[lv]||[]),...(SPEAK[LEVELS[Math.max(0,LEVELS.indexOf(lv)-1)]]||[])];
+ const dg=String(arg||'').startsWith('diag:')?DIAGRAMS.find(x=>'diag:'+x.id===arg):null;const site=!dg&&arg!=='general';const lv=st.level||'A2';
+ const dgTerms=dg?dg.labels.map(l=>l[1]):[];
+ const list=dg?['Explain this diagram in English: name each part and say what it does.','Walk a new worker through this diagram, from left to right.']:site?SITE_TOPICS:[...(SPEAK[lv]||[]),...(SPEAK[LEVELS[Math.max(0,LEVELS.indexOf(lv)-1)]]||[])];
  let topic=list[Math.random()*list.length|0];
- const m=screen(site?'Ziua mea pe șantier':'Vorbit liber',`
+ const m=screen(dg?'Explică schema':site?'Ziua mea pe șantier':'Vorbit liber',`
   <div class="row"><button class="btn ${site?'':'ghost'}" data-go="speak" data-arg="site">Ziua mea pe șantier</button><button class="btn ${site?'ghost':''}" data-go="speak" data-arg="general">Subiect general</button></div>
   <div class="card"><div class="eyebrow">Subiectul tău</div><div class="qp" id="tp"></div>
   <div class="row"><button class="btn ghost" id="lt">${IC.spk} Ascultă</button><button class="btn ghost" id="nt">Alt subiect</button></div>
   ${site?'<p class="small muted">Povestește liber, 1–2 minute, folosind termenii învățați. La final vezi ce termeni tehnici ai folosit, cât de clar ai pronunțat și ce ai greșit.</p>':''}</div>
+  ${dg?`<div class="card"><div class="eyebrow">${esc(dg.t)}</div><div style="overflow-x:auto;margin-inline:-6px">${diagSVG(dg)}</div><p class="small muted">Încearcă să folosești toți acești termeni:</p><div class="wchips" style="justify-content:flex-start">${dgTerms.map(e=>`<span class="wchip" style="background:var(--accent-soft);color:var(--ink)">${esc(e)}</span>`).join('')}</div></div>`:''}
   <div class="card"><p class="small muted">${SR?'Apasă microfonul și vorbește. Aplicația scrie ce aude. Apasă din nou ca să te oprești.':'Aici microfonul aplicației nu e disponibil: folosește microfonul tastaturii (setată pe engleză) în câmpul de mai jos.'}</p>
   ${SR?`<div class="pron"><button class="mic" id="mk">${IC.mic}</button><div class="mic-l" id="ml">Apasă ca să începi</div></div>`:''}
   <textarea id="ans" placeholder="Ce spui apare aici (poți și scrie)"></textarea>
@@ -2771,12 +2829,13 @@ R.speak=arg=>{
    ${wpm?`<p class="small muted">Ritm: ${wpm} cuvinte pe minut${wpm<70?' (încet, e normal la început)':wpm>150?' (repede: încetinește puțin)':' (bun)'}.</p>`:''}
    ${terms.length?`<h3>Termeni tehnici folosiți</h3><div class="list">${terms.map(w=>`<button class="li" data-say="${esc(w.en)}">${pic(w.en,'ill-s')}<span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div>`:'<p class="small">Nu am recunoscut termeni tehnici din listele tale. Încearcă să folosești câțiva: trench, manhole, pipe laying, pressure test…</p>'}
    ${low.length?`<h3>De spus mai clar</h3><p class="small muted">Aplicația a înțeles greu aceste părți. Ascultă-le și repetă-le.</p><div class="list">${low.slice(0,6).map(x=>`<button class="li" data-say="${esc(x.text)}"><span class="t"><b>${esc(x.text)}</b><span>claritate ${Math.round(x.conf*100)}%</span></span>${IC.spk}</button>`).join('')}</div>`:avg?'<p class="small">Toate frazele au fost clare. Bravo!</p>':'<p class="small muted">Claritatea apare când vorbești la microfonul aplicației (pe adresa web, în Safari sau Chrome).</p>'}
-   <p class="small muted">${known} dintre cuvintele învățate de tine apar în ce ai spus.</p>`;
+   <p class="small muted">${known} dintre cuvintele învățate de tine apar în ce ai spus.</p>
+   ${dg?(()=>{const used=new Set(terms.map(w=>w.en));const u=dgTerms.filter(e=>used.has(e)),n=dgTerms.filter(e=>!used.has(e));return`<h3>Termeni din schemă: ${u.length} din ${dgTerms.length}</h3>${n.length?`<p class="small muted">Nu i-ai folosit încă (atinge ca să-i auzi):</p><div class="list">${n.map(e=>{const w=W(e);return`<button class="li" data-say="${esc(e)}"><span class="t"><b>${esc(e)}</b><span>${esc(w?w.ro:'')}</span></span>${IC.spk}</button>`}).join('')}</div>`:'<p class="small">I-ai folosit pe toți. Excelent!</p>'}`})():''}`;
   loc.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
   addXP(Math.min(30,5+terms.length*3));
   if(!sampleFn){out.hidden=false;out.innerHTML='<p class="small muted">Corectura completă (greșeli de gramatică și folosirea termenilor) apare când aplicația e deschisă în Claude.</p>';return}
   out.hidden=false;out.innerHTML='<h3>Corectura profesorului</h3><div class="ai muted">Mă gândesc…</div>';const box=out.querySelector('.ai');
-  const prompt=`Ești profesor de engleză pentru un inginer român din construcții (rețele de apă, canalizare, gaze), nivel ${lv}. Elevul a vorbit ORAL (transcriere automată: ignoră punctuația și majusculele; cuvintele greșit transcrise pot fi pronunție neclară) despre: "${topic}".\n\nCe a spus:\n"""${a.slice(0,4000)}"""\n\nTermeni tehnici recunoscuți: ${terms.map(w=>w.en).join(', ')||'niciunul'}.\n${low.length?'Fraze înțelese greu de recunoașterea vocală (posibil pronunție neclară): '+low.map(x=>'"'+x.text+'"').join('; ')+'\n':''}\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, cu termenii tehnici corecți, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nTERMENI TEHNICI:\n- spune dacă a folosit corect termenii de șantier și ce termen englezesc ar fi fost mai potrivit (maxim 4)\nPRONUNȚIE:\n- cuvinte care probabil au fost pronunțate neclar, cu sfat scurt (maxim 3; scrie "fără observații" dacă nu e cazul)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
+  const prompt=`Ești profesor de engleză pentru un inginer român din construcții (rețele de apă, canalizare, gaze), nivel ${lv}. Elevul a vorbit ORAL (transcriere automată: ignoră punctuația și majusculele; cuvintele greșit transcrise pot fi pronunție neclară) despre: "${topic}".${dg?` Subiectul este schema „${dg.t}”, cu elementele: ${dgTerms.join(', ')}. Verifică dacă explicația lui despre rolul fiecărui element este corectă tehnic.`:''}\n\nCe a spus:\n"""${a.slice(0,4000)}"""\n\nTermeni tehnici recunoscuți: ${terms.map(w=>w.en).join(', ')||'niciunul'}.\n${low.length?'Fraze înțelese greu de recunoașterea vocală (posibil pronunție neclară): '+low.map(x=>'"'+x.text+'"').join('; ')+'\n':''}\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, cu termenii tehnici corecți, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nTERMENI TEHNICI:\n- spune dacă a folosit corect termenii de șantier și ce termen englezesc ar fi fost mai potrivit (maxim 4)\nPRONUNȚIE:\n- cuvinte care probabil au fost pronunțate neclar, cu sfat scurt (maxim 3; scrie "fără observații" dacă nu e cazul)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
   try{const r=await sampleFn(prompt,{cache:false,modelTier:'default',onText:({text})=>{box.classList.remove('muted');box.textContent=text}});box.textContent=r.text;addXP(15);
    const mt=r.text.match(/VERSIUNEA CORECTĂ:\s*\n([\s\S]*?)\n\s*GREȘELI/);if(mt){const b=document.createElement('button');b.className='btn ghost';b.innerHTML=IC.spk+' Ascultă versiunea corectă';const fixed=mt[1].trim();b.onclick=()=>say(fixed);out.appendChild(b)}}
   catch(e){box.textContent=e.text||'';const msg={not_granted:'Corectarea nu a fost permisă. Analiza aplicației de mai sus rămâne valabilă.',rate_limited:'Prea multe cereri acum. Încearcă din nou peste câteva minute.',sampling_disabled:'Corectarea nu e disponibilă pentru acest cont.'}[e.code]||'Nu am putut corecta acum. Încearcă din nou.';
@@ -2823,7 +2882,7 @@ R.games=()=>{
 };
 R.gPics=()=>{
  const keys=shuffle(Object.keys(PIC).filter(k=>W(k)));const pickK=keys.slice(0,10);
- const qs=pickK.map(en=>mc(`<div class="picbox">${pic(en)}</div>Ce este în imagine?`,en,shuffle(keys.filter(k=>k!==en)).slice(0,3),{sayAfter:en}));
+ const qs=pickK.map(en=>mc(`<div class="picbox">${pic(en)}</div>Ce este în imagine?`,en,shuffle(keys.filter(k=>k!==en)).slice(0,3),{sayAfter:en,en,ro:W(en).ro,kind:'Imagine'}));
  const m=screen('Ce vezi în imagine?','<div class="card" id="q"></div>');
  runQuiz(m.querySelector('#q'),qs,(s)=>{if(s>(st.picBest||0)){st.picBest=s;save()}
   screen('Ce vezi în imagine?',`<div class="card"><div class="big">${s}/${qs.length}</div><p class="muted">${s===qs.length?'Perfect! Ochi de inginer.':'Recordul tău: '+(st.picBest||s)+'/10.'}</p></div>
@@ -2895,6 +2954,10 @@ R.weekly=()=>{
 };
 
 /* ---------- Scheme cu termeni ---------- */
+/* fiecare etichetă: [număr, termen englez, x,y punct, x,y bulină, formă pentru evidențiere] */
+const LADDER=(x1,x2,y1,y2,st=16)=>{let d=`M${x1} ${y1}V${y2}M${x2} ${y1}V${y2}`;for(let y=y1+st;y<y2;y+=st)d+=`M${x1} ${y}h${x2-x1}`;return`<path class="o" d="${d}"/>`};
+const CHECKV=(x,y)=>`<circle class="w" cx="${x}" cy="${y}" r="7"/><path class="k" d="M${x-4} ${y+4}l4-8 4 8z"/>`;
+const GATEV=(x,y)=>`<path class="k" d="M${x-7} ${y-8}h14l-14 16h14z"/>`;
 const DIAGRAMS=[
 {id:'trench',t:'Șanțul și straturile',d:'Săpătură, pat de nisip, conductă, umplutură, cote',vb:'0 0 360 305',minw:0,
  art:`<rect class="soil" x="0" y="60" width="360" height="245"/><rect class="top" x="0" y="60" width="360" height="14"/>
@@ -2906,7 +2969,64 @@ const DIAGRAMS=[
  <path class="o" d="M120 60V260H240V60"/>
  <path class="lvl" d="M240 230H330M240 260H330M194 206H270"/><path class="k" d="M318 52l6 8 6-8zM318 222l6 8 6-8zM318 252l6 8 6-8z"/>
  <path class="dim" d="M270 60V206M264 60h12M264 206h12M120 280H240M120 274v12M240 274v12"/>`,
- labels:[[1,'ground level',326,60,345,40],[2,'topsoil',40,67,40,42],[3,'native soil',60,190,60,190],[4,'trench wall',120,112,96,112],[5,'backfill material',180,113,206,113],[6,'warning tape',150,166,96,150],[7,'pipe surround',140,192,96,192],[8,'pipe',180,220,214,206],[9,'invert level',326,230,346,230],[10,'sand bedding',150,247,96,247],[11,'trench bottom level',326,260,346,262],[12,'cover depth',270,133,288,133],[13,'trench width',180,280,206,293],[14,'pipe crown',180,206,152,204]]},
+ labels:[[1,'ground level',326,60,345,40,'<rect x="0" y="56" width="360" height="8"/>'],[2,'topsoil',40,67,40,42,'<rect x="0" y="60" width="360" height="14"/>'],[3,'native soil',60,190,60,190,'<path d="M0 74h120v231H0zM240 74h120v231H240z"/>'],[4,'trench wall',120,112,96,112,'<path d="M115 60h10v200h-10zM235 60h10v200h-10z"/>'],[5,'backfill material',180,113,206,113,'<rect x="120" y="74" width="120" height="104"/>'],[6,'warning tape',150,166,96,150,'<rect x="122" y="161" width="116" height="10"/>'],[7,'pipe surround',140,192,96,192,'<rect x="120" y="178" width="120" height="56"/>'],[8,'pipe',180,220,214,206,'<circle cx="180" cy="220" r="15"/>'],[9,'invert level',326,230,346,230,'<rect x="166" y="226" width="170" height="8"/>'],[10,'sand bedding',150,247,96,247,'<rect x="120" y="234" width="120" height="26"/>'],[11,'trench bottom level',326,260,346,262,'<rect x="120" y="256" width="216" height="8"/>'],[12,'cover depth',270,133,288,133,'<rect x="262" y="60" width="16" height="146"/>'],[13,'trench width',180,280,206,293,'<rect x="116" y="272" width="128" height="16"/>'],[14,'pipe crown',180,206,152,204,'<rect x="166" y="202" width="110" height="8"/>']]},
+{id:'racord',t:'Căminul de racord (canalizare)',d:'Capac de fontă în beton, corp, bază, intrare, ieșire',vb:'0 0 380 320',minw:0,
+ art:`<rect class="soil" x="0" y="70" width="380" height="250"/><rect class="top" x="0" y="70" width="380" height="8"/>
+ <path class="grass" d="M10 70l3-7M18 70l-2-6M300 70l3-7M308 70l-2-6"/>
+ <rect class="y" x="140" y="280" width="100" height="14"/>
+ <path class="p2" d="M0 254L152 262M228 266L340 272"/>
+ <circle class="f" cx="356" cy="276" r="18"/><circle class="w" cx="356" cy="276" r="13"/>
+ <rect class="f" x="150" y="248" width="80" height="34" rx="4"/><path class="o" d="M156 266h68"/>
+ <rect class="f" x="163" y="78" width="54" height="172"/><rect class="w" x="171" y="78" width="38" height="172"/>
+ <rect class="con" x="138" y="60" width="104" height="18"/>
+ <rect class="k" x="158" y="55" width="68" height="8" rx="1"/><path class="o" style="stroke:var(--bg)" d="M166 59h52"/>
+ <path class="o" d="M40 238l10 4-10 4M300 252l10 4-10 4"/><text class="lbl" x="4" y="236">din casă</text><text class="lbl" x="262" y="246">spre canal</text>`,
+ labels:[[1,'cast iron cover',192,59,192,38,'<rect x="156" y="53" width="72" height="12"/>'],[2,'concrete collar',142,69,112,50,'<rect x="136" y="58" width="108" height="22"/>'],[3,'chamber body',213,160,250,160,'<path d="M161 78h12v172h-12zM207 78h12v172h-12z"/>'],[4,'chamber base',226,266,252,230,'<rect x="148" y="246" width="84" height="38"/>'],[5,'inlet',90,258,100,284,'<path d="M0 246L152 254V270L0 262z"/>'],[6,'outlet',290,270,290,296,'<path d="M228 258L340 264V280L228 274z"/>'],[7,'sewer',356,276,356,248,'<circle cx="356" cy="276" r="20"/>'],[8,'sand bedding',190,288,150,308,'<rect x="138" y="279" width="104" height="16"/>']]},
+{id:'meter',t:'Căminul de apometru (branșament de apă)',d:'Robineți, filtru Y, apometru, clapetă, mufe, inel de stare',vb:'0 0 400 320',minw:0,
+ art:`<rect class="soil" x="0" y="60" width="400" height="260"/><rect class="top" x="0" y="60" width="400" height="8"/>
+ <rect class="con" x="80" y="270" width="240" height="20"/>
+ <rect class="con" x="90" y="70" width="220" height="200"/><rect class="w" x="100" y="70" width="200" height="200"/>
+ <rect class="con" x="84" y="60" width="232" height="12"/><rect class="k" x="168" y="54" width="64" height="8" rx="1"/>
+ <circle class="f" cx="24" cy="232" r="18"/><circle class="w" cx="24" cy="232" r="13"/><rect class="k" x="14" y="208" width="20" height="8"/>
+ <path class="p2" d="M24 212V190H400"/>
+ <path class="k" d="M112 182v16l16-16v16z"/><path class="o" style="stroke-width:3" d="M120 182v-12h12"/>
+ <rect class="f" x="134" y="182" width="12" height="16" rx="2"/>
+ <rect class="f" x="157" y="183" width="18" height="14"/><path class="o" style="stroke-width:3" d="M168 197l8 9"/>
+ <rect class="f" x="186" y="178" width="28" height="24" rx="4"/><circle class="o" cx="200" cy="190" r="7"/><path class="o" d="M200 190l4-4"/>
+ ${CHECKV(235,190).replace('M231 194l4-8 4 8z','M231 186l8 4-8 4z')}
+ <rect class="f" x="249" y="182" width="12" height="16" rx="2"/>
+ <path class="k" d="M270 182v16l16-16v16z"/><path class="o" style="stroke-width:3" d="M278 182v-12h12"/>
+ <text class="lbl" x="330" y="178">spre casă</text>`,
+ labels:[[1,'water main',24,232,24,270,'<circle cx="24" cy="232" r="20"/>'],[2,'tapping saddle',24,210,24,170,'<rect x="12" y="204" width="24" height="14"/>'],[3,'service connection',62,190,62,166,'<rect x="16" y="182" width="74" height="16"/>'],[4,'inlet valve',120,186,118,148,'<rect x="110" y="168" width="24" height="32"/>'],[5,'coupling',140,198,140,222,'<rect x="132" y="180" width="16" height="20"/>'],[6,'Y strainer',165,184,160,124,'<rect x="155" y="181" width="24" height="28"/>'],[7,'water meter',200,178,200,148,'<rect x="184" y="176" width="32" height="28"/>'],[8,'check valve',235,182,236,124,'<circle cx="235" cy="190" r="10"/>'],[9,'outlet valve',280,174,282,148,'<rect x="268" y="168" width="24" height="32"/>'],[10,'cast iron cover',200,56,200,36,'<rect x="166" y="52" width="68" height="12"/>'],[11,'chamber body',305,120,345,120,'<path d="M90 70h10v200H90zM300 70h10v200h-10z"/>'],[12,'support ring',200,280,200,306,'<rect x="78" y="268" width="244" height="24"/>'],[13,'outlet',350,190,352,214,'<rect x="310" y="182" width="90" height="16"/>']]},
+{id:'valves',t:'Căminul de vane (beton)',d:'Vană sertar, aerisire, golire, piesă de montaj-demontaj, bașă',vb:'0 0 400 315',minw:0,
+ art:`<rect class="soil" x="0" y="60" width="400" height="255"/><rect class="top" x="0" y="60" width="400" height="8"/>
+ <rect class="con" x="70" y="60" width="260" height="230"/><rect class="w" x="82" y="72" width="236" height="206"/>
+ <rect class="w" x="108" y="60" width="44" height="12"/><rect class="k" x="104" y="54" width="52" height="7" rx="1"/>
+ <rect class="w" x="140" y="278" width="30" height="10"/>
+ <path class="p2" d="M0 210H400"/>
+ ${LADDER(112,128,72,270)}
+ <rect class="f" x="176" y="196" width="28" height="28" rx="3"/><path class="o" style="stroke-width:4" d="M176 198v24M204 198v24M190 196V124"/><ellipse class="r" cx="190" cy="120" rx="20" ry="5"/>
+ <rect class="f" x="222" y="199" width="22" height="22"/><path class="o" d="M228 199v22M238 199v22"/>
+ <path class="p3" d="M270 203V172"/><rect class="f" x="261" y="150" width="18" height="24" rx="3"/><path class="o" d="M266 150v-6h8v6"/>
+ <path class="p3" d="M152 217V266"/><path class="k" d="M144 232h16l-16 14h16z"/>`,
+ labels:[[1,'valve chamber',324,110,352,110,'<path d="M70 60h12v230H70zM318 60h12v230h-12zM70 278h260v12H70z"/>'],[2,'manhole cover',130,57,130,36,'<rect x="102" y="52" width="56" height="11"/>'],[3,'access ladder',120,160,97,150,'<rect x="110" y="72" width="20" height="200"/>'],[4,'gate valve',190,150,212,150,'<rect x="168" y="112" width="44" height="114"/>'],[5,'dismantling joint',233,221,236,252,'<rect x="220" y="197" width="26" height="26"/>'],[6,'air valve',270,160,298,140,'<rect x="259" y="142" width="22" height="64"/>'],[7,'washout valve',152,239,180,258,'<rect x="142" y="216" width="20" height="48"/>'],[8,'sump',155,284,155,306,'<rect x="138" y="276" width="34" height="14"/>'],[9,'water main',40,210,40,188,'<rect x="0" y="200" width="70" height="20"/>']]},
+{id:'panel',t:'Tabloul de comandă (deschis)',d:'Întrerupător general, siguranțe, contactoare, convertizoare, PLC, butoane',vb:'0 0 360 345',minw:0,
+ art:`<rect class="con" x="40" y="20" width="280" height="300" rx="6"/><rect class="w" x="54" y="34" width="252" height="272"/>
+ <rect class="y" x="66" y="48" width="44" height="44" rx="3"/><circle class="r" cx="88" cy="70" r="12"/><path class="o" style="stroke-width:4" d="M80 70h16"/>
+ <rect class="f" x="120" y="48" width="20" height="44"/><path class="o" d="M126 56v28M134 56v28"/>
+ ${[0,1,2,3,4,5,6,7].map(i=>`<rect class="f" x="${150+i*18}" y="48" width="14" height="44"/><rect class="k" x="${154+i*18}" y="62" width="6" height="11"/>`).join('')}
+ <rect class="f" x="66" y="112" width="26" height="50"/><rect class="f" x="98" y="112" width="26" height="50"/><path class="o" d="M72 120h14M104 120h14M72 154h14M104 154h14"/>
+ <rect class="f" x="146" y="106" width="36" height="62" rx="2"/><rect class="k" x="152" y="114" width="24" height="12"/><rect class="f" x="190" y="106" width="36" height="62" rx="2"/><rect class="k" x="196" y="114" width="24" height="12"/>
+ <rect class="f" x="244" y="110" width="52" height="54" rx="2"/>${[0,1,2,3].map(i=>`<circle class="okc" cx="${254+i*10}" cy="122" r="2.5"/>`).join('')}<path class="o" d="M252 136h36M252 146h36"/>
+ <rect class="f" x="66" y="184" width="24" height="32"/><rect class="f" x="102" y="184" width="24" height="32"/>
+ ${Array.from({length:18},(_,i)=>`<rect class="f" x="${150+i*8}" y="186" width="6" height="28"/>`).join('')}
+ <rect class="f" x="56" y="232" width="248" height="68" rx="4"/>
+ <circle class="okc" cx="80" cy="255" r="7"/><circle class="r" cx="100" cy="255" r="7"/>
+ <circle class="okc" cx="150" cy="258" r="10"/><circle class="r" cx="182" cy="258" r="10"/>
+ <circle class="y" cx="232" cy="258" r="16"/><circle class="r" cx="232" cy="258" r="10"/>
+ <circle class="w" cx="282" cy="258" r="12"/><path class="o" style="stroke-width:4" d="M276 252l12 12"/>
+ <rect class="k" x="96" y="320" width="10" height="10"/><rect class="k" x="136" y="320" width="10" height="10"/><rect class="k" x="176" y="320" width="10" height="10"/><rect class="k" x="216" y="320" width="10" height="10"/>`,
+ labels:[[1,'main switch',88,48,88,10,'<rect x="64" y="46" width="48" height="48"/>'],[2,'surge protector',130,48,130,10,'<rect x="118" y="46" width="24" height="48"/>'],[3,'circuit breaker',220,48,220,10,'<rect x="148" y="46" width="146" height="48"/>'],[4,'contactor',66,137,20,137,'<rect x="64" y="110" width="62" height="54"/>'],[5,'frequency converter',186,106,186,99,'<rect x="144" y="104" width="84" height="66"/>'],[6,'PLC',296,137,340,137,'<rect x="242" y="108" width="56" height="58"/>'],[7,'level relay',66,200,20,200,'<rect x="64" y="182" width="28" height="36"/>'],[8,'phase monitoring relay',114,216,114,224,'<rect x="100" y="182" width="28" height="36"/>'],[9,'terminal block',294,200,340,200,'<rect x="148" y="184" width="150" height="32"/>'],[10,'indicator light',72,255,20,255,'<rect x="70" y="245" width="40" height="20"/>'],[11,'start button',150,268,150,288,'<circle cx="150" cy="258" r="12"/>'],[12,'stop button',182,268,186,288,'<circle cx="182" cy="258" r="12"/>'],[13,'emergency stop',232,274,232,291,'<circle cx="232" cy="258" r="18"/>'],[14,'selector switch',294,258,340,258,'<circle cx="282" cy="258" r="14"/>'],[15,'cable gland',226,325,250,334,'<rect x="94" y="318" width="134" height="14"/>']]},
 {id:'pump',t:'Stația de pompare a apelor uzate',d:'Decantor, pompe, vane, bașă, tablou, alimentare electrică',vb:'0 0 440 340',minw:540,
  art:`<rect class="soil" x="0" y="110" width="440" height="230"/><rect class="top" x="0" y="110" width="440" height="8"/>
  <rect class="con" x="18" y="104" width="74" height="206"/><rect class="w" x="26" y="112" width="58" height="190"/><rect class="wat" x="26" y="170" width="58" height="132"/>
@@ -2919,9 +3039,8 @@ const DIAGRAMS=[
  <path class="f" d="M162 283h16v14h-16z"/><path class="o" d="M172 297l7 7"/>
  <rect class="y" x="196" y="262" width="26" height="30" rx="4"/><rect class="y" x="240" y="262" width="26" height="30" rx="4"/>
  <path class="p2" d="M209 262V160M253 262V160M209 160H440"/>
- <circle class="w" cx="209" cy="236" r="7"/><path class="k" d="M205 240l4-8 4 8z"/><circle class="w" cx="253" cy="236" r="7"/><path class="k" d="M249 240l4-8 4 8z"/>
- <path class="k" d="M202 198h14l-14 16h14zM246 198h14l-14 16h14z"/>
- <path class="o" d="M122 112V300M138 112V300M122 128h16M122 144h16M122 160h16M122 176h16M122 192h16M122 208h16M122 224h16M122 240h16M122 256h16M122 272h16M122 288h16"/>
+ ${CHECKV(209,236)}${CHECKV(253,236)}${GATEV(209,206)}${GATEV(253,206)}
+ ${LADDER(122,138,112,300)}
  <rect class="r" x="155" y="114" width="9" height="6"/>
  <rect class="f" x="262" y="114" width="24" height="12"/><circle class="o" cx="274" cy="120" r="4"/>
  <path class="p3" d="M274 104V66"/><path class="k" d="M261 68h26a13 9 0 0 0-26 0z"/>
@@ -2936,51 +3055,96 @@ const DIAGRAMS=[
  <rect class="f" x="330" y="58" width="32" height="46" rx="2"/><path class="o" d="M346 62v38M334 104v6M358 104v6"/>
  <path class="el" d="M360 100h6v10"/><path class="o" d="M366 110v40M360 150h12M362 154h8M364 158h4"/>
  <path class="el dash" d="M336 104V136H306"/>`,
- labels:[[1,'settling tank',55,140,55,140],[2,'knife gate valve',100,290,100,324],[3,'Y strainer',170,290,170,268],[4,'pump',209,277,231,277],[5,'check valve',209,236,186,236],[6,'gate valve',209,206,186,206],[7,'force main',380,160,380,176],[8,'sump',262,316,246,330],[9,'sump pump',283,311,304,330],[10,'access ladder',130,200,152,176],[11,'access hatch',133,100,152,84],[12,'proximity sensor',160,117,178,130],[13,'ventilation fan',274,120,248,136],[14,'vent pipe',274,86,252,76],[15,'electric heater',287,206,268,214],[16,'cable entry',301,136,318,152],[17,'control panel',346,80,346,80],[18,'fence',318,92,300,92],[19,'earthing rod',366,150,348,164],[20,'supply cable',380,128,394,142],[21,'three-phase metering box',403,80,403,80],[22,'electrical service connection',412,44,396,32],[23,'power pole',428,64,428,64]]}
+ labels:[[1,'settling tank',55,140,55,140,'<rect x="18" y="104" width="74" height="206"/>'],[2,'knife gate valve',100,290,100,324,'<rect x="90" y="276" width="20" height="28"/>'],[3,'Y strainer',170,290,170,268,'<rect x="158" y="280" width="26" height="28"/>'],[4,'pump',209,277,231,277,'<path d="M194 260h30v34h-30zM238 260h30v34h-30z"/>'],[5,'check valve',209,236,186,236,'<path d="M200 227h18v18h-18zM244 227h18v18h-18z"/>'],[6,'gate valve',209,206,186,206,'<path d="M200 196h18v20h-18zM244 196h18v20h-18z"/>'],[7,'force main',380,160,380,176,'<rect x="300" y="154" width="140" height="12"/>'],[8,'sump',262,316,246,330,'<rect x="262" y="304" width="26" height="14"/>'],[9,'sump pump',283,311,304,330,'<rect x="265" y="304" width="20" height="14"/>'],[10,'access ladder',130,200,152,176,'<rect x="120" y="112" width="20" height="190"/>'],[11,'access hatch',133,100,152,84,'<rect x="112" y="95" width="42" height="11"/>'],[12,'proximity sensor',160,117,178,130,'<rect x="152" y="112" width="14" height="10"/>'],[13,'ventilation fan',274,120,248,136,'<rect x="260" y="112" width="28" height="16"/>'],[14,'vent pipe',274,86,252,76,'<rect x="258" y="52" width="32" height="54"/>'],[15,'electric heater',287,206,268,214,'<rect x="280" y="186" width="14" height="40"/>'],[16,'cable entry',301,136,318,152,'<rect x="294" y="130" width="14" height="12"/>'],[17,'control panel',346,80,346,80,'<rect x="328" y="56" width="36" height="50"/>'],[18,'fence',318,92,300,92,'<path d="M316 42h60v4h-60zM316 106h60v4h-60zM316 42h4v68h-4zM372 42h4v68h-4z"/>'],[19,'earthing rod',366,150,348,164,'<rect x="358" y="108" width="18" height="54"/>'],[20,'supply cable',380,128,394,142,'<path d="M340 124h66v8h-66zM399 92h8v40h-8z"/>'],[21,'three-phase metering box',403,80,403,80,'<rect x="390" y="64" width="26" height="32"/>'],[22,'electrical service connection',412,44,396,32,'<rect x="398" y="22" width="26" height="46"/>'],[23,'power pole',428,64,428,64,'<rect x="424" y="14" width="10" height="106"/>']]},
+{id:'waterps',t:'Stația de pompare a apei potabile',d:'3 pompe (2 active, 1 de rezervă), colectoare, hidrofor, convertizoare',vb:'0 0 440 320',minw:540,
+ art:`<rect class="soil" x="0" y="70" width="440" height="250"/><rect class="top" x="0" y="70" width="440" height="8"/>
+ <rect class="con" x="0" y="150" width="44" height="150"/><rect class="wat" x="0" y="170" width="36" height="122"/>
+ <rect class="con" x="60" y="64" width="320" height="236"/><rect class="w" x="72" y="76" width="296" height="212"/>
+ <rect class="k" x="78" y="57" width="44" height="7" rx="1"/>
+ ${LADDER(86,100,76,282)}
+ <rect class="r" x="124" y="78" width="9" height="6"/>
+ <path class="p2" d="M36 262H302M170 262V120M230 262V120M290 262V120M170 120H440"/>
+ <rect class="y" x="158" y="205" width="24" height="40" rx="4"/><rect class="y" x="218" y="205" width="24" height="40" rx="4"/><rect class="f" x="278" y="205" width="24" height="40" rx="4"/>
+ ${CHECKV(170,180)}${CHECKV(230,180)}${CHECKV(290,180)}${GATEV(170,150)}${GATEV(230,150)}${GATEV(290,150)}
+ <path class="p3" d="M152 120H170"/><rect class="y" x="118" y="98" width="34" height="64" rx="14"/>
+ <path class="o" d="M275 120V99"/><circle class="w" cx="275" cy="92" r="7"/><path class="o" d="M275 92l3-3"/>
+ <rect class="f" x="309" y="110" width="22" height="20" rx="3"/><path class="o" d="M314 120h12"/>
+ <rect class="f" x="330" y="78" width="24" height="12"/><circle class="o" cx="342" cy="84" r="4"/>
+ <path class="p3" d="M342 64V30"/><path class="k" d="M329 32h26a13 9 0 0 0-26 0z"/>
+ <rect class="f" x="354" y="130" width="10" height="40"/><path class="o" d="M359 134l3 4-6 4 6 4-6 4 6 4-6 4 6 4-3 4"/>
+ <rect class="k" x="366" y="96" width="12" height="8"/>
+ <rect class="f" x="392" y="24" width="38" height="42" rx="2"/><rect class="k" x="397" y="30" width="8" height="14"/><rect class="k" x="407" y="30" width="8" height="14"/><rect class="k" x="417" y="30" width="8" height="14"/><path class="o" d="M396 66v4M426 66v4"/>
+ <path class="el dash" d="M400 70V100H378"/>
+ <text class="lbl" x="268" y="252">rezervă</text>`,
+ labels:[[1,'reservoir',20,200,20,200,'<rect x="0" y="150" width="44" height="150"/>'],[2,'suction manifold',120,262,120,281,'<rect x="36" y="254" width="268" height="16"/>'],[3,'duty pump',170,225,142,225,'<path d="M156 203h28v44h-28zM216 203h28v44h-28z"/>'],[4,'standby pump',302,225,326,225,'<rect x="276" y="203" width="28" height="44"/>'],[5,'check valve',230,180,202,180,'<path d="M161 171h18v18h-18zM221 171h18v18h-18zM281 171h18v18h-18z"/>'],[6,'gate valve',230,150,202,150,'<path d="M161 140h18v20h-18zM221 140h18v20h-18zM281 140h18v20h-18z"/>'],[7,'discharge manifold',250,120,250,101,'<rect x="165" y="112" width="215" height="16"/>'],[8,'pressure vessel',135,162,135,184,'<rect x="116" y="96" width="38" height="68"/>'],[9,'pressure gauge',275,92,294,84,'<circle cx="275" cy="92" r="9"/>'],[10,'flow meter',320,130,320,148,'<rect x="307" y="108" width="26" height="24"/>'],[11,'distribution network',412,120,412,140,'<rect x="380" y="112" width="60" height="16"/>'],[12,'access hatch',100,60,100,42,'<rect x="76" y="55" width="48" height="11"/>'],[13,'access ladder',93,200,112,238,'<rect x="84" y="76" width="18" height="208"/>'],[14,'proximity sensor',128,81,150,50,'<rect x="122" y="76" width="13" height="10"/>'],[15,'ventilation fan',342,90,346,104,'<rect x="328" y="76" width="28" height="16"/>'],[16,'vent pipe',342,45,320,40,'<rect x="326" y="22" width="32" height="44"/>'],[17,'electric heater',354,150,336,178,'<rect x="352" y="128" width="14" height="44"/>'],[18,'control panel',411,24,411,10,'<rect x="390" y="22" width="42" height="46"/>'],[19,'frequency converter',411,37,382,14,'<rect x="395" y="28" width="32" height="18"/>'],[20,'cable entry',372,100,390,86,'<rect x="364" y="94" width="16" height="12"/>']]},
+{id:'wwtp',t:'Stația de epurare',d:'Grătar, deznisipator, decantoare, bazin de aerare, nămol, emisar',vb:'0 0 460 260',minw:520,
+ art:`<rect class="wat" x="425" y="0" width="35" height="260"/><path class="o" d="M432 20q6 10 0 20t0 20M444 80q6 10 0 20t0 20M436 160q6 10 0 20t0 20"/>
+ <path class="p2" d="M0 90H30M70 90H85M145 90H155M215 90H235M325 90H340M400 90H425"/>
+ <rect class="f" x="30" y="70" width="40" height="40"/><path class="o" d="M38 72v36M46 72v36M54 72v36M62 72v36"/>
+ <rect class="wat2" x="85" y="72" width="60" height="36"/>
+ <circle class="wat2" cx="185" cy="90" r="30"/><circle class="k" cx="185" cy="90" r="4"/><path class="o" d="M185 90L205 70"/>
+ <rect class="wat2" x="235" y="62" width="90" height="56"/>
+ <g class="bubl">${[[248,108],[258,100],[268,110],[280,102],[292,109],[304,99],[314,108],[262,88],[296,86]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.5"/>`).join('')}</g>
+ <circle class="wat2" cx="370" cy="90" r="30"/><circle class="k" cx="370" cy="90" r="4"/><path class="o" d="M370 90L350 70"/>
+ <path class="air" d="M280 170V118"/>
+ <path class="sl" d="M366 120V150H315V118M185 120V170M385 116V232H160V210"/>
+ <rect class="f" x="250" y="170" width="60" height="40" rx="3"/><circle class="o" cx="280" cy="190" r="10"/><path class="o" d="M280 180v20M270 190h20"/>
+ <rect class="f" x="118" y="170" width="84" height="40" rx="3"/><path class="o" d="M130 200h60M135 186h50"/>`,
+ labels:[[1,'wastewater',15,90,15,118,'<rect x="0" y="84" width="30" height="12"/>'],[2,'screen',50,90,50,48,'<rect x="28" y="68" width="44" height="44"/>'],[3,'grit chamber',115,90,115,48,'<rect x="83" y="70" width="64" height="40"/>'],[4,'primary clarifier',185,60,185,44,'<circle cx="185" cy="90" r="32"/>'],[5,'aeration tank',280,62,280,44,'<rect x="233" y="60" width="94" height="60"/>'],[6,'aeration diffusers',262,110,226,140,'<rect x="242" y="96" width="78" height="18"/>'],[7,'blower',280,210,280,232,'<rect x="248" y="168" width="64" height="44"/>'],[8,'secondary clarifier',370,60,370,44,'<circle cx="370" cy="90" r="32"/>'],[9,'return sludge',340,150,340,166,'<path d="M311 116h8v30h43v-28h8v36h-59z"/>'],[10,'sludge dewatering',160,190,100,190,'<rect x="116" y="168" width="88" height="44"/>'],[11,'effluent',412,90,410,118,'<rect x="400" y="84" width="25" height="12"/>'],[12,'receiving river',442,200,442,200,'<rect x="425" y="0" width="35" height="260"/>'],[13,'sludge',300,232,300,248,'<rect x="156" y="226" width="234" height="10"/>']]}
 ];
 function diagSVG(d,{focus=null,hideNums=false}={}){
  return `<svg class="diag ill" viewBox="${d.vb}" role="img" aria-label="${esc(d.t)}" ${d.minw?`style="min-width:${d.minw}px;max-width:none"`:'style="max-width:none"'}>${d.art}
+  ${d.labels.filter(l=>l[6]).map(l=>`<g class="hl ${focus===l[0]?'on':''}" data-h="${l[0]}">${l[6]}</g>`).join('')}
   ${d.labels.map(([n,en,x,y,bx,by])=>`<g class="bub ${focus===n?'on':''}" data-n="${n}">${(x!==bx||y!==by)?`<path class="lead" d="M${x} ${y}L${bx} ${by}"/>`:''}<circle cx="${bx}" cy="${by}" r="9"/><text x="${bx}" y="${by+3.5}" text-anchor="middle">${hideNums&&focus!==n?'?':n}</text></g>`).join('')}</svg>`}
+/* zonele mari stau sub cele mici, ca atingerea să prindă elementul cel mai precis */
+function orderHL(root){root.querySelectorAll('svg.diag').forEach(svg=>{const gs=[...svg.querySelectorAll('.hl')];const first=svg.querySelector('.bub');
+ gs.map(g=>{let a=0;try{const b=g.getBBox();a=b.width*b.height}catch(e){}return[g,a]}).sort((p,q)=>q[1]-p[1]).forEach(([g])=>svg.insertBefore(g,first))})}
+const tapN=el=>{const g=el.closest('[data-n],[data-h]');return g?+(g.dataset.n||g.dataset.h):null};
 R.diagrams=()=>{
- screen('Scheme cu termeni',`<p class="muted">Desene de pe șantier cu fiecare element numerotat. Atingi un număr: auzi termenul în engleză și vezi traducerea. Apoi te testezi.</p>
- <div class="list">${DIAGRAMS.map(d=>{const ws=d.labels.map(l=>l[1]);const k=ws.filter(e=>st.learned[e]).length;return`<button class="li" data-go="diagram" data-arg="${d.id}"><span class="t"><b>${esc(d.t)}</b><span>${esc(d.d)} · ${k} din ${ws.length} învățați</span></span><span class="mini"><i style="width:${k/ws.length*100}%"></i></span></button>`}).join('')}</div>
- <p class="small muted">Urmează: stația de epurare cu bazinele, căminul de branșament, căminul de vizitare.</p>`);
+ screen('Scheme cu termeni',`<p class="muted">Desene de pe șantier cu fiecare element numerotat. Atingi un element sau un număr: se face verde, auzi termenul în engleză și vezi traducerea. Apoi te testezi și explici schema vorbind.</p>
+ <div class="list">${DIAGRAMS.map(d=>{const ws=d.labels.map(l=>l[1]);const k=ws.filter(e=>st.learned[e]).length;return`<button class="li" data-go="diagram" data-arg="${d.id}"><span class="t"><b>${esc(d.t)}</b><span>${esc(d.d)} · ${k} din ${ws.length} învățați</span></span><span class="mini"><i style="width:${k/ws.length*100}%"></i></span></button>`}).join('')}</div>`);
 };
 R.diagram=id=>{
  const d=DIAGRAMS.find(x=>x.id===id);if(!d){go('diagrams');return}
- const m=screen(esc(d.t),`<div class="card"><div style="overflow-x:auto;margin-inline:-6px">${diagSVG(d)}</div>
-  <div class="note" id="cap">Atinge un număr din desen.</div></div>
+ const m=screen(esc(d.t),`<div class="card"><div style="overflow-x:auto;margin-inline:-6px" id="dg">${diagSVG(d)}</div>
+  <div class="note" id="cap">Atinge un element sau un număr din desen.</div></div>
   <div class="row"><button class="btn" id="tw">Test: unde este?</button><button class="btn ghost" id="tc">Test: ce este?</button></div>
   <button class="btn ghost wide" id="lrn">Învață termenii din schemă (pronunție + exemplu)</button>
+  <button class="btn ghost wide" data-go="speak" data-arg="diag:${d.id}">${IC.mic.replace('<svg ','<svg class="i" ')} Explică schema vorbind</button>
   <div class="card"><h3>Elementele schemei</h3><div class="list" id="dl">${d.labels.map(([n,en])=>{const w=W(en);return`<button class="li" data-n="${n}"><span class="tick ${st.learned[en]?'done':''}">${n}</span><span class="t"><b>${esc(en)}</b><span>${esc(w?w.ro:'')}</span></span>${IC.spk}</button>`}).join('')}</div></div>`);
+ orderHL(m);
  const cap=m.querySelector('#cap');
- const show=n=>{const l=d.labels.find(x=>x[0]===n);if(!l)return;const w=W(l[1]);m.querySelectorAll('.bub').forEach(g=>g.classList.toggle('on',+g.dataset.n===n));m.querySelectorAll('#dl .li').forEach(b=>b.classList.toggle('hl',+b.dataset.n===n));
+ const show=n=>{const l=d.labels.find(x=>x[0]===n);if(!l)return;const w=W(l[1]);
+  m.querySelectorAll('#dg .bub').forEach(g=>g.classList.toggle('on',+g.dataset.n===n));m.querySelectorAll('#dg .hl').forEach(g=>g.classList.toggle('on',+g.dataset.h===n));
+  m.querySelectorAll('#dl .li').forEach(b=>b.classList.toggle('hl',+b.dataset.n===n));
   cap.innerHTML=`<b>${n}. ${esc(l[1])}</b> — ${esc(w?w.ro:'')}${w?`<div class="small" style="margin-top:4px"><i>${esc(w.ex)}</i></div>`:''}`;say(l[1])};
- m.querySelectorAll('.bub').forEach(g=>g.onclick=()=>show(+g.dataset.n));
- m.querySelectorAll('#dl .li').forEach(b=>b.onclick=()=>{show(+b.dataset.n);m.querySelector('.diag').scrollIntoView({behavior:'smooth',block:'center'})});
+ m.querySelector('#dg').onclick=e=>{const n=tapN(e.target);if(n)show(n)};
+ m.querySelectorAll('#dl .li').forEach(b=>b.onclick=()=>{show(+b.dataset.n);m.querySelector('#dg').scrollIntoView({behavior:'smooth',block:'center'})});
  m.querySelector('#lrn').onclick=()=>{const left=d.labels.map(l=>l[1]).filter(e=>W(e)&&!st.learned[e]);startSession('water',(left.length?left:d.labels.map(l=>l[1])).slice(0,12))};
  m.querySelector('#tc').onclick=()=>{const ls=shuffle(d.labels).slice(0,10);const all=d.labels.map(l=>l[1]);
-  const qs=ls.map(([n,en])=>mc(`<div style="overflow-x:auto">${diagSVG(d,{focus:n,hideNums:true})}</div>Ce este marcat cu albastru?`,en,shuffle(all.filter(x=>x!==en)).slice(0,3),{sayAfter:en,kind:'Schemă'}));
+  const qs=ls.map(([n,en])=>{const w=W(en);return mc(`<div style="overflow-x:auto">${diagSVG(d,{focus:n,hideNums:true})}</div>Ce este marcat cu verde?`,en,shuffle(all.filter(x=>x!==en)).slice(0,3),{sayAfter:en,en,ro:w?w.ro:'',kind:'Schemă'})});
   const m2=screen(esc(d.t),'<div class="card" id="q"></div>');
-  runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{addXP(s*2);screen(esc(d.t),`<div class="card"><div class="eyebrow">Ce este?</div><div class="big">${s}/${qs.length}</div></div><button class="btn wide" data-go="diagram" data-arg="${id}">Înapoi la schemă</button>`)})};
+  runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{addXP(s*2);screen(esc(d.t),`<div class="card"><div class="eyebrow">Ce este?</div><div class="big">${s}/${qs.length}</div></div><button class="btn wide" data-go="diagram" data-arg="${id}">Înapoi la schemă</button><button class="btn ghost wide" data-go="speak" data-arg="diag:${id}">Explică schema vorbind</button>`)})};
  m.querySelector('#tw').onclick=()=>whereTest(d);
 };
-/* Test „unde este?”: atingi numărul corect pe desen; vezi imediat dacă ai nimerit */
+/* Test „unde este?”: atingi elementul pe desen; corect = verde, greșit = roșu + corectul verde */
 function whereTest(d){
  const ls=shuffle(d.labels).slice(0,10);let i=0,score=0;
  const m=screen(esc(d.t),`<div class="card"><div class="prog"><span id="pg"></span></div><div class="row" style="justify-content:space-between"><span class="qn" id="qn"></span><span class="lv">Unde este?</span></div>
-  <div class="qp" id="qq"></div><div style="overflow-x:auto;margin-inline:-6px" id="dg"></div><div class="fb" id="fb"></div></div>`);
+  <div class="qp" id="qq"></div><div class="row"><button class="btn ghost" id="hear">${IC.spk} Ascultă</button></div><div style="overflow-x:auto;margin-inline:-6px" id="dg"></div><div class="fb" id="fb"></div></div>`);
  function step(){
-  if(i>=ls.length){addXP(score*2);screen(esc(d.t),`<div class="card"><div class="eyebrow">Unde este?</div><div class="big">${score}/${ls.length}</div><p class="muted">${score>=8?'Foarte bine!':'Mai treci o dată prin schemă și reîncearcă.'}</p></div><button class="btn wide" data-go="diagram" data-arg="${d.id}">Înapoi la schemă</button>`);return}
+  if(i>=ls.length){addXP(score*2);screen(esc(d.t),`<div class="card"><div class="eyebrow">Unde este?</div><div class="big">${score}/${ls.length}</div><p class="muted">${score>=8?'Foarte bine!':'Mai treci o dată prin schemă și reîncearcă.'}</p></div><button class="btn wide" data-go="diagram" data-arg="${d.id}">Înapoi la schemă</button><button class="btn ghost wide" data-go="speak" data-arg="diag:${d.id}">Explică schema vorbind</button>`);return}
   const [n,en]=ls[i];const w=W(en);let done=false;
   m.querySelector('#pg').style.width=(i/ls.length*100)+'%';m.querySelector('#qn').textContent=`Întrebarea ${i+1} din ${ls.length}`;
-  m.querySelector('#qq').innerHTML=`Atinge pe desen: <b>${esc(en)}</b><div class="small muted">${esc(w?w.ro:'')}</div>`;
-  m.querySelector('#dg').innerHTML=diagSVG(d,{hideNums:true});m.querySelector('#fb').innerHTML='';say(en);
-  m.querySelectorAll('#dg .bub').forEach(g=>g.onclick=()=>{if(done)return;done=true;const k=+g.dataset.n;const ok=k===n;if(ok)score++;
-   m.querySelectorAll('#dg .bub').forEach(x=>{const xn=+x.dataset.n;if(xn===n){x.classList.add('good');x.querySelector('text').textContent=xn}else if(xn===k){x.classList.add('badb');x.querySelector('text').textContent=xn}});
-   const kl=d.labels.find(x=>x[0]===k);
-   m.querySelector('#fb').innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':`Greșit: acolo este <b>${esc(kl[1])}</b>. Corect e la verde.`}</div><button class="btn wide" id="nx">${i+1<ls.length?'Mai departe':'Vezi rezultatul'}</button>`;
-   m.querySelector('#nx').onclick=()=>{i++;step()};m.querySelector('#nx').scrollIntoView({block:'nearest',behavior:'smooth'})});
+  m.querySelector('#qq').innerHTML=`Atinge pe desen: <b>${esc(en)}</b>`;m.querySelector('#hear').onclick=()=>say(en);
+  const dg=m.querySelector('#dg');dg.innerHTML=diagSVG(d,{hideNums:true});orderHL(dg);m.querySelector('#fb').innerHTML='';say(en);
+  dg.onclick=e=>{if(done)return;const k=tapN(e.target);if(!k)return;done=true;const ok=k===n;if(ok)score++;
+   dg.querySelectorAll('.bub').forEach(x=>{const xn=+x.dataset.n;if(xn===n){x.classList.add('good');x.querySelector('text').textContent=xn}else if(xn===k){x.classList.add('badb');x.querySelector('text').textContent=xn}});
+   dg.querySelectorAll('.hl').forEach(x=>{const xn=+x.dataset.h;if(xn===n)x.classList.add('on');else if(xn===k)x.classList.add('wrong')});
+   const kl=d.labels.find(x=>x[0]===k);const kw=W(kl[1]);
+   m.querySelector('#fb').innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':`Greșit: ai atins <b>${esc(kl[1])}</b> (${esc(kw?kw.ro:'')}). Corect e la verde.`}</div>
+    <div class="after"><button class="btn ghost" id="rep">${IC.spk} ${esc(en)}</button><span>= <b>${esc(w?w.ro:'')}</b></span></div><button class="btn wide" id="nx">${i+1<ls.length?'Mai departe':'Vezi rezultatul'}</button>`;
+   m.querySelector('#rep').onclick=()=>say(en);m.querySelector('#nx').onclick=()=>{i++;step()};m.querySelector('#nx').scrollIntoView({block:'nearest',behavior:'smooth'})};
  }
  step();
 }
