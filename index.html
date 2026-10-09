@@ -1,4 +1,4 @@
-<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14213D"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
+<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14213D"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Benglish"><title>Benglish</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
 /* Layout: o singură coloană de telefon, ecrane care se schimbă; microfonul rotund e centrul fiecărui exercițiu de vorbit */
 /* Layout: aplicație de telefon cu bară de file jos; fiecare categorie are culoarea ei, în tema șantierului (galben de avertizare + bleumarin) */
 :root{
@@ -2483,7 +2483,7 @@ const R={};
 
 /* ---------- Bun venit ---------- */
 R.welcome=()=>{
- const m=screen('Speak Up','',{back:false});
+ const m=screen('Benglish','',{back:false});
  m.innerHTML=`<div class="hello"><div class="eyebrow">Engleză pentru vorbit</div><h1>Învață să vorbești, nu doar să citești.</h1>
   <p class="muted">Începem cu un test scurt de nivel (20 de întrebări, cam 5 minute), apoi unul despre cum înveți tu cel mai bine.</p></div>
   <div class="card"><label for="nm"><b>Cum te numești?</b></label><input type="text" id="nm" placeholder="Prenumele tău" autocomplete="given-name">
@@ -2563,7 +2563,7 @@ R.home=()=>{
  const isWeekend=[0,6].includes(new Date().getDay());const L=levelInfo();const nb=Object.keys(st.badges||{}).length;
  const h=new Date().getHours();const hi=h<11?'Bună dimineața':h<18?'Bună ziua':'Bună seara';
  const totalTerms=TOPICS.reduce((a,x)=>a+(TW[x.id]||[]).length,0);
- screen('Speak Up',`
+ screen('Benglish',`
  <section class="hero">
   <button class="rankbtn" data-go="rewards"><span class="hi"><span class="lvbadge">${L.n}</span><span style="min-width:0"><span class="sub">${hi},</span><h1>${esc(st.name)}</h1><span class="sub">${esc(L.name)} · ${st.level} ${LNAME[st.level]}</span></span></span>
    <span class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></span><span class="sub small">${st.xp||0} XP · încă ${L.to-(st.xp||0)} până la nivelul ${L.n+1} · ${nb} insigne</span></button>
@@ -3249,7 +3249,7 @@ R.rewards=()=>{
 };
 
 /* ---------- Microfon și voce ---------- */
-const LIVE_URL='https://cazacubeniamin1988-dot.github.io/speakup/';
+const LIVE_URL='https://cazacubeniamin1988-dot.github.io/benglish/';
 R.voice=()=>{
  const inClaude=!!(window.claude&&claude.use)&&window.top!==window;
  const micOk=micState==='ok',micNo=micState==='blocked'||micState==='none';
