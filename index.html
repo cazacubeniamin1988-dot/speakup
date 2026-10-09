@@ -1,0 +1,2419 @@
+<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13212A"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
+/* Layout: o singură coloană de telefon, ecrane care se schimbă; microfonul rotund e centrul fiecărui exercițiu de vorbit */
+:root{
+  --bg:#EEF2F1; --surface:#FFFFFF; --ink:#13212A; --muted:#5A6B72; --line:#D6DFDD;
+  --accent:#1E4FD6; --accent-soft:#E2E9FB; --on-accent:#FFFFFF;
+  --ok:#11804B; --ok-soft:#DDF2E6; --bad:#C2352B; --bad-soft:#FBE3E0; --mark:#FFD84D;
+  --display:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1418; --surface:#172027; --ink:#E7EEF0; --muted:#94A4AB; --line:#29353D;
+  --accent:#7DA0FF; --accent-soft:#1D2A47; --on-accent:#0E1418;
+  --ok:#47C485; --ok-soft:#163327; --bad:#F27A6E; --bad-soft:#3A1F1C; --mark:#FFD84D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1418; --surface:#172027; --ink:#E7EEF0; --muted:#94A4AB; --line:#29353D;
+  --accent:#7DA0FF; --accent-soft:#1D2A47; --on-accent:#0E1418;
+  --ok:#47C485; --ok-soft:#163327; --bad:#F27A6E; --bad-soft:#3A1F1C; --mark:#FFD84D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:0 40px}
+#app{max-width:560px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:10px;padding-block:12px;background:var(--bg)}
+.bar-t{flex:1;font-family:var(--display);font-weight:600;font-size:1.05rem;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:40px;height:40px;font-size:1.2rem;display:grid;place-items:center}
+.chip{font-family:var(--display);font-weight:800;background:var(--ink);color:var(--bg);border-radius:8px;padding:3px 9px;font-size:.85rem;letter-spacing:.04em}
+.screen{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 18px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:48px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn.wide{width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>.btn{flex:1}
+svg.i{width:20px;height:20px;flex:none}
+/* home */
+.hello{padding-block:8px 4px;display:flex;flex-direction:column;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted);line-height:1.25}
+.today{background:var(--accent);color:var(--on-accent);border:0}
+.today .muted{color:inherit;opacity:.85}
+.today .btn{background:var(--on-accent);color:var(--accent)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:22px;height:8px;border-radius:4px;background:currentColor;opacity:.25}
+.dots i.on{opacity:1}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.tile h3{font-size:1.05rem}
+.tile p{font-size:.85rem;color:var(--muted);line-height:1.35}
+.tile .ico{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.tile.flag{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.banner{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
+/* quiz */
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.prog span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qn{font-size:.85rem;color:var(--muted)}
+.qp{font-size:1.25rem;font-family:var(--display);font-weight:600;line-height:1.3}
+.qp b{background:linear-gradient(transparent 58%,var(--mark) 58%);color:var(--ink);padding:0 2px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;min-height:50px}
+@media (hover:hover){.opt:hover:not([disabled]){border-color:var(--muted)}}
+.opt.mine{border-color:var(--ink);border-width:2px;font-weight:700}
+.tnav{display:flex;justify-content:space-between;gap:10px}
+.rev{display:flex;flex-direction:column;gap:12px}
+.ri{display:flex;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.ri:last-child{border-bottom:0;padding-bottom:0}
+.rn{font-family:var(--display);font-weight:800;min-width:40px;font-variant-numeric:tabular-nums}
+.ri.ok .rn{color:var(--ok)}.ri.bad .rn{color:var(--bad)}
+.rb{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rq{font-weight:600}
+.rq b{background:linear-gradient(transparent 58%,var(--mark) 58%);color:var(--ink);padding:0 2px}
+.ra{font-size:.95rem;border-radius:8px;padding:4px 9px;align-self:flex-start}
+.ra.ok{background:var(--ok-soft);color:var(--ok)}
+.ra.bad{background:var(--bad-soft);color:var(--bad);text-decoration:line-through}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.typef{display:flex;gap:8px;flex-wrap:wrap}
+input[type=text],textarea,.typef input{flex:1;min-width:0;font:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+textarea{min-height:130px;resize:vertical}
+.fb{display:flex;flex-direction:column;gap:10px}
+.verdict{border-radius:10px;padding:10px 12px;font-weight:700}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.note{background:var(--accent-soft);border-radius:10px;padding:10px 12px;font-size:.92rem}
+/* word card */
+.word{font-family:var(--display);font-size:2.6rem;font-weight:800;letter-spacing:-.02em;line-height:1;overflow-wrap:anywhere}
+.tr{font-size:1.15rem}
+.ex{border-left:3px solid var(--mark);padding-left:12px;font-style:italic}
+.counter{font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums}
+/* pronunciation */
+.pron{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.pron-target{font-family:var(--display);font-size:1.5rem;font-weight:600;line-height:1.3}
+.pron-target.hid{color:var(--muted);font-size:1.1rem;font-style:italic}
+.pron-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mic{width:84px;height:84px;border-radius:50%;border:0;background:var(--ink);color:var(--bg);display:grid;place-items:center;position:relative}
+.mic svg{width:34px;height:34px}
+.mic.on{background:var(--bad);color:#fff}
+.mic.on::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:3px solid var(--bad);animation:pulse 1.2s infinite}
+@keyframes pulse{from{transform:scale(.92);opacity:1}to{transform:scale(1.25);opacity:0}}
+.mic-l{font-size:.85rem;color:var(--muted)}
+.pron-res{width:100%;display:flex;flex-direction:column;gap:8px}
+.wchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.wchip{padding:3px 9px;border-radius:7px;font-weight:700}
+.wchip.ok{background:var(--ok-soft);color:var(--ok)}
+.wchip.bad{background:var(--bad-soft);color:var(--bad);text-decoration:underline wavy}
+.heard{font-size:.9rem;color:var(--muted)}
+.linkbtn{background:none;border:0;color:var(--accent);text-decoration:underline;padding:4px}
+/* list items */
+.list{display:flex;flex-direction:column;gap:8px}
+.li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 14px;text-align:left;width:100%}
+.li .t{flex:1;min-width:0}
+.li .t b{display:block;font-family:var(--display);font-weight:600}
+.li .t span{font-size:.85rem;color:var(--muted)}
+.tick{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-size:.8rem}
+.tick.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.mini{width:54px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;flex:none}
+.mini i{display:block;height:100%;background:var(--ok)}
+.domcard{display:flex;flex-direction:column;gap:10px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:18px}
+.domcard .tags{display:flex;flex-wrap:wrap;gap:6px}
+.domcard .tags span{font-size:.8rem;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.lv{font-family:var(--display);font-weight:800;font-size:.75rem;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+/* match game */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.match .opt{text-align:center;padding:12px 8px;font-size:.95rem}
+.match .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.match .opt.gone{opacity:.25;border-color:var(--ok)}
+/* sentence builder */
+.slot{min-height:58px;border:2px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+.tok{border:1.5px solid var(--line);background:var(--surface);border-radius:9px;padding:7px 11px;font-weight:700}
+.tok.used{visibility:hidden}
+.bank{display:flex;flex-wrap:wrap;gap:6px}
+/* results */
+.big{font-family:var(--display);font-size:3.6rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.levels div{text-align:center;padding:8px 2px;border-radius:8px;background:var(--line);font-family:var(--display);font-weight:800;font-size:.9rem}
+.levels div.on{background:var(--accent);color:var(--on-accent)}
+.levels div small{display:block;font-family:var(--body);font-weight:400;font-size:.62rem;line-height:1.1}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bars .b{display:grid;grid-template-columns:90px 1fr 34px;align-items:center;gap:8px;font-size:.9rem}
+.bars.wide .b{grid-template-columns:minmax(0,1.5fr) 1fr 34px}
+.bars .b i{height:12px;border-radius:6px;background:var(--line);overflow:hidden;display:block}
+.bars .b i span{display:block;height:100%;background:var(--accent)}
+.rule{white-space:pre-line}
+.ai{white-space:pre-wrap;font-size:.98rem}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+.tbl td{padding:7px 4px;border-bottom:1px solid var(--line)}
+.confirm{border:1.5px solid var(--bad);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:380px){.word{font-size:2.1rem}.grid{grid-template-columns:1fr}}
+</style></head><body><div id="app"></div>
+
+<script>
+/* ================= DATE ================= */
+const LEVELS=['A1','A2','B1','B2','C1'];
+const LNAME={A1:'Începător',A2:'Elementar',B1:'Intermediar',B2:'Intermediar avansat',C1:'Avansat'};
+const RAW={
+A1:`house|casă|We live in a small house.
+water|apă|Can I have some water, please?
+bread|pâine|I buy fresh bread every morning.
+family|familie|My family is very important to me.
+friend|prieten|He is my best friend.
+work|muncă, serviciu|I go to work at seven.
+car|mașină|My car is in the garage.
+day|zi|Have a nice day!
+night|noapte|I sleep eight hours every night.
+morning|dimineață|I drink coffee in the morning.
+eat|a mânca|We eat lunch at one o'clock.
+drink|a bea|I drink a lot of water.
+go|a merge|Let's go home.
+come|a veni|Can you come here, please?
+big|mare|This is a big city.
+small|mic|I have a small dog.
+good|bun|This is a good idea.
+bad|rău|The weather is bad today.
+today|azi|Today is Friday.
+tomorrow|mâine|See you tomorrow.
+yesterday|ieri|I was tired yesterday.
+money|bani|I don't have much money.
+time|timp|What time is it?
+child|copil|The child is playing outside.
+city|oraș|I live in a quiet city.
+street|stradă|The shop is on this street.
+open|a deschide|Please open the window.
+close|a închide|Close the door, please.
+buy|a cumpăra|I want to buy a new phone.
+learn|a învăța|I learn English every day.
+one|unu|I have one brother.
+two|doi|We have two cars.
+three|trei|Three people came today.
+four|patru|The table has four legs.
+five|cinci|I work five days a week.
+six|șase|Wake me up at six.
+seven|șapte|There are seven days in a week.
+eight|opt|The shop opens at eight.
+nine|nouă|She is nine years old.
+ten|zece|I need ten minutes.
+hundred|sută|It costs a hundred euros.
+thousand|mie|A thousand people live here.
+first|primul|This is my first day.
+second|al doilea; secundă|Wait a second, please.
+half|jumătate|Half an hour is enough.
+Monday|luni|I start work on Monday.
+Tuesday|marți|The meeting is on Tuesday.
+Wednesday|miercuri|We play football on Wednesday.
+Thursday|joi|See you on Thursday.
+Friday|vineri|Friday is my favourite day.
+Saturday|sâmbătă|We relax on Saturday.
+Sunday|duminică|On Sunday we visit my parents.
+week|săptămână|I work six days a week.
+month|lună (calendaristică)|My birthday is next month.
+year|an|I was in London last year.
+hour|oră|The trip takes one hour.
+minute|minut|Wait five minutes, please.
+weekend|weekend|What are you doing this weekend?
+now|acum|I am busy now.
+later|mai târziu|Call me later.
+soon|curând|See you soon.
+evening|seară|We eat dinner in the evening.
+afternoon|după-amiază|I have a meeting this afternoon.
+red|roșu|The car is red.
+blue|albastru|The sky is blue.
+green|verde|I like green tea.
+yellow|galben|The bus is yellow.
+black|negru|He wears a black jacket.
+white|alb|The walls are white.
+grey|gri|It's a grey day.
+brown|maro|She has brown eyes.
+colour|culoare|What colour is it?
+mother|mamă|My mother is a teacher.
+father|tată|My father works in a bank.
+parents|părinți|My parents live in the village.
+brother|frate|My brother is older than me.
+sister|soră|My sister lives in Spain.
+son|fiu|Our son is ten.
+daughter|fiică|Their daughter is a doctor.
+husband|soț|Her husband is an engineer.
+wife|soție|My wife likes to cook.
+baby|bebeluș|The baby is sleeping.
+man|bărbat|That man is my uncle.
+woman|femeie|The woman at the desk is kind.
+people|oameni|Many people live here.
+boy|băiat|The boy is playing football.
+girl|fată|The girl is reading a book.
+name|nume|What is your name?
+head|cap|My head hurts.
+hand|mână|Give me your hand.
+eye|ochi|Close your eyes.
+ear|ureche|My ear hurts.
+mouth|gură|Open your mouth, please.
+nose|nas|He has a big nose.
+face|față|Wash your face.
+hair|păr|She has long hair.
+leg|picior (gambă)|I hurt my leg.
+foot|laba piciorului|My foot hurts after the walk.
+arm|braț|He broke his arm.
+back|spate|My back hurts.
+tooth|dinte|I have a bad tooth.
+heart|inimă|Her heart is strong.
+food|mâncare|The food is very good.
+breakfast|mic dejun|I eat breakfast at seven.
+lunch|prânz|Let's have lunch together.
+dinner|cină|Dinner is ready.
+coffee|cafea|A coffee, please.
+tea|ceai|I drink tea with lemon.
+milk|lapte|Do you want milk?
+egg|ou|I eat two eggs every morning.
+meat|carne|I don't eat much meat.
+chicken|pui|We have chicken for dinner.
+fish|pește|The fish is fresh.
+cheese|brânză|I like this cheese.
+apple|măr|An apple a day is healthy.
+fruit|fructe|Eat more fruit.
+vegetable|legumă|A carrot is a vegetable.
+potato|cartof|We have potatoes with the fish.
+rice|orez|I cook rice.
+soup|supă, ciorbă|The soup is hot.
+salt|sare|Pass me the salt, please.
+sugar|zahăr|No sugar, thank you.
+beer|bere|A cold beer, please.
+wine|vin|We drink red wine.
+juice|suc|Orange juice, please.
+cake|prăjitură, tort|This cake is very good.
+hungry|flămând|I'm very hungry.
+thirsty|însetat|I'm thirsty.
+cook|a găti; bucătar|I cook on Sundays.
+room|cameră|My room is small.
+kitchen|bucătărie|We eat in the kitchen.
+bedroom|dormitor|The bedroom is upstairs.
+bathroom|baie|Where is the bathroom?
+door|ușă|The door is open.
+window|fereastră|Open the window, please.
+table|masă|The keys are on the table.
+chair|scaun|Sit on this chair.
+bed|pat|I go to bed at eleven.
+garden|grădină|We have a small garden.
+key|cheie|I lost my key.
+light|lumină|Turn on the light.
+phone|telefon|Where is my phone?
+computer|calculator|I work on the computer.
+picture|imagine, poză|This is a picture of my family.
+home|acasă|I'm at home.
+flat|apartament|We live in a flat.
+shirt|cămașă|He wears a white shirt.
+trousers|pantaloni|These trousers are too long.
+shoes|pantofi|My shoes are new.
+jacket|geacă, sacou|Take your jacket, it's cold.
+hat|pălărie, căciulă|Wear a hat in winter.
+dress|rochie|She has a red dress.
+wear|a purta (haine)|I wear glasses.
+shop|magazin|The shop closes at nine.
+school|școală|My son goes to school.
+hospital|spital|The hospital is near here.
+bank|bancă|I need to go to the bank.
+office|birou|I work in an office.
+restaurant|restaurant|Let's go to a restaurant.
+hotel|hotel|The hotel is near the beach.
+station|gară, stație|The station is five minutes away.
+airport|aeroport|We arrive at the airport at six.
+park|parc|We walk in the park.
+church|biserică|The church is very old.
+village|sat|I grew up in a village.
+country|țară|Romania is a beautiful country.
+road|drum|The road is closed.
+supermarket|supermarket|I buy food at the supermarket.
+pharmacy|farmacie|Is the pharmacy open?
+bus|autobuz|I take the bus to work.
+train|tren|The train is late.
+plane|avion|The plane lands at ten.
+bike|bicicletă|I go to work by bike.
+taxi|taxi|Let's take a taxi.
+ticket|bilet|I need a ticket to Cluj.
+drive|a conduce (mașina)|I drive to work.
+walk|a merge pe jos|We walk to the park.
+travel|a călători|I love to travel.
+left|stânga|Turn left here.
+right|dreapta; corect|Turn right at the corner.
+straight|drept înainte|Go straight on.
+here|aici|Come here.
+there|acolo|The car is over there.
+near|aproape de|I live near the station.
+far|departe|Is it far from here?
+job|slujbă, loc de muncă|I like my job.
+teacher|profesor|My sister is a teacher.
+doctor|doctor|I need to see a doctor.
+driver|șofer|The driver is waiting.
+engineer|inginer|I am an engineer.
+student|student, elev|He is a student.
+boss|șef|My boss is on holiday.
+sun|soare|The sun is shining.
+rain|ploaie; a ploua|It will rain today.
+snow|zăpadă|There is a lot of snow.
+wind|vânt|The wind is strong.
+hot|cald, fierbinte|It is very hot today.
+cold|rece, frig|It's cold outside.
+warm|călduț|It's warm in here.
+sky|cer|The sky is clear.
+tree|copac|There is a big tree in the garden.
+flower|floare|She likes flowers.
+dog|câine|My dog is very friendly.
+cat|pisică|The cat sleeps all day.
+animal|animal|Do you like animals?
+summer|vară|We go to the sea in summer.
+winter|iarnă|Winter is cold here.
+spring|primăvară|Spring is my favourite season.
+autumn|toamnă|The leaves fall in autumn.
+sea|mare|We swim in the sea.
+mountain|munte|We go to the mountains in winter.
+river|râu|The river is very wide.
+be|a fi|I want to be a good speaker.
+have|a avea|I have two children.
+do|a face|What do you do?
+make|a face, a fabrica|I make coffee every morning.
+get|a obține, a primi|I get home at six.
+see|a vedea|I can see the sea.
+look|a privi, a se uita|Look at this!
+watch|a urmări|We watch TV in the evening.
+hear|a auzi|Can you hear me?
+listen|a asculta|Listen to the teacher.
+speak|a vorbi (o limbă)|Do you speak English?
+talk|a vorbi, a discuta|Let's talk later.
+say|a spune|What did you say?
+tell|a spune (cuiva)|Tell me the truth.
+ask|a întreba|Can I ask a question?
+answer|răspuns; a răspunde|Answer the phone, please.
+read|a citi|I read the news every morning.
+write|a scrie|Write your name here.
+know|a ști|I know the answer.
+think|a crede, a gândi|I think it's a good idea.
+want|a vrea|I want a coffee.
+like|a plăcea|I like music.
+love|a iubi|I love my family.
+need|a avea nevoie|I need help.
+help|ajutor; a ajuta|Can you help me?
+give|a da|Give me the keys, please.
+take|a lua|Take an umbrella.
+put|a pune|Put it on the table.
+find|a găsi|I can't find my phone.
+sleep|a dormi|I sleep badly.
+wake up|a se trezi|I wake up at six.
+sit|a sta jos|Please sit down.
+stand|a sta în picioare|Stand here, please.
+run|a alerga|I run every morning.
+play|a juca|The children play outside.
+sing|a cânta|She sings very well.
+swim|a înota|Can you swim?
+wait|a aștepta|Wait for me.
+stop|a opri|Stop the car here.
+start|a începe|We start at eight.
+finish|a termina|I finish work at five.
+live|a locui, a trăi|I live in Romania.
+pay|a plăti|Can I pay by card?
+sell|a vinde|They sell fresh bread.
+use|a folosi|Can I use your phone?
+try|a încerca|Try again.
+understand|a înțelege|I don't understand.
+feel|a simți|I feel good today.
+meet|a întâlni|Nice to meet you.
+leave|a pleca; a lăsa|I leave home at seven.
+arrive|a ajunge|We arrive at nine.
+bring|a aduce|Bring your ID card.
+carry|a căra|Can you carry this box?
+clean|curat; a curăța|Clean the table, please.
+wash|a spăla|Wash your hands.
+turn on|a porni|Turn on the TV.
+turn off|a opri (un aparat)|Turn off the lights.
+new|nou|I have a new car.
+old|vechi; bătrân|This house is very old.
+young|tânăr|He is young.
+long|lung|It's a long road.
+short|scurt|The meeting was short.
+tall|înalt|My son is tall.
+high|înalt, ridicat|The price is very high.
+low|jos, scăzut|The price is low.
+fast|rapid|This car is fast.
+slow|încet|The internet is slow.
+easy|ușor|This test is easy.
+difficult|dificil|English is not difficult.
+happy|fericit|I'm happy to see you.
+sad|trist|Why are you sad?
+beautiful|frumos|What a beautiful day!
+nice|drăguț, plăcut|She is very nice.
+ready|gata|Are you ready?
+free|liber; gratuit|Are you free tomorrow?
+busy|ocupat|I'm busy right now.
+full|plin|The bus is full.
+empty|gol|The box is empty.
+wrong|greșit|That is the wrong answer.
+true|adevărat|Is it true?
+same|același|We have the same car.
+different|diferit|Every day is different.
+important|important|This is very important.
+favourite|preferat|What is your favourite food?
+ill|bolnav|I am ill today.
+dirty|murdar|My shoes are dirty.
+heavy|greu (ca greutate)|This box is heavy.
+many|mulți|Many people came.
+much|mult|How much is it?
+little|puțin; mic|I have a little time.
+all|toți, tot|All the workers are here.
+every|fiecare|I work every day.
+very|foarte|It's very good.
+again|din nou|Say it again, please.
+also|de asemenea|I also speak French.
+only|doar|I have only five euros.
+please|te rog|Help me, please.
+thanks|mulțumesc|Thanks for your help.
+sorry|scuze, îmi pare rău|Sorry, I don't understand.
+hello|salut|Hello, how are you?
+goodbye|la revedere|Goodbye, see you tomorrow.
+yes|da|Yes, of course.
+maybe|poate|Maybe tomorrow.
+question|întrebare|I have a question.
+word|cuvânt|What does this word mean?
+language|limbă (vorbită)|English is an international language.
+number|număr|What is your phone number?
+thing|lucru|I have many things to do.
+problem|problemă|No problem!
+idea|idee|Good idea!
+life|viață|Life is beautiful.
+game|joc|Let's play a game.
+music|muzică|I listen to music in the car.
+book|carte|I'm reading a good book.
+letter|scrisoare; literă|I got a letter today.
+email|e-mail|Send me an email.
+party|petrecere|We have a party on Saturday.
+holiday|vacanță; sărbătoare|We are on holiday in August.
+birthday|zi de naștere|Happy birthday!
+price|preț|What is the price?
+shopping|cumpărături|I go shopping on Saturday.
+bag|geantă, pungă|Do you need a bag?
+box|cutie|Put it in the box.
+bottle|sticlă|A bottle of water, please.
+glass|pahar; sticlă (material)|A glass of wine, please.
+cup|ceașcă|A cup of tea, please.
+plate|farfurie|The plate is hot.
+card|card|Can I pay by card?
+cash|numerar, cash|Do you have cash?`,
+A2:`weather|vreme|The weather is nice today.
+journey|călătorie, drum|The journey took three hours.
+cheap|ieftin|This hotel is cheap.
+expensive|scump|The new car is very expensive.
+borrow|a împrumuta (de la cineva)|Can I borrow your pen?
+decide|a decide|We decided to stay at home.
+explain|a explica|Can you explain this again?
+healthy|sănătos|I want to eat healthy food.
+neighbour|vecin|My neighbour is very friendly.
+appointment|programare|I have an appointment at ten.
+forget|a uita|Don't forget your keys.
+remember|a-și aminti|I remember your name.
+almost|aproape|It's almost five o'clock.
+always|mereu|She always arrives on time.
+never|niciodată|I never drink coffee at night.
+early|devreme|I get up early.
+late|târziu|Sorry, I'm late.
+enough|destul|We have enough time.
+together|împreună|Let's work together.
+invite|a invita|I want to invite you to dinner.
+receive|a primi|Did you receive my message?
+send|a trimite|I will send you the photos.
+build|a construi|They want to build a new school.
+break|a sparge, a strica|Be careful, don't break the glass.
+repair|a repara|He can repair the car.
+careful|atent, prudent|Be careful on the road.
+dangerous|periculos|This street is dangerous at night.
+quiet|liniștit|The village is very quiet.
+noisy|zgomotos|The machine is too noisy.
+tired|obosit|I'm tired after work.
+angry|furios|Don't be angry with me.
+afraid|speriat|I'm afraid of dogs.
+worried|îngrijorat|I'm worried about the exam.
+bored|plictisit|The children are bored.
+excited|entuziasmat|I'm excited about the trip.
+surprised|surprins|I was surprised by the news.
+nervous|emoționat, agitat|I'm nervous before interviews.
+proud|mândru|I'm proud of my son.
+lonely|singur, însingurat|He feels lonely at night.
+kind|amabil|She is very kind.
+friendly|prietenos|The staff is friendly.
+funny|amuzant|He tells funny stories.
+polite|politicos|Be polite to customers.
+rude|nepoliticos|That was very rude.
+honest|cinstit|He is an honest man.
+lazy|leneș|Don't be lazy.
+clever|deștept|She is very clever.
+shy|timid|My son is shy.
+patient|răbdător; pacient|Be patient, please.
+relaxed|relaxat|I feel relaxed on holiday.
+health|sănătate|Health is the most important thing.
+pain|durere|I have a pain in my back.
+headache|durere de cap|I have a headache.
+fever|febră|The child has a fever.
+cough|tuse; a tuși|I have a bad cough.
+medicine|medicament|Take this medicine twice a day.
+pill|pastilă|Take one pill after dinner.
+dentist|dentist|I have to go to the dentist.
+nurse|asistentă medicală|The nurse is very kind.
+hurt|a durea; a răni|My knee hurts.
+rest|odihnă; a se odihni|You need some rest.
+fit|în formă|I want to be fit.
+diet|dietă|I'm on a diet.
+exercise|exercițiu; mișcare|Exercise is good for you.
+trip|excursie|We had a great trip.
+abroad|în străinătate|He works abroad.
+map|hartă|Do you have a map?
+suitcase|valiză|My suitcase is heavy.
+flight|zbor|The flight was late.
+passenger|pasager|The passengers are waiting.
+platform|peron|The train leaves from platform two.
+timetable|orar, mers|Check the timetable.
+return ticket|bilet dus-întors|A return ticket, please.
+border|graniță|We crossed the border at night.
+tourist|turist|The city is full of tourists.
+souvenir|suvenir|I bought a souvenir.
+beach|plajă|We spent the day on the beach.
+lake|lac|We swam in the lake.
+island|insulă|They live on an island.
+forest|pădure|We walked in the forest.
+bridge|pod|The bridge is very old.
+corner|colț|The shop is on the corner.
+traffic|trafic|There is a lot of traffic today.
+traffic lights|semafor|Turn right at the traffic lights.
+petrol station|benzinărie|Stop at the petrol station.
+parking|parcare|Is there parking near the hotel?
+miss|a pierde (trenul); a-i fi dor|I missed the bus.
+catch|a prinde|I need to catch the train.
+get on|a urca (în autobuz)|Get on the bus here.
+get off|a coborî|Get off at the next stop.
+size|mărime|What size are you?
+try on|a proba|Can I try it on?
+sale|reducere; vânzare|The shoes are on sale.
+receipt|bon fiscal|Keep the receipt.
+change|rest; schimbare; a schimba|Here is your change.
+queue|coadă (rând)|There is a long queue.
+spend|a cheltui|I spend too much money.
+save|a economisi; a salva|I save money every month.
+afford|a-și permite|We can't afford a new car.
+brand|marcă|What brand is your phone?
+furniture|mobilă|We bought new furniture.
+fridge|frigider|The milk is in the fridge.
+cooker|aragaz|The cooker is new.
+washing machine|mașină de spălat|The washing machine is broken.
+sofa|canapea|Sit on the sofa.
+carpet|covor|The carpet is dirty.
+stairs|scări|Take the stairs.
+rent|chirie; a închiria|The rent is too high.
+electricity|electricitate, curent|The electricity is off.
+heating|încălzire|Turn on the heating.
+rubbish|gunoi|Take out the rubbish.
+tidy|ordonat; a face ordine|Tidy your room.
+iron|fier de călcat; a călca|I need to iron my shirt.
+housework|treburi casnice|I hate housework.
+get dressed|a se îmbrăca|Get dressed, we are late.
+have a shower|a face duș|I have a shower every morning.
+lesson|lecție|The lesson starts at nine.
+homework|temă|Did you do your homework?
+exam|examen|I passed the exam.
+mistake|greșeală|Everyone makes mistakes.
+practice|exercițiu; a exersa|Practice makes perfect.
+course|curs|I'm taking an English course.
+skill|abilitate|Speaking is an important skill.
+career|carieră|He has a good career.
+company|companie, firmă|I work for a construction company.
+factory|fabrică|The factory is outside the city.
+earn|a câștiga (bani)|He earns a good salary.
+job interview|interviu de angajare|I have a job interview tomorrow.
+experience|experiență|Do you have experience?
+agree|a fi de acord|I agree with you.
+disagree|a nu fi de acord|I disagree with this plan.
+believe|a crede|I believe you.
+hope|a spera|I hope you are well.
+wish|a dori, a-și dori|I wish you good luck.
+plan|plan; a planifica|What is the plan?
+prepare|a pregăti|Prepare the documents, please.
+choose|a alege|Choose one option.
+check|a verifica|Check your email.
+collect|a colecta; a lua (pe cineva)|I collect my son from school.
+return|a se întoarce; a returna|I return home on Friday.
+visit|a vizita|We visit my parents every month.
+enjoy|a se bucura de|Enjoy your meal!
+laugh|a râde|We laughed a lot.
+cry|a plânge|The baby is crying.
+smile|zâmbet; a zâmbi|She has a nice smile.
+worry|a-și face griji|Don't worry, it's fine.
+hate|a urî|I hate waiting.
+prefer|a prefera|I prefer tea.
+move|a muta; a se muta|We moved to a new house.
+grow|a crește|The city is growing fast.
+fall|a cădea|Be careful, don't fall.
+drop|a scăpa (din mână)|Don't drop the phone.
+throw|a arunca|Throw it in the bin.
+lose|a pierde|I lost my wallet.
+win|a câștiga (un joc)|We won the match.
+teach|a preda|She teaches English.
+study|a studia|I study in the evening.
+describe|a descrie|Describe your house.
+mean|a însemna|What does this mean?
+spell|a spune pe litere|How do you spell your name?
+repeat|a repeta|Repeat after me.
+show|a arăta|Show me your ticket.
+follow|a urma|Follow me, please.
+lend|a împrumuta (cuiva)|Can you lend me ten euros?
+share|a împărți|Let's share the pizza.
+fill in|a completa|Fill in this form.
+look for|a căuta|I'm looking for my keys.
+look after|a avea grijă de|I look after my mother.
+find out|a afla|I found out the truth.
+give up|a renunța|Don't give up.
+pick up|a ridica; a lua pe cineva|I'll pick you up at eight.
+put on|a îmbrăca|Put on your jacket.
+take off|a scoate (haina); a decola|Take off your shoes.
+hurry|a se grăbi|Hurry up, we're late.
+happen|a se întâmpla|What happened?
+seem|a părea|He seems tired.
+become|a deveni|He became a manager.
+keep|a păstra; a continua|Keep the change.
+let|a lăsa, a permite|Let me help you.
+allow|a permite|Smoking is not allowed here.
+complain|a se plânge|He always complains.
+apologise|a-și cere scuze|I apologise for the delay.
+promise|promisiune; a promite|I promise to call you.
+guess|a ghici|Guess what happened!
+join|a se alătura|Join us for dinner.
+marry|a se căsători|They married last year.
+possible|posibil|Is it possible?
+impossible|imposibil|It's impossible to finish today.
+necessary|necesar|Is it necessary?
+useful|util|This app is very useful.
+famous|celebru|The city is famous for its wine.
+popular|popular|This restaurant is very popular.
+modern|modern|The office is very modern.
+comfortable|confortabil|This chair is very comfortable.
+strong|puternic|He is very strong.
+weak|slab|The signal is weak.
+safe|sigur, în siguranță|Is it safe here?
+clear|clar|Is that clear?
+loud|tare (sunet)|The music is too loud.
+fresh|proaspăt|The bread is fresh.
+delicious|delicios|The soup is delicious.
+wonderful|minunat|We had a wonderful time.
+terrible|groaznic|The traffic is terrible.
+perfect|perfect|Your English is perfect.
+sure|sigur (convins)|Are you sure?
+probably|probabil|It will probably rain.
+usually|de obicei|I usually walk to work.
+often|des|I often work late.
+sometimes|uneori|Sometimes I cook.
+rarely|rar|I rarely watch TV.
+already|deja|I have already eaten.
+yet|încă (în negații)|I haven't finished yet.
+still|încă|I still live here.
+just|tocmai; doar|I just arrived.
+quickly|repede|Come quickly!
+slowly|încet|Speak slowly, please.
+carefully|cu atenție|Drive carefully.
+suddenly|deodată|Suddenly, the lights went off.
+instead|în loc|Let's take the train instead.
+outside|afară|The children are outside.
+inside|înăuntru|Let's go inside.
+upstairs|sus (la etaj)|The bedroom is upstairs.
+downstairs|jos (la parter)|The kitchen is downstairs.
+behind|în spate|The car park is behind the hotel.
+between|între|The bank is between the shop and the school.
+opposite|vizavi|The pharmacy is opposite the bank.
+next to|lângă|Sit next to me.
+during|în timpul|I slept during the flight.
+until|până (la)|Wait until five.
+because|pentru că|I'm late because of the traffic.
+if|dacă|Call me if you need help.
+news|știri|Did you hear the news?
+newspaper|ziar|I read the newspaper.
+film|film|Let's watch a film.
+sport|sport|Football is my favourite sport.
+match|meci|The match starts at eight.
+hobby|hobby|My hobby is fishing.
+free time|timp liber|What do you do in your free time?
+gift|cadou|This is a gift for you.
+wedding|nuntă|The wedding is in June.
+invitation|invitație|Thanks for the invitation.
+advice|sfat|Can you give me some advice?
+information|informații|I need more information.
+opinion|părere|What is your opinion?
+reason|motiv|What is the reason?
+example|exemplu|Give me an example.
+noise|zgomot|What is that noise?
+police|poliție|Call the police!
+fire|foc, incendiu|There is a fire!
+danger|pericol|Danger! Keep out.
+luck|noroc|Good luck!
+chance|șansă|Give me a chance.
+future|viitor|What are your plans for the future?
+past|trecut|Forget the past.
+present|prezent; cadou|Live in the present.
+history|istorie|I like history.
+science|știință|He studies science.
+environment|mediu înconjurător|We must protect the environment.
+pollution|poluare|Pollution is a big problem.`,
+B1:`achieve|a atinge (un obiectiv)|We achieved our goal this year.
+available|disponibil|Is the manager available today?
+budget|buget|The project is within budget.
+deadline|termen limită|The deadline is next Monday.
+deliver|a livra|They will deliver the materials tomorrow.
+estimate|estimare; a estima|Can you give me a cost estimate?
+improve|a îmbunătăți|I want to improve my English.
+increase|a crește; creștere|Prices increased last month.
+measure|a măsura|Measure the length of the pipe.
+require|a necesita|This job requires experience.
+reliable|de încredere|He is a reliable worker.
+schedule|program, grafic|We are behind schedule.
+supply|a furniza; aprovizionare|They supply us with concrete.
+surface|suprafață|The surface must be clean and dry.
+damage|deteriorare; a deteriora|The storm caused a lot of damage.
+warranty|garanție|The pump has a two year warranty.
+contractor|antreprenor|The contractor finished the work early.
+permit|autorizație|We need a building permit.
+site|șantier|Everyone must wear a helmet on site.
+equipment|echipament|The equipment is in the truck.
+safety|siguranță|Safety comes first.
+accurate|precis, exact|The measurements must be accurate.
+approve|a aproba|The client approved the design.
+delay|întârziere|There was a delay because of the rain.
+fee|taxă, onorariu|The fee is paid every month.
+invoice|factură|Please send the invoice by email.
+maintain|a întreține|We maintain the network every year.
+provide|a oferi, a asigura|We provide clean water to the village.
+purpose|scop|What is the purpose of this meeting?
+suggest|a sugera|I suggest we start earlier.
+although|deși|Although it rained, we worked.
+however|totuși|However, the price is high.
+therefore|prin urmare|Therefore, we need more time.
+unless|dacă nu|We won't finish unless we start now.
+despite|în ciuda|Despite the rain, we finished.
+instead of|în loc de|Use steel instead of plastic.
+in order to|pentru a|We left early in order to avoid traffic.
+as soon as|de îndată ce|Call me as soon as you arrive.
+while|în timp ce|I listen to music while I work.
+otherwise|altfel|Hurry up, otherwise we'll be late.
+anyway|oricum|Anyway, let's continue.
+actually|de fapt|Actually, I agree with you.
+especially|mai ales|I like fruit, especially apples.
+finally|în final|Finally, we finished the project.
+eventually|până la urmă|Eventually, he agreed.
+immediately|imediat|Call me immediately.
+recently|recent|I recently started a new job.
+nearly|aproape|It's nearly finished.
+definitely|cu siguranță|I will definitely come.
+generally|în general|Generally, I work from home.
+whether|dacă (una sau alta)|I don't know whether he is coming.
+besides|în plus|Besides, it's too expensive.
+discuss|a discuta|Let's discuss the details.
+mention|a menționa|He mentioned the problem.
+inform|a informa|Please inform the client.
+announce|a anunța|They announced the results.
+advise|a sfătui|I advise you to wait.
+recommend|a recomanda|I recommend this hotel.
+persuade|a convinge|He persuaded me to stay.
+convince|a convinge|You convinced me.
+argue|a se certa; a argumenta|They argue about money.
+request|cerere; a solicita|We received your request.
+refuse|a refuza|He refused the offer.
+accept|a accepta|We accept your offer.
+reject|a respinge|They rejected our proposal.
+confirm|a confirma|Please confirm the date.
+cancel|a anula|We had to cancel the meeting.
+postpone|a amâna|The meeting was postponed.
+arrange|a aranja, a organiza|I'll arrange a meeting.
+organise|a organiza|She organised the event.
+manage|a reuși; a conduce|I managed to finish on time.
+handle|a gestiona|He handles the customers.
+deal with|a se ocupa de|I'll deal with it tomorrow.
+solve|a rezolva|We solved the problem.
+fix|a repara, a rezolva|Can you fix it today?
+compare|a compara|Compare the two offers.
+consider|a lua în considerare|We are considering your offer.
+expect|a se aștepta|I expect an answer today.
+depend|a depinde|It depends on the weather.
+intend|a intenționa|I intend to finish today.
+owe|a datora|I owe you ten euros.
+employ|a angaja|The company employs fifty people.
+retire|a se pensiona|He retired last year.
+resign|a demisiona|She resigned from her job.
+promote|a promova|He was promoted to manager.
+responsibility|responsabilitate|Safety is everyone's responsibility.
+responsible|responsabil|Who is responsible for this?
+task|sarcină|I have three tasks today.
+duty|datorie, obligație|It's my duty to help.
+opportunity|oportunitate|This is a great opportunity.
+advantage|avantaj|What are the advantages?
+disadvantage|dezavantaj|The disadvantage is the price.
+solution|soluție|We need a quick solution.
+decision|decizie|It's a difficult decision.
+result|rezultat|The results are good.
+effect|efect|What is the effect of the change?
+cause|cauză; a cauza|What caused the problem?
+situation|situație|The situation is under control.
+condition|condiție; stare|The road is in bad condition.
+quality|calitate|Quality is important to us.
+quantity|cantitate|Check the quantity.
+amount|sumă; cantitate|It's a large amount of money.
+average|medie; mediu|The average price is ten euros.
+total|total|The total is five hundred euros.
+percent|la sută|Prices rose by five percent.
+record|înregistrare; a înregistra|Keep a record of all costs.
+detail|detaliu|Send me the details.
+method|metodă|What method do you use?
+process|proces|The process takes two weeks.
+system|sistem|The system is down.
+service|serviciu|The service was excellent.
+product|produs|Our products are made in Romania.
+material|material|We need more material.
+tool|unealtă|Use the right tool.
+machine|mașinărie, utilaj|The machine is broken.
+technology|tehnologie|Technology changes fast.
+software|software|We use new software.
+device|dispozitiv|Turn off all devices.
+data|date|We collected the data.
+knowledge|cunoștințe|He has good knowledge of English.
+memory|memorie; amintire|I have a bad memory.
+relationship|relație|We have a good relationship with the client.
+trust|încredere; a avea încredere|I trust you.
+respect|respect|Show respect to others.
+behaviour|comportament|His behaviour was strange.
+attitude|atitudine|He has a positive attitude.
+habit|obicei|Smoking is a bad habit.
+dream|vis; a visa|My dream is to travel.
+success|succes|Congratulations on your success!
+failure|eșec|Failure is part of learning.
+effort|efort|It takes a lot of effort.
+patience|răbdare|Learning a language needs patience.
+confidence|încredere în sine|I want to speak with confidence.
+fear|frică|Don't let fear stop you.
+stress|stres|I have a lot of stress at work.
+mood|dispoziție|I'm in a good mood.
+emotion|emoție|He doesn't show his emotions.
+government|guvern|The government changed the law.
+law|lege|It's against the law.
+rule|regulă|Follow the rules.
+economy|economie|The economy is growing.
+industry|industrie|I work in the construction industry.
+population|populație|The population is ten thousand.
+community|comunitate|We help the local community.
+society|societate|Society is changing.
+culture|cultură|I love Italian culture.
+tradition|tradiție|It's a local tradition.
+election|alegeri|The election is in November.
+crime|infracțiune|Crime is low here.
+arrangement|aranjament, înțelegere|We have an arrangement.
+advertisement|reclamă|I saw the advertisement online.
+article|articol|I read an interesting article.
+review|recenzie; a revizui|Read the reviews first.
+account|cont|Log in to your account.
+password|parolă|I forgot my password.
+screen|ecran|The screen is broken.
+download|a descărca|Download the app.
+website|site web|Visit our website.
+online|online|I buy everything online.
+message|mesaj|Leave a message.
+admit|a recunoaște|He admitted his mistake.
+avoid|a evita|Avoid the city centre.
+belong|a aparține|This belongs to me.
+cover|a acoperi|Cover the materials.
+create|a crea|We created new jobs.
+develop|a dezvolta|We want to develop the business.
+disappear|a dispărea|My keys disappeared.
+encourage|a încuraja|My wife encourages me.
+exist|a exista|This problem exists everywhere.
+explore|a explora|Let's explore the city.
+fail|a eșua; a pica|He failed the exam.
+gain|a câștiga, a dobândi|We gained experience.
+hide|a ascunde|Don't hide the problem.
+imagine|a-și imagina|Imagine you are in London.
+include|a include|The price includes VAT.
+involve|a implica|The job involves travel.
+lead|a conduce|He leads the team.
+limit|limită; a limita|There is a speed limit.
+mix|a amesteca|Mix the cement with water.
+notice|a observa; anunț|I noticed a crack.
+own|a deține; propriu|I own a small company.
+prevent|a preveni|Prevent accidents.
+produce|a produce|The factory produces pipes.
+protect|a proteja|Protect your eyes.
+prove|a dovedi|Can you prove it?
+realise|a-și da seama|I realised my mistake.
+reduce|a reduce|We must reduce costs.
+replace|a înlocui|Replace the old pipe.
+rely on|a se baza pe|You can rely on me.
+remove|a îndepărta|Remove the old paint.
+respond|a răspunde|Please respond by Friday.
+search|a căuta|I searched everywhere.
+succeed|a reuși|I'm sure you will succeed.
+support|sprijin; a susține|Thank you for your support.
+survive|a supraviețui|Only a few survived.
+waste|risipă; a risipi|Don't waste time.
+warn|a avertiza|I warned you.
+complete|complet; a finaliza|Complete the form.
+continue|a continua|Let's continue tomorrow.
+reach|a ajunge la; a atinge|We reached the city at noon.
+recognise|a recunoaște (pe cineva)|I didn't recognise you.
+set up|a înființa; a monta|They set up a new company.
+carry out|a efectua|We carried out the tests.
+figure out|a-și da seama|I can't figure out the problem.
+point out|a sublinia|He pointed out a mistake.
+run out of|a rămâne fără|We ran out of cement.
+look forward to|a aștepta cu nerăbdare|I look forward to your reply.
+get along|a se înțelege|We get along well.
+put off|a amâna|Don't put it off.
+turn down|a refuza; a da mai încet|They turned down our offer.
+bring up|a aduce în discuție|He brought up an important point.
+come up with|a veni cu (o idee)|She came up with a great idea.
+take care of|a avea grijă de|I'll take care of it.
+work out|a se rezolva; a face sport|It will work out fine.
+call back|a suna înapoi|I'll call you back.
+hold on|a aștepta (la telefon)|Hold on, please.
+go on|a continua|Go on, I'm listening.
+give back|a da înapoi|Give back the keys.
+sort out|a rezolva, a pune în ordine|We need to sort out this problem.
+fill up|a umple|Fill up the tank.
+set off|a porni la drum|We set off at six.
+break down|a se strica|The car broke down.
+appropriate|potrivit|Wear appropriate clothes.
+aware|conștient|Are you aware of the risk?
+basic|de bază|I have basic English.
+common|comun, frecvent|It's a common mistake.
+complex|complex|The problem is complex.
+correct|corect|Your answer is correct.
+current|actual, curent|What is the current price?
+efficient|eficient|The new pump is more efficient.
+equal|egal|Divide it into equal parts.
+essential|esențial|Water is essential.
+exact|exact|What is the exact time?
+extra|suplimentar|We need extra time.
+familiar|familiar, cunoscut|This place looks familiar.
+flexible|flexibil|My hours are flexible.
+general|general|This is a general rule.
+huge|uriaș|The house is huge.
+independent|independent|She is very independent.
+local|local|We use local materials.
+main|principal|What is the main problem?
+normal|normal|It's normal to make mistakes.
+obvious|evident|The answer is obvious.
+particular|anume, deosebit|Is there a particular reason?
+personal|personal|It's a personal question.
+positive|pozitiv|Stay positive.
+negative|negativ|The result was negative.
+previous|anterior|The previous owner left.
+private|privat|This is a private road.
+public|public|Public transport is cheap here.
+serious|serios; grav|This is a serious problem.
+similar|asemănător|The two offers are similar.
+simple|simplu|Keep it simple.
+specific|specific|Can you be more specific?
+strict|strict|The rules are strict.
+sudden|brusc|There was a sudden change.
+suitable|potrivit|Is this suitable for children?
+typical|tipic|It's a typical Romanian dish.
+unusual|neobișnuit|That's unusual.
+various|diverse|We work in various cities.
+whole|întreg|I worked the whole day.
+wide|lat|The road is wide.
+narrow|îngust|The street is very narrow.
+deep|adânc|The trench is very deep.`,
+B2:`accomplish|a îndeplini|We accomplished a lot this week.
+assess|a evalua|We need to assess the risks.
+comply|a respecta (reguli)|All work must comply with the standards.
+consistent|consecvent, constant|The quality must be consistent.
+crucial|esențial|Good planning is crucial.
+drawback|dezavantaj|The main drawback is the cost.
+enhance|a spori|This will enhance our reputation.
+feasible|fezabil, realizabil|Is this plan feasible?
+implement|a implementa|We will implement the new system next month.
+negotiate|a negocia|We need to negotiate a better price.
+outcome|rezultat|We are happy with the outcome.
+overcome|a depăși|We overcame many problems.
+prior|anterior|Prior experience is required.
+pursue|a urmări, a continua|She decided to pursue her career abroad.
+reluctant|reticent|He was reluctant to sign the contract.
+significant|semnificativ|There was a significant increase in costs.
+straightforward|simplu, direct|The process is quite straightforward.
+sustainable|sustenabil|We want a sustainable solution.
+thorough|temeinic, amănunțit|They did a thorough inspection.
+undertake|a întreprinde|We will undertake the project next year.
+whereas|în timp ce (contrast)|He likes tea, whereas I prefer coffee.
+ensure|a asigura|Please ensure that the valve is closed.
+acknowledge|a confirma, a recunoaște|Please acknowledge receipt of this email.
+allocate|a aloca|We allocated more money to safety.
+compensate|a compensa|They will compensate us for the delay.
+durable|durabil, rezistent|These pipes are very durable.
+inevitable|inevitabil|Some delays are inevitable.
+adequate|adecvat, suficient|The budget is adequate for the work.
+emerge|a apărea|New problems emerged during the work.
+tender|licitație|We won the tender for the water network.
+moreover|în plus|Moreover, the cost is lower.
+nevertheless|cu toate acestea|Nevertheless, we continued.
+furthermore|mai mult decât atât|Furthermore, it saves energy.
+consequently|în consecință|Consequently, prices rose.
+thus|astfel|Thus, we reduced the cost.
+hence|de aceea|Hence the delay.
+meanwhile|între timp|Meanwhile, the team kept working.
+apparently|se pare că|Apparently, he resigned.
+presumably|probabil, presupun|Presumably, he forgot.
+approximately|aproximativ|It costs approximately ten thousand euros.
+gradually|treptat|Prices gradually increased.
+fairly|destul de|It's fairly easy.
+relatively|relativ|It's relatively cheap.
+entirely|complet|I entirely agree.
+merely|doar, numai|It's merely a suggestion.
+primarily|în primul rând|We work primarily in the north.
+in terms of|în ceea ce privește|In terms of cost, it's better.
+as far as I know|din câte știu|As far as I know, it's finished.
+on the other hand|pe de altă parte|On the other hand, it's expensive.
+in addition|în plus|In addition, we offer training.
+regardless|indiferent|We will finish regardless of the weather.
+anticipate|a anticipa|We anticipate some delays.
+attribute|a atribui|He attributed the success to the team.
+clarify|a clarifica|Could you clarify this point?
+collaborate|a colabora|We collaborate with local firms.
+commit|a se angaja|We are committed to quality.
+conclude|a încheia; a concluziona|We concluded the meeting at noon.
+contribute|a contribui|Everyone contributed to the project.
+convey|a transmite|It's hard to convey emotions.
+demonstrate|a demonstra|Let me demonstrate how it works.
+derive|a proveni|This word derives from Latin.
+determine|a determina, a stabili|We need to determine the cause.
+distinguish|a distinge|Can you distinguish the two sounds?
+emphasise|a sublinia|I want to emphasise safety.
+establish|a stabili; a înființa|The company was established in 2021.
+evaluate|a evalua|We evaluate every offer.
+exceed|a depăși|The cost exceeded the budget.
+facilitate|a facilita|This will facilitate the work.
+generate|a genera|Solar panels generate electricity.
+highlight|a evidenția|The report highlights the risks.
+identify|a identifica|We identified the problem.
+indicate|a indica|The results indicate a leak.
+justify|a justifica|Can you justify the extra cost?
+modify|a modifica|We modified the design.
+monitor|a monitoriza|We monitor the pressure daily.
+obtain|a obține|We obtained the permit.
+occur|a avea loc, a apărea|The problem occurs at night.
+perceive|a percepe|How do customers perceive us?
+prioritise|a prioritiza|Prioritise the urgent tasks.
+proceed|a continua, a trece la|Let's proceed to the next point.
+reinforce|a întări|This reinforces my opinion.
+resolve|a rezolva|We resolved the conflict.
+retain|a păstra, a reține|We want to retain good workers.
+reveal|a dezvălui|The test revealed a defect.
+seek|a căuta|We seek new partners.
+specify|a specifica|Please specify the quantity.
+sustain|a susține, a menține|We can't sustain this pace.
+tackle|a aborda (o problemă)|We need to tackle this issue.
+transform|a transforma|Technology transformed the industry.
+utilise|a utiliza|We utilise modern equipment.
+withdraw|a retrage|They withdrew the offer.
+adapt|a se adapta|We adapt to every client.
+adjust|a ajusta|Adjust the valve slightly.
+appeal|a atrage; a face apel|The idea appeals to me.
+assume|a presupune|I assume you agree.
+cope|a face față|How do you cope with stress?
+criticise|a critica|Don't criticise without reason.
+deny|a nega|He denied everything.
+doubt|îndoială; a se îndoi|I doubt it will work.
+engage|a implica|Engage with your customers.
+insist|a insista|He insisted on paying.
+interrupt|a întrerupe|Sorry to interrupt.
+neglect|a neglija|Don't neglect maintenance.
+oppose|a se opune|Many people opposed the plan.
+predict|a prezice|It's hard to predict the future.
+pretend|a se preface|He pretended not to hear.
+recover|a-și reveni; a recupera|The market recovered quickly.
+reflect|a reflecta|The price reflects the quality.
+regret|a regreta|I regret saying that.
+resist|a rezista|I couldn't resist.
+restore|a restaura|They restored the old church.
+suspend|a suspenda|Work was suspended due to rain.
+approach|abordare|We need a new approach.
+aspect|aspect|Consider every aspect.
+assumption|presupunere|That's a wrong assumption.
+awareness|conștientizare|Safety awareness is important.
+bias|părtinire|The report shows bias.
+capacity|capacitate|The tank has a capacity of ten cubic metres.
+challenge|provocare|It's a big challenge.
+circumstances|circumstanțe|Under these circumstances, we must wait.
+commitment|angajament|Thank you for your commitment.
+concept|concept|The concept is simple.
+concern|îngrijorare|Safety is our main concern.
+conflict|conflict|We avoid conflicts.
+consequence|consecință|Think about the consequences.
+constraint|constrângere|Time is our main constraint.
+criteria|criterii|What are the selection criteria?
+demand|cerere|Demand is growing.
+dispute|dispută|The dispute was solved.
+efficiency|eficiență|We improved efficiency.
+element|element|It's a key element.
+evidence|dovezi|There is no evidence.
+expertise|expertiză|We have expertise in water networks.
+factor|factor|Cost is an important factor.
+feedback|feedback, părere|Thanks for your feedback.
+framework|cadru|We work within a legal framework.
+impact|impact|What is the impact on the budget?
+initiative|inițiativă|He took the initiative.
+insight|înțelegere profundă|It gave me insight into the problem.
+issue|problemă, chestiune|This is a serious issue.
+objective|obiectiv|What is the main objective?
+obstacle|obstacol|We overcame many obstacles.
+perspective|perspectivă|From my perspective, it's fine.
+phase|fază|We are in the final phase.
+policy|politică, regulament|It's company policy.
+potential|potențial|The market has great potential.
+priority|prioritate|Safety is our priority.
+procedure|procedură|Follow the procedure.
+proportion|proporție|A large proportion of costs is labour.
+range|gamă|We offer a wide range of services.
+resource|resursă|We have limited resources.
+scope|domeniu, sferă|This is outside the scope of the contract.
+sector|sector|The public sector pays late.
+shortage|lipsă|There is a shortage of workers.
+source|sursă|What is the source of the problem?
+stability|stabilitate|We need financial stability.
+standard|standard|It meets European standards.
+statement|declarație|He made a public statement.
+structure|structură|The structure is stable.
+tendency|tendință|There is a tendency to delay.
+threat|amenințare|Rising costs are a threat.
+trend|trend, tendință|It's a new trend.
+variety|varietate|There is a wide variety of options.
+accessible|accesibil|The site is not accessible by car.
+acceptable|acceptabil|The price is acceptable.
+considerable|considerabil|It took considerable effort.
+controversial|controversat|It's a controversial decision.
+convenient|convenabil|Is Monday convenient for you?
+critical|critic|This is a critical moment.
+deliberate|deliberat|It was a deliberate decision.
+enormous|enorm|The project is enormous.
+evident|evident|It is evident that we need help.
+excessive|excesiv|The cost is excessive.
+explicit|explicit|The instructions are explicit.
+genuine|autentic, sincer|He showed genuine interest.
+inadequate|inadecvat|The drainage is inadequate.
+initial|inițial|The initial cost is high.
+legal|legal|Is this legal?
+logical|logic|That's a logical solution.
+minor|minor|It's a minor problem.
+moderate|moderat|The risk is moderate.
+mutual|reciproc|It's in our mutual interest.
+numerous|numeroși|We had numerous problems.
+precise|precis|Give me a precise answer.
+reasonable|rezonabil|The price is reasonable.
+relevant|relevant|Is this information relevant?
+remarkable|remarcabil|It was a remarkable result.
+sensitive|sensibil|It's a sensitive topic.
+severe|sever, grav|The damage is severe.
+sufficient|suficient|We have sufficient funds.
+temporary|temporar|It's a temporary solution.
+permanent|permanent|We need a permanent solution.
+ultimate|final, suprem|Our ultimate goal is quality.
+urgent|urgent|It's urgent!
+vague|vag|His answer was vague.
+vital|vital|Water is vital for life.`,
+C1:`albeit|deși|The result was good, albeit expensive.
+ambiguous|ambiguu|The contract wording is ambiguous.
+cumbersome|greoi, anevoios|The procedure is cumbersome and slow.
+discrepancy|discrepanță|There is a discrepancy in the figures.
+mitigate|a atenua|We must mitigate the environmental impact.
+nuance|nuanță|She understands every nuance of the language.
+plausible|plauzibil|His explanation sounds plausible.
+scrutiny|examinare atentă|The project is under public scrutiny.
+leverage|a valorifica|We can leverage our experience.
+meticulous|meticulos|He is meticulous about details.
+notwithstanding|în ciuda|Notwithstanding the delays, we finished on time.
+pervasive|omniprezent|The problem is pervasive in the industry.
+robust|robust, solid|We need a robust plan.
+substantiate|a fundamenta, a dovedi|Can you substantiate your claim?
+tangible|tangibil, concret|We need tangible results.
+unprecedented|fără precedent|The demand was unprecedented.
+viable|viabil|Is this a viable option?
+warrant|a justifica|The situation warrants a full investigation.
+deteriorate|a se deteriora|The old pipes have deteriorated.
+contingency|rezervă pentru neprevăzute|We keep ten percent for contingency.
+endeavour|efort, strădanie|Good luck in your future endeavours.
+expedite|a grăbi|Can you expedite the delivery?
+foreseeable|previzibil|In the foreseeable future, prices will rise.
+inherent|inerent|Every project has inherent risks.
+liability|răspundere juridică|The contractor accepts full liability.
+paramount|primordial|Safety is paramount.
+rigorous|riguros|The tests were rigorous.
+stipulate|a stipula|The contract stipulates a fixed price.
+subsequent|ulterior|Subsequent tests confirmed the problem.
+tenuous|fragil, slab|The link between the two events is tenuous.
+abundant|abundent|Water is abundant here.
+adverse|nefavorabil|Adverse weather delayed the work.
+advocate|a pleda pentru|He advocates for safer sites.
+arbitrary|arbitrar|The decision seems arbitrary.
+articulate|elocvent; a exprima clar|She is very articulate.
+ascertain|a constata, a stabili|We must ascertain the cause.
+benchmark|reper, etalon|This project sets a new benchmark.
+circumvent|a ocoli, a eluda|They tried to circumvent the rules.
+coherent|coerent|Give a coherent explanation.
+commence|a începe|Works will commence in May.
+compelling|convingător|He made a compelling argument.
+comprehensive|cuprinzător|We need a comprehensive report.
+concise|concis|Keep your answer concise.
+conducive|propice|The weather was conducive to work.
+consensus|consens|We reached a consensus.
+constitute|a constitui|This constitutes a breach of contract.
+contemplate|a lua în calcul|We are contemplating a merger.
+conversely|invers, dimpotrivă|Conversely, costs went down.
+corroborate|a confirma, a corobora|The data corroborates his claim.
+credible|credibil|Is the source credible?
+curtail|a reduce, a limita|We had to curtail spending.
+deem|a considera|The bridge was deemed unsafe.
+detrimental|dăunător|Delays are detrimental to the project.
+deviate|a devia|Don't deviate from the plan.
+diligent|conștiincios|She is a diligent worker.
+disclose|a dezvălui|We cannot disclose the price.
+discretion|discreție|Use your discretion.
+disrupt|a perturba|The strike disrupted traffic.
+elaborate|a detalia; elaborat|Could you elaborate on that?
+elicit|a obține (un răspuns)|The question elicited no answer.
+eloquent|elocvent|He gave an eloquent speech.
+encompass|a cuprinde|The project encompasses three villages.
+entail|a implica|What does the job entail?
+exacerbate|a agrava|The rain exacerbated the problem.
+fluctuate|a fluctua|Prices fluctuate every month.
+forthcoming|apropiat; disponibil|Details will be forthcoming.
+hamper|a împiedica|Bad weather hampered progress.
+hinder|a îngreuna|Lack of funds hindered the project.
+implicit|implicit|There was an implicit agreement.
+imperative|imperativ|It is imperative to act now.
+incentive|stimulent|We offer incentives to staff.
+incur|a suporta (costuri)|We incurred extra costs.
+indispensable|indispensabil|He is indispensable to the team.
+intricate|complicat|The design is intricate.
+intrinsic|intrinsec|It has intrinsic value.
+jeopardise|a pune în pericol|Delays could jeopardise the contract.
+lucrative|profitabil|It's a lucrative business.
+mandate|mandat|The board gave him a mandate.
+marginal|marginal|The difference is marginal.
+negligible|neglijabil|The risk is negligible.
+nonetheless|totuși|Nonetheless, we signed.
+obsolete|învechit|This equipment is obsolete.
+offset|a compensa|Savings offset the cost.
+ostensibly|aparent|Ostensibly, it was a mistake.
+overhaul|revizie generală; a revizui|The pump needs an overhaul.
+paradigm|paradigmă|It's a paradigm shift.
+perpetuate|a perpetua|Don't perpetuate the myth.
+pragmatic|pragmatic|We need a pragmatic approach.
+precedent|precedent|This sets a dangerous precedent.
+predominantly|predominant|The area is predominantly rural.
+preliminary|preliminar|These are preliminary results.
+prevalent|răspândit|The problem is prevalent in old networks.
+profound|profund|It had a profound impact.
+proficient|priceput, competent|He is proficient in English.
+prohibit|a interzice|Smoking is prohibited on site.
+prospective|potențial, viitor|We met prospective clients.
+reconcile|a reconcilia|We need to reconcile the figures.
+redundant|redundant; disponibilizat|Fifty workers were made redundant.
+refine|a rafina, a îmbunătăți|We refined the design.
+remedy|remediu; a remedia|We must remedy the defect.
+resilient|rezistent, rezilient|The network must be resilient.
+rhetoric|retorică|It's just political rhetoric.
+scrutinise|a examina atent|They scrutinised every invoice.
+sceptical|sceptic|I'm sceptical about the plan.
+simultaneously|simultan|Both teams worked simultaneously.
+speculate|a specula|I won't speculate on the price.
+stringent|strict, riguros|The rules are stringent.
+succinct|succint|Give a succinct summary.
+superficial|superficial|The damage is superficial.
+supersede|a înlocui (o regulă)|The new rule supersedes the old one.
+susceptible|predispus|Old pipes are susceptible to cracks.
+tentative|provizoriu|We have a tentative date.
+trivial|banal|It's a trivial issue.
+underlying|de fond|What is the underlying problem?
+undermine|a submina|This undermines our credibility.
+unanimous|unanim|The decision was unanimous.
+utmost|maxim|It is of the utmost importance.
+validate|a valida|We need to validate the data.
+versatile|versatil|It's a versatile machine.
+vulnerable|vulnerabil|The system is vulnerable.
+whereby|prin care|It's a system whereby workers share profits.
+wield|a exercita (putere)|He wields great influence.
+yield|randament; a produce|The investment yields five percent.
+acquisition|achiziție (a unei firme)|The acquisition was completed.
+allegedly|chipurile, se pare|He allegedly lied.
+amend|a modifica (un document)|We amended the contract.
+ample|amplu, suficient|We have ample time.
+anomaly|anomalie|The test showed an anomaly.
+attain|a atinge|We attained our goals.
+bolster|a consolida|This will bolster confidence.
+candid|sincer, deschis|Let me be candid.
+clause|clauză|Read the penalty clause.
+coincide|a coincide|The dates coincide.
+deficiency|deficiență|We found several deficiencies.
+dilemma|dilemă|We face a dilemma.
+discern|a discerne|It's hard to discern the difference.
+enforce|a aplica (legea)|The rules must be enforced.
+erode|a eroda|Inflation erodes profits.
+foster|a încuraja, a cultiva|We foster teamwork.
+impede|a împiedica|Nothing should impede progress.`};
+const TOPICS=[
+{id:'site',g:'Construcții',t:'Șantierul',d:'Oameni, etape, recepție, lucrări',raw:`construction site|șantier|The construction site opens at seven.
+site manager|șef de șantier|The site manager checks the work every morning.
+foreman|maistru|The foreman gives the tasks to the workers.
+worker|muncitor|We need two more workers tomorrow.
+subcontractor|subcontractor|The subcontractor will do the electrical work.
+general contractor|antreprenor general|The general contractor is responsible for the whole project.
+investor|investitor, beneficiar|The investor visited the site today.
+site supervisor|diriginte de șantier|The site supervisor must approve this stage.
+designer|proiectant|We asked the designer for a new drawing.
+drawing|plan, desen tehnic|Check the dimensions on the drawing.
+blueprint|plan de execuție|The blueprints are in the site office.
+site office|birou de șantier|The meeting is in the site office.
+progress|stadiu, progres|We report the progress every week.
+stage|etapă, fază|The first stage is almost finished.
+milestone|etapă cheie|We reached an important milestone.
+handover|predarea lucrării|The handover is planned for December.
+acceptance|recepție (lucrare)|The final acceptance will take place next month.
+as-built drawings|planuri as-built|We must deliver the as-built drawings.
+bill of quantities|antemăsurătoare|Check the quantities in the bill of quantities.
+work order|dispoziție de lucru|The work order arrived this morning.
+shift|tură|The night shift starts at ten.
+overtime|ore suplimentare|We worked overtime to finish on time.
+dig|a săpa|We need to dig two metres deep.
+pour|a turna (beton)|We will pour the concrete on Monday.
+install|a monta, a instala|They installed the new pump yesterday.
+level|a nivela|Level the ground before you start.
+backfill|a umple la loc săpătura|Backfill the trench in layers.
+compact|a compacta|Compact each layer of soil.
+survey|ridicare topografică|The survey shows a slope of two percent.
+surveyor|topograf|The surveyor marked the axis.`},
+{id:'build',g:'Construcții',t:'Clădiri și structuri',d:'Fundații, beton, zidărie, acoperiș',raw:`foundation|fundație|The foundation is one metre deep.
+concrete|beton|The concrete needs seven days to cure.
+reinforced concrete|beton armat|The slab is made of reinforced concrete.
+rebar|armătură, fier beton|Tie the rebar before pouring.
+formwork|cofraj|Remove the formwork after three days.
+slab|placă|The slab is twenty centimetres thick.
+beam|grindă|The beam supports the roof.
+column|stâlp|The column is cracked at the base.
+wall|perete|This wall is very old.
+load-bearing wall|perete portant|Do not cut a load-bearing wall.
+brick|cărămidă|The walls are made of brick.
+mortar|mortar|Mix the mortar with clean water.
+plaster|tencuială|The plaster is still wet.
+screed|șapă|The screed must dry before tiling.
+roof|acoperiș|The roof needs new tiles.
+insulation|izolație termică|We use mineral wool for insulation.
+waterproofing|hidroizolație|The basement needs waterproofing.
+floor|pardoseală; etaj|The office is on the second floor.
+ceiling|tavan|The ceiling is three metres high.
+staircase|scară interioară|The staircase is made of concrete.
+window frame|toc de fereastră|Seal the window frame with silicone.
+scaffolding|schelă|The scaffolding must be inspected daily.
+crane|macara|The crane lifts the beams.
+steel structure|structură metalică|The hall has a steel structure.
+weld|sudură; a suda|The weld must be checked.
+bolt|șurub cu piuliță|Tighten all the bolts.
+crack|fisură|There is a crack in the wall.
+cure|a se întări (betonul)|Let the concrete cure for a week.
+plumb|la verticală|Check that the wall is plumb.
+zoning certificate|certificat de urbanism|We applied for the zoning certificate.`},
+{id:'water',g:'Construcții',t:'Apă și canalizare',d:'Rețele, branșamente, cămine, stații',raw:`sewer|canal, conductă de canalizare|The sewer runs under the road.
+sewerage system|sistem de canalizare|The village has no sewerage system.
+wastewater|ape uzate|Wastewater goes to the treatment plant.
+stormwater|ape pluviale|Stormwater is collected separately.
+water supply|alimentare cu apă|The new water supply network is ready.
+water main|conductă principală de apă|The water main burst last night.
+distribution network|rețea de distribuție|We extended the distribution network.
+service connection|branșament|Each house needs a service connection.
+house connection|racord de canalizare|We built fifty house connections.
+manhole|cămin de vizitare|The manhole is two metres deep.
+manhole cover|capac de cămin|Put the manhole cover back.
+inspection chamber|cămin de racord|Install an inspection chamber at the property line.
+water meter|apometru|The water meter is in the meter chamber.
+meter chamber|cămin de apometru|The meter chamber is next to the fence.
+fire hydrant|hidrant|The fire hydrant is painted red.
+valve|vană, robinet|Close the valve before you start.
+gate valve|vană cu sertar|Open the gate valve slowly.
+pumping station|stație de pompare|The pumping station sends wastewater uphill.
+treatment plant|stație de epurare|The treatment plant cleans the wastewater.
+water tower|castel de apă|The water tower is fifty metres high.
+reservoir|rezervor|The reservoir holds five hundred cubic metres.
+trench|tranșee, șanț|The trench is one metre wide.
+bedding|pat de pozare|Lay the pipe on sand bedding.
+gradient|pantă|The sewer needs a minimum gradient.
+flow|debit|The flow is too low.
+pressure test|probă de presiune|The pressure test lasted two hours.
+leak|pierdere de apă|We found a leak near the valve.
+blockage|înfundare|There is a blockage in the sewer.
+CCTV inspection|inspecție video|The CCTV inspection showed a crack.
+relining|cămășuire (relining)|We repaired the old pipe by relining.
+dewatering|epuizment|We need dewatering because of groundwater.
+groundwater|apă freatică|The groundwater level is high.`},
+{id:'pipes',g:'Construcții',t:'Țevi și fitinguri',d:'Materiale, îmbinări, armături',raw:`pipe|țeavă|The pipe is two hundred millimetres in diameter.
+pipeline|conductă|The pipeline is three kilometres long.
+diameter|diametru|What is the diameter of the pipe?
+outer diameter|diametru exterior|The outer diameter is one hundred and ten millimetres.
+wall thickness|grosimea peretelui|Check the wall thickness.
+HDPE pipe|țeavă PEHD|We use HDPE pipe for drinking water.
+PVC pipe|țeavă PVC|The sewer is made of PVC pipe.
+ductile iron|fontă ductilă|The old main is made of ductile iron.
+fitting|fiting|We need more fittings for the connection.
+elbow|cot|Install a ninety degree elbow here.
+tee|teu|Use a tee for the branch.
+reducer|reducție|Put a reducer between the two pipes.
+coupling|mufă, manșon|Join the pipes with a coupling.
+electrofusion coupling|manșon de electrofuziune|Weld it with an electrofusion coupling.
+butt fusion|sudură cap la cap|HDPE pipes are joined by butt fusion.
+flange|flanșă|Tighten the flange bolts evenly.
+gasket|garnitură|Replace the old gasket.
+tapping saddle|colier de branșament|Install a tapping saddle on the main.
+end cap|dop de capăt|Close the pipe with an end cap.
+check valve|clapetă de reținere|The check valve stops the backflow.
+ball valve|robinet cu bilă|Turn off the ball valve.
+seal|etanșare; a etanșa|The joint is not sealed properly.
+joint|îmbinare|The leak is at the joint.
+thread|filet|Wrap tape around the thread.
+socket|mufă (capătul mufat)|Push the spigot into the socket.
+spigot|capăt drept al țevii|Clean the spigot before you join it.
+pipe cutter|dispozitiv de tăiat țeava|Cut the pipe with a pipe cutter.
+nominal pressure|presiune nominală|The nominal pressure is ten bar.
+bend|curbă|Use a long radius bend.
+hose|furtun|Connect the hose to the pump.`},
+{id:'machines',g:'Construcții',t:'Utilaje și scule',d:'Excavatoare, compactoare, unelte',raw:`excavator|excavator|The excavator digs the trench.
+backhoe loader|buldoexcavator|The backhoe loader is on site.
+mini excavator|miniexcavator|Use the mini excavator in the yard.
+dump truck|basculantă|The dump truck takes the soil away.
+roller|cilindru compactor|The roller compacts the asphalt.
+plate compactor|placă compactoare|Use the plate compactor in the trench.
+concrete mixer|betonieră, autobetonieră|The concrete mixer arrived late.
+concrete pump|pompă de beton|We need a concrete pump for the slab.
+forklift|stivuitor|The forklift unloads the pallets.
+generator|generator|The generator runs all day.
+drill|bormașină|I need a drill and some screws.
+angle grinder|flex, polizor unghiular|Wear goggles when you use the angle grinder.
+hammer|ciocan|Pass me the hammer, please.
+shovel|lopată|We need more shovels.
+wheelbarrow|roabă|Fill the wheelbarrow with sand.
+spirit level|nivelă cu bulă|Check it with the spirit level.
+tape measure|ruletă|Use the tape measure.
+laser level|nivelă laser|The laser level shows the slope.
+wrench|cheie fixă|Tighten it with a wrench.
+ladder|scară mobilă|Hold the ladder for me.
+trench box|cutie de sprijinire|Install the trench box before you go in.
+shoring|sprijinirea malurilor|Deep trenches need shoring.
+fuel|combustibil|The excavator is low on fuel.
+fuel consumption|consum de combustibil|We record the fuel consumption every day.
+breakdown|defecțiune|The roller had a breakdown.
+spare parts|piese de schimb|We ordered the spare parts.
+operator|operator utilaj|The operator has ten years of experience.
+pump|pompă|Start the pump.
+trailer|remorcă, trailer|Load the excavator on the trailer.
+jackhammer|picamăr|We broke the asphalt with a jackhammer.`},
+{id:'safety',g:'Construcții',t:'Siguranța pe șantier',d:'Echipament, pericole, proceduri',raw:`hard hat|cască de protecție|Always wear your hard hat.
+safety boots|bocanci de protecție|Safety boots are required on site.
+high-visibility vest|vestă reflectorizantă|Put on your high-visibility vest.
+gloves|mănuși|Wear gloves when you handle the pipes.
+goggles|ochelari de protecție|Use goggles when cutting.
+ear protection|antifoane|The machine is loud, use ear protection.
+harness|ham de siguranță|Wear a harness when working at height.
+personal protective equipment|echipament individual de protecție|Personal protective equipment is required.
+hazard|pericol|Report every hazard.
+risk assessment|evaluarea riscurilor|Read the risk assessment before you start.
+accident|accident|There was a minor accident.
+injury|accidentare|He had a hand injury.
+first aid kit|trusă de prim ajutor|The first aid kit is in the van.
+fire extinguisher|stingător|The fire extinguisher is next to the door.
+warning sign|semn de avertizare|Put a warning sign near the trench.
+barrier|barieră de protecție|Close the area with barriers.
+traffic management|semnalizarea lucrării pe drum|We need traffic management on this road.
+working at height|lucru la înălțime|Working at height needs a permit.
+confined space|spațiu închis|A manhole is a confined space.
+gas detector|detector de gaze|Use the gas detector before entering the manhole.
+underground utilities|rețele subterane existente|Check for underground utilities before digging.
+power line|linie electrică|Keep away from the power line.
+toolbox talk|instructaj scurt de siguranță|We have a toolbox talk every Monday.
+emergency|urgență|In an emergency, call one one two.
+evacuate|a evacua|Evacuate the trench immediately.
+collapse|prăbușire; a se prăbuși|The trench wall could collapse.
+slippery|alunecos|The ground is slippery after the rain.
+mandatory|obligatoriu|Hard hats are mandatory on site.
+near miss|incident fără victime|Report every near miss.
+safety induction|instruire inițială de siguranță|New workers need a safety induction.`},
+{id:'docs',g:'Construcții',t:'Oferte, contracte, documente',d:'Limbaj tehnic-administrativ',raw:`offer|ofertă|We sent the offer on Monday.
+quotation|cotație de preț|Please send us a quotation.
+unit price|preț unitar|The unit price includes the materials.
+contract|contract|We signed the contract yesterday.
+addendum|act adițional|We need an addendum for the extra work.
+extra work|lucrări suplimentare|Extra work must be approved first.
+variation order|dispoziție de modificare|The client issued a variation order.
+specification|caiet de sarcini|Follow the technical specification.
+technical data sheet|fișă tehnică|Send me the technical data sheet.
+certificate of conformity|certificat de conformitate|The pipes come with a certificate of conformity.
+site diary|jurnal de șantier|Write it in the site diary.
+minutes|proces-verbal de ședință|I will send the minutes after the meeting.
+report|raport|The report is due on Friday.
+progress payment|situație de lucrări|We submitted the progress payment.
+retention|garanție de bună execuție|Five percent is kept as retention.
+penalty|penalitate|There is a penalty for each day of delay.
+guarantee period|perioadă de garanție|The guarantee period is three years.
+quality control|controlul calității|Quality control checks every weld.
+audit|audit|The audit is next week.
+non-conformity|neconformitate|The auditor found a non-conformity.
+corrective action|acțiune corectivă|We proposed a corrective action.
+inspection|inspecție, verificare|The inspection went well.
+approval|aprobare|We are waiting for approval.
+signature|semnătură|The document needs your signature.
+stamp|ștampilă|Put the company stamp here.
+procurement|achiziție|Procurement takes two months.
+supplier|furnizor|Our supplier delivers on Tuesday.
+delivery note|aviz de însoțire|Sign the delivery note.
+financing|finanțare|The project has European financing.
+cash flow|flux de numerar|We need to manage the cash flow.`},
+{id:'biz',g:'Business',t:'Business și birou',d:'Ședințe, vânzări, e-mailuri, bani',raw:`meeting|ședință, întâlnire|The meeting starts at nine.
+agenda|ordine de zi|What is on the agenda?
+colleague|coleg|My colleague will help you.
+manager|manager|I will ask my manager.
+customer|client|The customer called this morning.
+sales|vânzări|Sales increased this year.
+profit|profit|The company made a profit.
+loss|pierdere|We had a small loss last year.
+revenue|venituri, cifră de afaceri|Our revenue grew by ten percent.
+cost|cost|We need to reduce costs.
+price list|listă de prețuri|Can you send me the price list?
+discount|reducere|Can you give us a discount?
+payment terms|termene de plată|Our payment terms are thirty days.
+due date|scadență|The due date is the fifteenth.
+order|comandă; a comanda|We placed an order yesterday.
+partner|partener|They are a reliable partner.
+agreement|acord, înțelegere|We reached an agreement.
+proposal|propunere|I will send you a proposal.
+negotiation|negociere|The negotiation took two hours.
+follow up|a reveni (asupra unui subiect)|I will follow up next week.
+attachment|atașament|Please see the attachment.
+call|apel; a suna|I will call you tomorrow.
+hire|a angaja|We want to hire two engineers.
+employee|angajat|We have forty employees.
+salary|salariu|The salary is paid every month.
+team|echipă|Our team is very experienced.
+goal|obiectiv|Our goal is to grow.
+strategy|strategie|We need a new strategy.
+market|piață|The market is growing.
+competitor|concurent|Our competitor is cheaper.
+growth|creștere|We expect strong growth.
+investment|investiție|This is a long term investment.
+loan|împrumut, credit|We applied for a bank loan.
+accountant|contabil|Ask the accountant.
+tax|taxă, impozit|We pay tax every quarter.
+VAT|TVA|The price does not include VAT.
+deal|afacere, înțelegere|It's a deal!
+reply|răspuns; a răspunde|Thank you for your quick reply.
+best regards|cu stimă (în e-mail)|Best regards, the project team.
+headquarters|sediu central|Our headquarters is in the north of the country.`},
+{id:'hotel',g:'Hotelier și turism',t:'Hotel, restaurant, călătorii',d:'Recepție, cameră, restaurant, oraș',raw:`reservation|rezervare|I have a reservation for two nights.
+booking|rezervare (online)|Can I change my booking?
+check in|a face check-in|What time can I check in?
+check out|a face check-out|Check out is at eleven.
+reception|recepție|Please leave the key at reception.
+receptionist|recepționer|The receptionist was very kind.
+guest|oaspete, client|The guest asked for a quiet room.
+single room|cameră single|I would like a single room.
+double room|cameră dublă|We booked a double room.
+vacancy|cameră liberă|Do you have any vacancies?
+key card|card de acces|My key card doesn't work.
+breakfast included|mic dejun inclus|Is breakfast included?
+room service|room service|I'd like to order room service.
+housekeeping|serviciul de curățenie|Housekeeping cleans the rooms in the morning.
+towel|prosop|Could I have an extra towel?
+luggage|bagaje|Can you keep my luggage until five?
+lift|lift|The lift is on the left.
+view|priveliște|The room has a sea view.
+complaint|reclamație|I would like to make a complaint.
+refund|rambursare|Can I get a refund?
+deposit|avans, garanție|We need a deposit of fifty euros.
+cancellation|anulare|Free cancellation until Friday.
+fully booked|complet ocupat|Sorry, we are fully booked.
+waiter|ospătar|The waiter brought the menu.
+tip|bacșiș|Is the tip included?
+bill|notă de plată|Can we have the bill, please?
+menu|meniu|Can I see the menu, please?
+dish|fel de mâncare|This dish is spicy.
+allergic|alergic|I'm allergic to nuts.
+sightseeing|vizitarea obiectivelor|We went sightseeing in the old town.
+tour guide|ghid turistic|The tour guide speaks English.
+airport transfer|transfer de la aeroport|Do you offer an airport transfer?
+passport|pașaport|May I see your passport, please?
+directions|indicații de drum|Can you give me directions to the station?
+nearby|în apropiere|Is there a pharmacy nearby?
+wifi password|parola de wifi|What is the wifi password?
+late check-out|check-out întârziat|Can I have a late check-out?
+amenities|facilități|The hotel has great amenities.`}
+];
+const WORDS={},ALLW=[],WMAP=new Map();
+function addWord(w){if(!w||!w.en||WMAP.has(w.en))return false;ALLW.push(w);WMAP.set(w.en,w);return true}
+for(const lv of LEVELS){WORDS[lv]=RAW[lv].split('\n').map(l=>{const[en,ro,ex]=l.split('|');const w={en,ro,ex,lv};addWord(w);return w})}
+const TW={};
+for(const t of TOPICS){TW[t.id]=[];for(const l of t.raw.split('\n')){const[en,ro,ex]=l.split('|');let w=WMAP.get(en);if(!w){w={en,ro,ex,tp:t.id};addWord(w)}TW[t.id].push(w)}}
+const W=en=>WMAP.get(en);
+const tag=w=>w.tp?(TOPICS.find(t=>t.id===w.tp)||{t:'Subiectul tău'}).t:w.lv;
+
+const PLACEMENT=[
+ ['A1','I ___ a student.','am',['is','are','be']],
+ ['A1','Ce înseamnă <b>kitchen</b>?','bucătărie',['dormitor','baie','grădină']],
+ ['A1','She ___ coffee every morning.','drinks',['drink','drinking','is drink']],
+ ['A1','Ascultă și alege traducerea.','Bună dimineața, ce mai faci?',['Noapte bună, pe mâine!','La revedere, mulțumesc!','Bună seara, ce faci?'],'Good morning, how are you?'],
+ ['A2','We ___ to London last year.','went',['go','gone','goes']],
+ ['A2','There aren\'t ___ apples left.','any',['some','no','a']],
+ ['A2','Ce înseamnă <b>borrow</b>?','a împrumuta (de la cineva)',['a cumpăra','a vinde','a pierde']],
+ ['A2','Ascultă și alege traducerea.','O să-mi vizitez părinții weekendul viitor.',['Mi-am vizitat părinții weekendul trecut.','Părinții mei vin la mine azi.','Nu-mi vizitez părinții des.'],'I\'m going to visit my parents next weekend.'],
+ ['B1','I have lived here ___ 2015.','since',['for','from','at']],
+ ['B1','If it rains, we ___ at home.','will stay',['stay','would stay','stayed']],
+ ['B1','The report ___ by the engineer yesterday.','was written',['wrote','has written','is writing']],
+ ['B1','Ascultă și alege traducerea.','Îmi poți trimite factura până vineri?',['Ai primit factura de vineri?','Plătesc factura vineri.','Factura a fost trimisă vineri.'],'Could you send me the invoice by Friday?'],
+ ['B2','If I ___ you, I would accept the offer.','were',['am','be','will be']],
+ ['B2','She suggested ___ earlier.','leaving',['to leave','leave','left']],
+ ['B2','Ce înseamnă <b>feasible</b>?','realizabil',['periculos','costisitor','obligatoriu']],
+ ['B2','By the time we arrived, the meeting ___.','had finished',['finished','has finished','was finishing']],
+ ['C1','Hardly ___ the site when it started to rain.','had we reached',['we had reached','we reached','did we reached']],
+ ['C1','Ce înseamnă <b>mitigate</b>?','a atenua',['a amplifica','a amâna','a ignora']],
+ ['C1','The proposal, ___ ambitious, was approved.','albeit',['despite','however','in spite']],
+ ['C1','Ascultă și alege traducerea.','În ciuda întârzierilor, proiectul a fost predat în buget.',['Din cauza întârzierilor, proiectul a depășit bugetul.','Proiectul a fost amânat din lipsă de buget.','Întârzierile au fost prevăzute în buget.'],'Notwithstanding the delays, the project was delivered within budget.']
+];
+
+const STYLEQ=[
+ ['Când înveți un cuvânt nou, ce te ajută cel mai mult?',['Să-l văd scris, cu o imagine','Să-l aud pronunțat','Să-l scriu de câteva ori','Să-l folosesc imediat într-o situație reală']],
+ ['Ții minte mai ușor un drum nou dacă…',['îl văd pe hartă','mi-l explică cineva','îmi notez indicațiile','îl parcurg o dată']],
+ ['La un curs preferi…',['scheme și desene','explicația vorbită','notițe și manual','exerciții practice']],
+ ['Când montezi ceva nou…',['mă uit la desene','ascult pe cineva care explică','citesc instrucțiunile','încerc direct și văd']],
+ ['Îți amintești o persoană mai ales după…',['față','voce și ce a spus','numele scris','ce am făcut împreună']],
+ ['Te deranjează cel mai tare când lucrezi…',['dezordinea din jur','zgomotul','lipsa notițelor','să stau mult pe loc']],
+ ['Te pregătești pentru o discuție importantă…',['făcând o schemă','repetând cu voce tare','scriind ce vreau să spun','simulând discuția']],
+ ['La un film în engleză…',['citesc subtitrarea','ascult fără subtitrare','caut transcrierea după','repet replicile']]
+];
+const STYLES={
+ V:{n:'Vizual',tips:['Uită-te la cuvânt scris mare înainte să-l asculți.','Fă-ți cartonașe cu cuvântul și o imagine.','Folosește jocul „Perechi” zilnic.']},
+ A:{n:'Auditiv',tips:['Ascultă fiecare cuvânt de 3 ori, normal și rar.','Fă des „Texte de memorat”, mai întâi doar ascultând.','Repetă cu voce tare tot ce înveți.']},
+ S:{n:'Scris / citit',tips:['Fă jocul „Dictare” după fiecare sesiune.','Scrie propozițiile exemplu într-un caiet.','Citește regula de gramatică înainte de exerciții.']},
+ K:{n:'Practic',tips:['Spune cuvintele în propoziții despre munca ta.','Folosește „Vorbit liber” zilnic, 5 minute.','Învață mișcându-te: plimbare + texte de memorat.']}
+};
+
+const PRON=[
+ {id:'th',t:'Sunetul TH',tip:'Pune vârful limbii ușor între dinți și suflă. Nu îl înlocui cu „s”, „f” sau „d”.',items:['think','three','thank you','the weather','this and that','I think so too']},
+ {id:'wv',t:'W și V',tip:'W: buzele rotunjite, ca la „u”, fără dinți. V: dinții de sus pe buza de jos.',items:['very well','wine','vine','west','vest','We were very wet']},
+ {id:'ii',t:'I scurt și I lung',tip:'„ship” e scurt și relaxat; „sheep” e lung și întins. Diferența schimbă sensul.',items:['ship','sheep','live','leave','fill','feel']},
+ {id:'ed',t:'Terminația -ed',tip:'După t/d se citește „id” (wanted). După sunete surde „t” (worked). În rest „d” (played).',items:['worked','played','wanted','finished','needed','I visited my friends']},
+ {id:'hard',t:'Cuvinte capcană',tip:'Silabe care nu se pronunță: comf-ta-ble, veg-ta-ble, Wens-day.',items:['comfortable','vegetable','clothes','schedule','Wednesday','especially']},
+ {id:'daily',t:'Fraze de zi cu zi',tip:'Spune toată fraza legat, fără pauză între cuvinte.',items:['Nice to meet you.','Could you repeat that, please?','Sorry, I didn\'t understand.','How much does it cost?','What do you mean?','Let me think about it.']}
+];
+
+const TEXTS=[
+ {id:'about',t:'Despre mine',lv:'A2',lines:['Hello, nice to meet you.','I am an engineer and I work in construction.','Every day I start work early in the morning.','I like my job because every project is different.','In my free time I spend time with my family.','I am learning English because I want to speak with confidence.']},
+ {id:'rest',t:'La restaurant',lv:'A1',lines:['Good evening, a table for two, please.','Can I see the menu, please?','I would like the chicken soup and a salad.','Could I have a glass of water, please?','The food was delicious, thank you.','Can we have the bill, please?']},
+ {id:'site',t:'Ședința de șantier',lv:'B1',lines:['Good morning, everyone, let\'s start with a short safety meeting.','Please wear your helmet and your safety boots at all times.','Today we are installing the new water pipes on this street.','The excavator will dig the trench first.','After that, we will lay the pipes and connect the manholes.','If you see any problem, tell me immediately.','We need to finish this section by Friday.']},
+ {id:'sewer',t:'Explic lucrarea de canalizare',lv:'B1',lines:['This week we are building the sewer network on Main Street.','First, the surveyor marks the axis and the levels.','Then the excavator digs the trench and we install the trench box.','We lay the PVC pipe on sand bedding with the correct gradient.','Every fifty metres we build a manhole.','At the end we do a CCTV inspection and a tightness test.','After that, we backfill the trench and compact it in layers.']},
+ {id:'handover',t:'Recepția lucrării',lv:'B2',lines:['Good morning, thank you for coming to the final acceptance.','All the works were completed according to the technical specification.','The pressure tests were successful and the reports are signed.','Here are the as-built drawings and the certificates of conformity.','We found two small non-conformities, and both have been corrected.','The guarantee period starts from today.','If you have any questions, we are happy to answer them.']},
+ {id:'hotelcheck',t:'La recepția hotelului',lv:'A2',lines:['Good evening, I have a reservation under the name Popescu.','It is a double room for three nights.','Is breakfast included in the price?','What time is check out?','Could you tell me the wifi password, please?','Thank you, have a nice evening.']},
+ {id:'call',t:'Un telefon de afaceri',lv:'B1',lines:['Hello, I am calling about the offer you sent last week.','I have a few questions about the price and the delivery time.','Could you send me the technical documents by email?','We would like to start the work next month.','Is that possible for you?','Great, I will wait for your email. Have a nice day.']}
+];
+
+const GRAMMAR=[
+ {id:'pres',t:'Present Simple sau Continuous',lv:'A1',
+  rule:'Present Simple = obiceiuri și lucruri mereu adevărate.\nLa he/she/it adaugi -s: he works.\n\nPresent Continuous = ce se întâmplă acum.\nam/is/are + verb-ing: I am working now.',
+  ex:['I work every day.','She is working now.','Water boils at one hundred degrees.'],
+  q:[['He ___ to work by car every day.','goes',['is going','go']],['Look! It ___.','is raining',['rains','rain']],['I ___ English at the moment.','am learning',['learn','learns']],['Water ___ at 100 degrees.','boils',['is boiling','boil']],['They ___ on a new project this month.','are working',['work','works']]]},
+ {id:'past',t:'Past Simple',lv:'A2',
+  rule:'Acțiuni terminate în trecut, cu moment clar (yesterday, last week).\nVerbe regulate: + ed (worked, finished).\nNeregulate le înveți pe de rost: go → went, buy → bought, see → saw, build → built.\nNegație: didn\'t + verbul simplu. Întrebare: Did you…?',
+  ex:['Yesterday I bought a new phone.','We didn\'t see the email.','Did you finish the report?'],
+  q:[['Yesterday I ___ a new phone.','bought',['buy','buyed']],['We ___ the meeting at five.','finished',['finish','finishing']],['She ___ come to work yesterday.','didn\'t',['doesn\'t','not']],['___ you see the email?','Did',['Do','Were']],['They ___ a house last year.','built',['build','builded']]]},
+ {id:'perf',t:'Present Perfect sau Past Simple',lv:'B1',
+  rule:'Present Perfect = have/has + forma a III-a. Fără moment precis, sau cu legătură cu prezentul: I have finished. Have you ever…?\n\nPast Simple = cu moment precis: I finished yesterday.\n\nRegula simplă: dacă spui CÂND, folosești Past Simple.',
+  ex:['I have seen this film three times.','I saw him yesterday.','Have you ever been to London?'],
+  q:[['I ___ this film three times.','have seen',['saw','see']],['I ___ him yesterday.','saw',['have seen','see']],['She ___ just ___ the report.','has … sent',['did … send','is … sent']],['We ___ in Bucharest in 2019.','lived',['have lived','live']],['___ you ever ___ to London?','Have … been',['Did … go','Were … go']]]},
+ {id:'art',t:'Articolele a, an, the',lv:'A1',
+  rule:'a / an = unul oarecare, prima dată menționat. „an” înainte de sunet de vocală: an engineer, an hour.\nthe = unul anume, cunoscut: the door, the sun.\nFără articol = la general: I like coffee.',
+  ex:['I need an engineer.','Close the door, please.','I like coffee.'],
+  q:[['I need ___ engineer.','an',['a','the']],['___ sun is very hot today.','The',['A','(nimic)']],['She is ___ teacher.','a',['the','(nimic)']],['I like ___ coffee.','(nimic)',['the','a']],['Can you close ___ door, please?','the',['a','an']]]},
+ {id:'prep',t:'In, on, at pentru timp',lv:'A2',
+  rule:'at + oră: at 7 o\'clock, at night.\non + zi sau dată: on Monday, on 5 March.\nin + lună, an, anotimp, parte a zilei: in May, in 2020, in summer, in the morning.',
+  ex:['We start at seven o\'clock.','The meeting is on Monday.','I was born in May.'],
+  q:[['The meeting is ___ Monday.','on',['in','at']],['The company started ___ 2021.','in',['on','at']],['We start ___ 7 o\'clock.','at',['in','on']],['___ the morning I drink coffee.','In',['On','At']],['My birthday is ___ 5 March.','on',['in','at']]]},
+ {id:'fut',t:'Viitorul: will sau going to',lv:'B1',
+  rule:'going to = plan deja hotărât, sau ceva ce se vede că urmează: Look at the clouds, it\'s going to rain.\nwill = decizie luată pe loc, promisiune, părere despre viitor: I\'ll answer the phone. I will help you.',
+  ex:['We are going to visit Paris next month.','I will help you, I promise.','Look at those clouds, it is going to rain.'],
+  q:[['I\'ve bought the tickets. We ___ visit Paris.','are going to',['will','go to']],['The phone is ringing. I ___ answer it.','will',['am going to','going to']],['I promise I ___ help you.','will',['am going to','going']],['Look at those clouds! It ___ rain.','is going to',['will','going']],['I\'ve already planned it: next year I ___ open a new office.','am going to',['will','go to']]]}
+];
+
+const SPEAK={
+ A1:['Introduce yourself: name, city, job.','Describe your house.','What do you eat for breakfast?','Tell me about your family.'],
+ A2:['What did you do last weekend?','Describe your typical work day.','Where would you like to travel and why?','Tell me about your best friend.'],
+ B1:['Describe a project you are proud of.','What are the advantages and disadvantages of your job?','Explain to a new worker the safety rules on site.','How do you plan to improve your English?','Explain step by step how you build a house connection to the water network.','A hotel guest has a complaint about the room. What do you say?'],
+ B2:['Should companies invest more in renewable energy? Why?','Describe a difficult problem at work and how you solved it.','How will technology change construction in the next ten years?'],
+ C1:['To what extent should infrastructure be financed by public money?','Discuss the trade-offs between cost, quality and deadlines in large projects.']
+};
+
+/* ================= STARE ================= */
+const KEY='speakup_v1';
+const fresh=()=>({name:'',level:null,startLevel:null,style:null,learned:{},sessions:{},weekly:[],streak:0,lastDay:null,pron:0,pronDone:{},textsDone:{},grammar:{},today:null,custom:[],customTopics:[]});
+let st=fresh();
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)st=Object.assign(fresh(),s)}catch(e){}
+function attachTopic(t){if(!TOPICS.find(x=>x.id===t.id)){TOPICS.push(t);TW[t.id]=TW[t.id]||[]}}
+function attachWord(w){
+ const ok=addWord(w);const real=W(w.en);
+ if(w.tp){attachTopic(TOPICS.find(t=>t.id===w.tp)||{id:w.tp,g:'Subiectul tău',t:w.tp,d:''});if(!TW[w.tp].includes(real))TW[w.tp].push(real)}
+ else if(ok&&WORDS[w.lv])WORDS[w.lv].push(real);
+ return ok}
+(st.customTopics||[]).forEach(attachTopic);(st.custom||[]).forEach(attachWord);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+function dstr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const today=()=>dstr(new Date());
+const daysAgo=s=>Math.round((new Date(today())-new Date(s))/864e5);
+
+/* ================= UTILITARE ================= */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+const sim=(a,b)=>1-lev(a,b)/Math.max(a.length,b.length,1);
+const NUM={one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10',hundred:'100',thousand:'1000'};
+const canon=w=>NUM[w]||w;
+function scoreSpeech(target,alts){
+ const t=norm(target).split(' ').filter(Boolean);let best={score:-1,words:t.map(w=>({w,ok:false})),heard:''};
+ for(const a of alts){const h=norm(a).split(' ').filter(Boolean).map(canon);const used=h.map(()=>false);
+  const words=t.map(w=>{const cw=canon(w);for(let i=0;i<h.length;i++){if(!used[i]&&(h[i]===cw||sim(cw,h[i])>=(cw.length<=3?1:.8))){used[i]=true;return{w,ok:true}}}return{w,ok:false}});
+  const score=words.filter(x=>x.ok).length/t.length;if(score>best.score)best={score,words,heard:a}}
+ return best}
+const IC={
+ spk:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+ slow:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>',
+ mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>',
+ book:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h14"/></svg>',
+ game:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M16 12h.01M18 14h.01"/></svg>',
+ talk:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+ film:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>',
+ test:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg>',
+ chart:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ wave:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 7v10M21 12h0"/></svg>'
+};
+
+/* ================= VOCE ================= */
+let voice=null,voices=[];
+/* Cele mai naturale voci primesc scor mare; vocile „robot” sau de efect sunt scoase */
+const BADV=/compact|eloquence|novelty|bells|bad news|bahh|boing|bubbles|cellos|whisper|zarvox|trinoids|albert|jester|organ|superstar|wobble|fred|junior|ralph|kathy|grandma|grandpa|rocko|shelley|flo\b|reed|sandy|espeak/i;
+function vScore(v){let s=0;const n=v.name;
+ if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=20;if(/premium/i.test(n))s+=55;if(/enhanced|siri/i.test(n))s+=45;if(/google/i.test(n))s+=35;
+ if(/ava|samantha|aria|jenny|guy|zoe|evan|nathan|allison|susan|serena|daniel|libby|sonia|ryan|michelle|emma|andrew|brian/i.test(n))s+=10;
+ if(/en[-_]US/i.test(v.lang))s+=6;else if(/en[-_]GB/i.test(v.lang))s+=5;if(v.localService===false)s+=3;return s}
+function loadVoices(){if(!('speechSynthesis' in window))return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function say(t,rate=.95){return new Promise(res=>{if(!('speechSynthesis' in window))return res();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:'en-US';if(voice)u.voice=voice;u.rate=Math.max(.5,Math.min(1.3,rate*(st.rate||1)));u.pitch=1;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
+async function sayAll(lines,rate=.95){for(const l of lines){await say(l,rate);await new Promise(r=>setTimeout(r,450))}}
+const stopVoice=()=>{try{speechSynthesis.cancel()}catch(e){}};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let micState=SR?'unknown':'none';
+function listen(){return new Promise((res,rej)=>{if(!SR)return rej('nosupport');let r;try{r=new SR()}catch(e){return rej('nosupport')}r.lang='en-US';r.interimResults=false;r.maxAlternatives=5;let done=false;
+ r.onresult=e=>{done=true;micState='ok';const alts=[...e.results[0]].map(a=>a.transcript);alts.conf=e.results[0][0].confidence||0;res(alts)};r.onerror=e=>{done=true;rej(e.error)};r.onend=()=>{if(!done)rej('no-speech')};try{r.start()}catch(e){rej('not-allowed')}})}
+
+/* Widget pronunție: nu trece mai departe până nu e corect */
+function pron(el,target,{onPass,hideText=false,hint=''}={}){
+ let tries=0,passed=false;const words=norm(target).split(' ').length;
+ el.innerHTML=`<div class="pron">
+  <div class="pron-target ${hideText?'hid':''}">${hideText?esc(hint):esc(target)}</div>
+  <div class="pron-btns"><button class="btn ghost" data-a="play">${IC.spk} Ascultă</button><button class="btn ghost" data-a="slow">${IC.slow} Rar</button></div>
+  <button class="mic" data-a="mic" aria-label="Pronunță">${IC.mic}</button>
+  <div class="mic-l">Apasă și spune în engleză</div>
+  <div class="pron-res" aria-live="polite"></div></div>`;
+ const res=el.querySelector('.pron-res'),mic=el.querySelector('.mic'),lab=el.querySelector('.mic-l');
+ el.querySelector('[data-a=play]').onclick=()=>say(target);
+ el.querySelector('[data-a=slow]').onclick=()=>say(target,.6);
+ const need=words===1?1:.85;
+ function judge(alts,mode='mic'){
+  /* Strict: contează doar prima variantă auzită, nu alternativele; claritatea sub 55% nu trece */
+  const top=[alts[0]||''];const r=scoreSpeech(target,top);tries++;
+  const conf=alts.conf||0;const unclear=mode==='mic'&&conf>0&&conf<.55&&r.score>=need;
+  const pass=r.score>=need&&!unclear;
+  res.innerHTML=`<div class="heard">Am auzit: „${esc(r.heard||'…')}”${mode==='mic'&&conf>0?` · claritate ${Math.round(conf*100)}%`:''}</div>
+   ${hideText&&!pass?'':`<div class="wchips">${r.words.map(w=>`<span class="wchip ${w.ok?'ok':'bad'}">${esc(w.w)}</span>`).join('')}</div>`}
+   <div class="verdict ${pass?'ok':'bad'}">${pass?'Corect! '+Math.round(r.score*100)+'%':unclear?'Cuvintele sunt bune, dar pronunția nu e destul de clară. Mai spune o dată, mai rar.':'Încă nu. '+Math.round(r.score*100)+'% — ascultă din nou și repetă.'}</div>
+   ${mode==='kb'?'<div class="small muted">Verificare aproximativă: tastatura corectează singură cuvintele, deci e mai îngăduitoare decât microfonul aplicației.</div>':''}`;
+  if(pass&&!passed){passed=true;st.pron=(st.pron||0)+1;save();onPass&&onPass()}
+  else if(!pass&&tries>=5){const b=document.createElement('button');b.className='linkbtn';b.textContent='Treci peste (revii la el mai târziu)';b.onclick=()=>{if(!passed){passed=true;onPass&&onPass(true)}};res.appendChild(b)}
+ }
+ function typed(){
+  res.innerHTML=`<div class="note">În fereastra din Claude aplicația nu are voie să folosească microfonul. Pentru verificarea reală a pronunției, deschide aplicația în Chrome (vezi <b>Progres → Microfon și voce</b>). Până atunci: apasă în câmp, apoi pe <b>microfonul tastaturii</b> (setată pe engleză) și spune textul.</div>
+   <form class="typef"><input type="text" id="dict-${Math.random().toString(36).slice(2,8)}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Dictează aici"><button class="btn">Verifică</button></form>`;
+  const f=res.querySelector('form');f.onsubmit=e=>{e.preventDefault();const v=f.querySelector('input').value;if(!v.trim())return;judge([v],'kb');if(!passed){const again=document.createElement('button');again.className='linkbtn';again.textContent='Încearcă din nou';again.onclick=typed;res.appendChild(again)}}
+ }
+ mic.onclick=async()=>{
+  if(micState==='blocked'||micState==='none'){typed();return}
+  stopVoice();mic.classList.add('on');lab.textContent='Te ascult…';
+  try{const alts=await listen();mic.classList.remove('on');lab.textContent='Apasă și spune în engleză';judge(alts)}
+  catch(err){mic.classList.remove('on');lab.textContent='Apasă și spune în engleză';
+   if(['not-allowed','service-not-allowed','nosupport','audio-capture','network'].includes(err)){micState='blocked';typed()}
+   else res.innerHTML='<div class="verdict bad">Nu te-am auzit. Apasă din nou și vorbește clar, aproape de telefon.</div>'}
+ };
+}
+
+/* Chestionar generic */
+function mc(prompt,correct,others,extra={}){const o=shuffle([correct,...others]);return{type:'mc',prompt,options:o,answer:o.indexOf(correct),...extra}}
+function distract(w,n=3,field='ro'){const key=x=>x.tp||x.lv;const same=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)===key(w)));const rest=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)!==key(w)));const out=[];for(const x of [...same,...rest]){if(out.length>=n)break;if(!out.includes(x[field]))out.push(x[field])}return out}
+function qWord(w,mode){
+ if(mode==='listen')return mc('Ce ai auzit? Alege traducerea.',w.ro,distract(w),{audio:w.en});
+ if(mode==='type')return{type:'type',prompt:`Scrie în engleză: <b>${esc(w.ro)}</b>`,answer:w.en,sayAfter:w.en};
+ if(mode==='dict')return{type:'type',prompt:'Scrie ce auzi.',audio:w.en,answer:w.en,sayAfter:w.en};
+ if(mode==='ro2en')return mc(`Cum se spune în engleză <b>${esc(w.ro)}</b>?`,w.en,distract(w,3,'en'),{sayAfter:w.en});
+ return mc(`Ce înseamnă <b>${esc(w.en)}</b>?`,w.ro,distract(w),{sayAfter:w.en});
+}
+/* Mod test: fără indicii, cu „Înapoi”, scor calculat la final */
+function runTest(host,qs,onDone){
+ let i=0;const ans=qs.map(()=>null);
+ const isOk=(q,a)=>a!=null&&(q.type==='type'?norm(a)===norm(q.answer):a===q.answer);
+ function step(){
+  const q=qs[i],a=ans[i],last=i===qs.length-1;
+  host.innerHTML=`<div class="prog"><span style="width:${i/qs.length*100}%"></span></div>
+   <div class="qn">Întrebarea ${i+1} din ${qs.length}</div>
+   ${q.audio?`<div><button class="btn ghost" data-a="aud">${IC.spk} Ascultă din nou</button></div>`:''}
+   <div class="qp">${q.prompt}</div>
+   ${q.type==='type'?`<form class="typef"><input type="text" id="tt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrie în engleză"><button class="btn">${last?'Termină':'Mai departe'}</button></form>`
+     :`<div class="opts">${q.options.map((o,k)=>`<button class="opt ${a===k?'mine':''}" data-k="${k}">${esc(o)}</button>`).join('')}</div>`}
+   <div class="tnav">${i>0?`<button class="btn ghost" data-a="prev">← Înapoi</button>`:'<span></span>'}${a!=null&&!last?`<button class="btn ghost" data-a="next">Înainte →</button>`:''}</div>
+   ${last&&ans.every(x=>x!=null)?`<button class="btn wide" data-a="end">Vezi rezultatul</button>`:''}`;
+  if(q.audio){host.querySelector('[data-a=aud]').onclick=()=>say(q.audio);if(a==null)setTimeout(()=>say(q.audio),250)}
+  const pv=host.querySelector('[data-a=prev]');if(pv)pv.onclick=()=>{stopVoice();i--;step()};
+  const nx=host.querySelector('[data-a=next]');if(nx)nx.onclick=()=>{stopVoice();i++;step()};
+  const en=host.querySelector('[data-a=end]');if(en)en.onclick=finish;
+  const advance=()=>{stopVoice();if(last){if(ans.every(x=>x!=null))finish();else{i=ans.findIndex(x=>x==null);step()}}else{i++;step()}};
+  if(q.type==='type'){const f=host.querySelector('form'),inp=f.querySelector('input');if(a!=null)inp.value=a;setTimeout(()=>inp.focus(),60);
+   f.onsubmit=e=>{e.preventDefault();if(!inp.value.trim())return;ans[i]=inp.value.trim();advance()}}
+  else host.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ans[i]=+b.dataset.k;host.querySelectorAll('.opt').forEach(x=>x.classList.toggle('mine',x===b));b.blur();setTimeout(advance,200)});
+ }
+ function finish(){
+  let score=0;const wrong=[];qs.forEach((q,k)=>{if(isOk(q,ans[k]))score++;else wrong.push(q)});
+  onDone(score,wrong,reviewHTML(qs,ans,isOk));
+ }
+ step();
+}
+function reviewHTML(qs,ans,isOk){
+ const txt=(q,a)=>a==null?'—':q.type==='type'?a:q.options[a];
+ const correct=q=>q.type==='type'?q.answer:q.options[q.answer];
+ return `<div class="card"><h3>Răspunsurile tale</h3><div class="rev">${qs.map((q,k)=>{const ok=isOk(q,ans[k]);
+  return `<div class="ri ${ok?'ok':'bad'}"><div class="rn">${k+1}. ${ok?'✓':'✗'}</div><div class="rb"><div class="rq">${q.prompt}${q.audio?`<div class="small muted">Ai auzit: „${esc(q.audio)}”</div>`:''}</div>
+   ${ok?`<div class="ra ok">${esc(correct(q))}</div>`:`<div class="ra bad">Tu: ${esc(txt(q,ans[k]))}</div><div class="ra ok">Corect: ${esc(correct(q))}</div>`}</div></div>`}).join('')}</div></div>`;
+}
+function runQuiz(host,qs,onDone,{feedback=true}={}){
+ if(!feedback)return runTest(host,qs,onDone);
+ let i=0,score=0;const wrong=[];
+ function step(){
+  if(i>=qs.length){onDone(score,wrong);return}
+  const q=qs[i];
+  host.innerHTML=`<div class="prog"><span style="width:${i/qs.length*100}%"></span></div>
+   <div class="qn">Întrebarea ${i+1} din ${qs.length}</div>
+   ${q.audio?`<div><button class="btn ghost" data-a="aud">${IC.spk} Ascultă din nou</button></div>`:''}
+   <div class="qp">${q.prompt}</div>
+   ${q.type==='type'?`<form class="typef"><input type="text" id="qt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrie în engleză"><button class="btn">Verifică</button></form>`
+     :`<div class="opts">${q.options.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div>`}
+   <div class="fb" aria-live="polite"></div>`;
+  if(q.audio){host.querySelector('[data-a=aud]').onclick=()=>say(q.audio);setTimeout(()=>say(q.audio),250)}
+  const fb=host.querySelector('.fb');
+  const finish=(ok,ct)=>{if(ok)score++;else wrong.push(q);
+   if(!feedback){setTimeout(()=>{i++;step()},280);return}
+   fb.innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':'Răspunsul corect: '+esc(ct)}</div><button class="btn wide" data-a="next">${i+1<qs.length?'Mai departe':'Vezi rezultatul'}</button>`;
+   const n=fb.querySelector('[data-a=next]');n.onclick=()=>{stopVoice();i++;step()};n.focus({preventScroll:true});n.scrollIntoView({block:'nearest',behavior:'smooth'})};
+  if(q.type==='type'){const f=host.querySelector('form');setTimeout(()=>f.querySelector('input').focus(),60);
+   f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');if(!inp.value.trim())return;inp.disabled=true;f.querySelector('button').disabled=true;const ok=norm(inp.value)===norm(q.answer);finish(ok,q.answer);if(q.sayAfter&&feedback)say(q.sayAfter)}}
+  else host.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;host.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(feedback&&+x.dataset.k===q.answer)x.classList.add('right')});if(k!==q.answer&&feedback)b.classList.add('wrong');if(!feedback)b.classList.add('sel');finish(k===q.answer,q.options[q.answer]);if(q.sayAfter&&feedback)say(q.sayAfter)});
+ }
+ step();
+}
+
+/* ================= NAVIGARE ================= */
+const app=document.getElementById('app');
+function screen(title,html,{back=true}={}){
+ stopVoice();
+ app.innerHTML=`<header class="bar">${back?`<button class="back" data-go="home" aria-label="Înapoi la început">←</button>`:''}<div class="bar-t">${title}</div>${st.level?`<span class="chip" title="${LNAME[st.level]}">${st.level}</span>`:''}</header><main class="screen">${html}</main>`;
+ window.scrollTo(0,0);return app.querySelector('main');
+}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(!g)return;e.preventDefault();go(g.dataset.go,g.dataset.arg)});
+function go(r,arg){(R[r]||R.home)(arg)}
+const R={};
+
+/* ---------- Bun venit ---------- */
+R.welcome=()=>{
+ const m=screen('Speak Up','',{back:false});
+ m.innerHTML=`<div class="hello"><div class="eyebrow">Engleză pentru vorbit</div><h1>Învață să vorbești, nu doar să citești.</h1>
+  <p class="muted">Începem cu un test scurt de nivel (20 de întrebări, cam 5 minute), apoi unul despre cum înveți tu cel mai bine.</p></div>
+  <div class="card"><label for="nm"><b>Cum te numești?</b></label><input type="text" id="nm" placeholder="Prenumele tău" autocomplete="given-name">
+  <button class="btn wide" id="startp">Încep testul de nivel</button>
+  <button class="linkbtn" id="skipp">Știu nivelul meu, aleg singur</button></div>
+  <p class="small muted">Ai nevoie de sonor pornit. Progresul se salvează pe acest dispozitiv.</p>`;
+ const nm=m.querySelector('#nm');nm.value=st.name||'';
+ m.querySelector('#startp').onclick=()=>{st.name=nm.value.trim()||'prietene';save();go('placement')};
+ m.querySelector('#skipp').onclick=()=>{st.name=nm.value.trim()||'prietene';save();go('pickLevel')};
+};
+R.pickLevel=()=>{
+ const m=screen('Alege nivelul',`<p class="muted">De la ce nivel vrei să înveți cuvinte noi?</p><div class="list">${LEVELS.map(l=>`<button class="li" data-l="${l}"><span class="lv">${l}</span><span class="t"><b>${LNAME[l]}</b></span></button>`).join('')}</div>`);
+ m.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{st.level=b.dataset.l;st.startLevel=b.dataset.l;save();go(st.style?'home':'styleIntro')});
+};
+
+/* ---------- Test de nivel ---------- */
+R.placement=()=>{
+ const m=screen('Test de nivel','<div class="card" id="q"></div>');
+ const qs=PLACEMENT.map(([lv,p,c,o,aud])=>mc(esc(p).replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>').replace(/___/g,'<b>___</b>'),c,o,{audio:aud,lv}));
+ const card=m.querySelector('#q');let per={};
+ const wrapped=qs.map(q=>q);
+ runQuiz(card,wrapped,(score,wrong,review)=>{
+  const wrongSet=new Set(wrong);LEVELS.forEach(l=>per[l]=0);wrapped.forEach(q=>{if(!wrongSet.has(q))per[q.lv]++});
+  let lv='A1';for(const l of LEVELS){if(per[l]>=3)lv=l;else break}
+  if(score>=18)lv='C1';else if(score>=14&&LEVELS.indexOf(lv)<3)lv='B2';else if(score>=10&&LEVELS.indexOf(lv)<2)lv='B1';else if(score>=6&&LEVELS.indexOf(lv)<1)lv='A2';
+  st.level=lv;st.startLevel=lv;st.placement={date:today(),score,per};save();
+  const m2=screen('Rezultatul tău',`<div class="card"><div class="eyebrow">Nivelul tău estimat</div><div class="big">${lv}</div><h2>${LNAME[lv]}</h2>
+   <div class="levels">${LEVELS.map(l=>`<div class="${l===lv?'on':''}">${l}<small>${per[l]}/4</small></div>`).join('')}</div>
+   <p class="muted">Ai răspuns corect la ${score} din 20. Cuvintele zilnice pornesc de la nivelul ${lv}. Poți schimba oricând din Progres.</p></div>
+   <button class="btn wide" data-go="${st.style?'home':'styleIntro'}">Mai departe</button>
+   ${review}
+   <button class="btn wide" data-go="${st.style?'home':'styleIntro'}">Mai departe</button>`);
+ },{feedback:false});
+};
+
+/* ---------- Stil de învățare ---------- */
+R.styleIntro=()=>{
+ screen('Cum înveți tu',`<div class="card"><h2>Ce fel de elev ești?</h2><p>8 întrebări rapide. Nu există răspunsuri greșite. Alege ce ți se potrivește cel mai des.</p>
+  <button class="btn wide" data-go="styleTest">Încep</button><button class="linkbtn" data-go="home">Mai târziu</button></div>`);
+};
+R.styleTest=()=>{
+ const m=screen('Cum înveți tu','<div class="card" id="q"></div>');const card=m.querySelector('#q');
+ const keys=['V','A','S','K'];const pick=STYLEQ.map(()=>null);const orders=STYLEQ.map(()=>shuffle([0,1,2,3]));let i=0;
+ function step(){
+  if(i>=STYLEQ.length){const cnt={V:0,A:0,S:0,K:0};pick.forEach(k=>cnt[keys[k]]++);st.style=cnt;save();go('styleResult');return}
+  const [q,opts]=STYLEQ[i];
+  card.innerHTML=`<div class="prog"><span style="width:${i/STYLEQ.length*100}%"></span></div><div class="qn">${i+1} din ${STYLEQ.length}</div><div class="qp">${q}</div><div class="opts">${orders[i].map(k=>`<button class="opt ${pick[i]===k?'mine':''}" data-k="${k}">${opts[k]}</button>`).join('')}</div>
+   ${i>0?'<div class="tnav"><button class="btn ghost" data-a="prev">← Înapoi</button></div>':''}`;
+  const pv=card.querySelector('[data-a=prev]');if(pv)pv.onclick=()=>{i--;step()};
+  card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{pick[i]=+b.dataset.k;b.classList.add('mine');setTimeout(()=>{i++;step()},200)});
+ }
+ step();
+};
+R.styleResult=()=>{
+ const c=st.style||{V:0,A:0,S:0,K:0};const tot=Object.values(c).reduce((a,b)=>a+b,0)||1;
+ const top=Object.keys(c).sort((a,b)=>c[b]-c[a]);const main=STYLES[top[0]];
+ screen('Stilul tău',`<div class="card"><div class="eyebrow">Stilul tău principal</div><h1>${main.n}</h1>
+  <div class="bars">${top.map(k=>`<div class="b"><span>${STYLES[k].n}</span><i><span style="width:${c[k]/tot*100}%"></span></i><b>${Math.round(c[k]/tot*100)}%</b></div>`).join('')}</div></div>
+  <div class="card"><h3>Ce îți recomand</h3><ul>${main.tips.map(t=>`<li>${t}</li>`).join('')}</ul>
+  <p class="small muted">Al doilea stil: ${STYLES[top[1]].n}. ${STYLES[top[1]].tips[0]}</p></div>
+  <button class="btn wide" data-go="home">Începe să înveți</button>`);
+};
+
+/* ---------- Acasă ---------- */
+function learnedCount(){return Object.keys(st.learned).length}
+function weekDots(){const out=[];for(let k=6;k>=0;k--){const d=new Date();d.setDate(d.getDate()-k);out.push(st.sessions[dstr(d)]!=null)}return out}
+R.home=()=>{
+ if(!st.name){go('welcome');return}
+ if(!st.level){go('pickLevel');return}
+ const t=st.today&&st.today.date===today()?st.today:null;
+ const doneToday=st.sessions[today()]!=null;
+ const streak=(st.lastDay===today()||daysAgo(st.lastDay||'2000-01-01')===1)?st.streak:0;
+ const isWeekend=[0,6].includes(new Date().getDay());
+ const m=screen('Speak Up',`
+ <div class="hello"><div class="eyebrow">${LNAME[st.level]} · ${st.level}</div><h1>Salut, ${esc(st.name)}!</h1></div>
+ ${(!SR)?`<div class="banner">Browserul acesta nu are recunoaștere vocală. Pentru pronunție folosește microfonul tastaturii sau deschide aplicația în Chrome.</div>`:''}
+ <div class="stats"><div class="stat"><b>${streak}</b><span>zile la rând</span></div><div class="stat"><b>${learnedCount()}</b><span>cuvinte învățate</span></div><div class="stat"><b>${st.pron||0}</b><span>pronunții corecte</span></div></div>
+ <div class="card today"><div class="eyebrow" style="color:inherit;opacity:.8">Sesiunea de azi</div>
+  <h2>${doneToday?'Gata pe azi. Bravo!':t?`Ai ajuns la cuvântul ${Math.min(t.idx+1,10)} din 10`:'10 cuvinte noi te așteaptă'}</h2>
+  <div class="dots" aria-label="Ultimele 7 zile">${weekDots().map(o=>`<i class="${o?'on':''}"></i>`).join('')}</div>
+  <button class="btn wide" data-go="daily">${doneToday?'Recapitulare sau încă 10':t?'Continuă':'Începe sesiunea'}</button></div>
+ <button class="domcard" data-go="domains"><div class="eyebrow">Vocabular pe domenii</div><h2>Construcții, business, hotelier</h2>
+  <p class="small muted">${TOPICS.reduce((a,t)=>a+(TW[t.id]||[]).length,0)} termeni de specialitate, plus orice subiect vrei tu.</p>
+  <div class="tags">${TOPICS.filter(t=>t.g==='Construcții').slice(0,4).map(t=>`<span>${esc(t.t)}</span>`).join('')}<span>+ ${TOPICS.length-4}</span></div></button>
+ <div class="grid">
+  <button class="tile" data-go="pronList"><span class="ico">${IC.wave}</span><h3>Pronunție</h3><p>Sunete grele. Treci doar dacă pronunți corect.</p></button>
+  <button class="tile" data-go="texts"><span class="ico">${IC.film}</span><h3>Texte de memorat</h3><p>1–2 minute. Asculți, repeți, apoi spui din memorie.</p></button>
+  <button class="tile" data-go="speak"><span class="ico">${IC.talk}</span><h3>Vorbit liber</h3><p>Răspunzi la o întrebare și primești corecturi.</p></button>
+  <button class="tile" data-go="gramList"><span class="ico">${IC.book}</span><h3>Gramatică</h3><p>Reguli scurte, explicate în română.</p></button>
+  <button class="tile" data-go="games"><span class="ico">${IC.game}</span><h3>Jocuri</h3><p>Perechi, ascultare, propoziții, dictare.</p></button>
+  <button class="tile ${isWeekend?'flag':''}" data-go="weekly"><span class="ico">${IC.test}</span><h3>Test săptămânal</h3><p>${isWeekend?'E weekend: azi e ziua testului.':'Recomandat sâmbătă sau duminică.'}</p></button>
+ </div>
+ <button class="li" data-go="voice"><span class="tick">${IC.spk}</span><span class="t"><b>Microfon și voce</b><span>Voce mai naturală, verificarea pronunției</span></span></button>
+ <button class="li" data-go="progress"><span class="tick">${IC.chart}</span><span class="t"><b>Progres și setări</b><span>Rezultate, nivel, stil de învățare</span></span></button>`,{back:false});
+};
+
+/* ---------- Sesiunea zilnică ---------- */
+function newWords(n,exclude=[]){
+ const start=LEVELS.indexOf(st.startLevel||st.level);const out=[];
+ for(let k=start;k<LEVELS.length&&out.length<n;k++)for(const w of WORDS[LEVELS[k]]){if(out.length>=n)break;if(!st.learned[w.en]&&!exclude.includes(w.en))out.push(w.en)}
+ if(out.length<n)for(let k=start-1;k>=0&&out.length<n;k--)for(const w of WORDS[LEVELS[k]]){if(out.length>=n)break;if(!st.learned[w.en]&&!exclude.includes(w.en))out.push(w.en)}
+ return out}
+R.daily=()=>{
+ if(st.today&&st.today.date===today()&&st.today.phase!=='done'){go(st.today.phase==='quiz'?'dailyQuiz':'dailyLearn');return}
+ if(st.sessions[today()]!=null){
+  const m=screen('Sesiunea de azi',`<div class="card"><h2>Ai terminat sesiunea de azi</h2><p class="muted">Scor la verificare: ${st.sessions[today()]}/10. Revino mâine pentru încă 10 cuvinte.</p>
+   <button class="btn wide" id="rev">Recapitulare: 10 cuvinte vechi</button><button class="btn ghost wide" id="more">Încă 10 cuvinte noi (bonus)</button></div>`);
+  m.querySelector('#rev').onclick=()=>go('review');
+  m.querySelector('#more').onclick=()=>{startSession()};return}
+ startSession();
+};
+const topicNew=(id,n)=>(TW[id]||[]).filter(w=>!st.learned[w.en]).slice(0,n).map(w=>w.en);
+function startSession(src='general'){
+ const ws=src==='general'?newWords(10):topicNew(src,10);
+ if(!ws.length){
+  const m=screen('Cuvinte noi',`<div class="card"><h2>Ai învățat toate cuvintele de aici!</h2><p class="muted">Pot genera cuvinte noi cu Claude, potrivite nivelului tău.</p><div id="gen"></div><button class="btn ghost" data-go="review">Recapitulare</button></div>`);
+  genButton(m.querySelector('#gen'),src==='general'?{level:st.startLevel||st.level}:{topic:src},()=>startSession(src));return}
+ st.today={date:today(),words:ws,idx:0,phase:'learn',src};save();go('dailyLearn');
+}
+R.dailyLearn=()=>{
+ const t=st.today;if(t.idx>=t.words.length){t.phase='quiz';save();go('dailyQuiz');return}
+ const w=W(t.words[t.idx]);if(!w){t.idx++;save();go('dailyLearn');return}
+ const tt=t.src&&t.src!=='general'?(TOPICS.find(x=>x.id===t.src)||{}).t:'Cuvinte noi';
+ const m=screen(esc(tt||'Cuvinte noi'),`<div class="prog"><span style="width:${t.idx/t.words.length*100}%"></span></div>
+  <div class="card"><div class="row" style="justify-content:space-between;align-items:center"><span class="counter">${t.idx+1} / ${t.words.length}</span><span class="lv">${esc(tag(w))}</span></div>
+   <div class="word">${esc(w.en)}</div><div class="tr">${esc(w.ro)}</div>
+   <div class="ex">${esc(w.ex)}</div>
+   <div class="row"><button class="btn ghost" id="pex">${IC.spk} Propoziția</button><button class="btn ghost" id="pexs">${IC.slow} Rar</button></div></div>
+  <div class="card" id="pr"></div>
+  <div class="card" id="pr2" hidden></div>
+  <button class="btn wide" id="next" disabled>Pronunță corect ca să treci mai departe</button>`);
+ m.querySelector('#pex').onclick=()=>say(w.ex);m.querySelector('#pexs').onclick=()=>say(w.ex,.65);
+ setTimeout(()=>say(w.en),300);
+ const nb=m.querySelector('#next');
+ pron(m.querySelector('#pr'),w.en,{onPass:()=>{
+   const p2=m.querySelector('#pr2');p2.hidden=false;
+   p2.innerHTML='<h3>Acum spune propoziția</h3><div></div><button class="linkbtn" id="skipex">Sar peste propoziție</button>';
+   pron(p2.querySelector('div'),w.ex,{onPass:done});p2.querySelector('#skipex').onclick=done;
+   nb.disabled=false;nb.textContent=t.idx+1<t.words.length?'Următorul cuvânt':'Verificarea finală';
+ }});
+ let advanced=false;function done(){nb.focus();nb.scrollIntoView({behavior:'smooth',block:'center'})}
+ nb.onclick=()=>{if(advanced)return;advanced=true;t.idx++;save();go('dailyLearn')};
+};
+R.dailyQuiz=()=>{
+ const t=st.today;const ws=shuffle(t.words.map(W));const modes=['en2ro','en2ro','en2ro','listen','listen','listen','type','type','ro2en','ro2en'];
+ const m=screen('Verificare',`<div class="card" id="q"></div>`);
+ runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i])),(score)=>{
+  const d=today();t.words.forEach(en=>{if(!st.learned[en])st.learned[en]={d}});
+  st.sessions[d]=Math.max(st.sessions[d]||0,score);
+  if(st.lastDay!==d){st.streak=(st.lastDay&&daysAgo(st.lastDay)===1)?st.streak+1:1;st.lastDay=d}
+  t.phase='done';save();const n=ws.length,r=score/n;const fromTopic=t.src&&t.src!=='general';
+  screen('Sesiune terminată',`<div class="card"><div class="eyebrow">Verificare</div><div class="big">${score}/${n}</div><h2>${r>=.8?'Excelent!':r>=.5?'Bine, mai exersează puțin.':'Repetă cuvintele în jocuri.'}</h2>
+   <p class="muted">Ai ${learnedCount()} cuvinte învățate. Serie: ${st.streak} ${st.streak===1?'zi':'zile'} la rând.</p></div>
+   ${fromTopic?`<button class="btn wide" data-go="topic" data-arg="${esc(t.src)}">Înapoi la domeniu</button>`:''}
+   <button class="btn ${fromTopic?'ghost ':''}wide" data-go="games">Joacă-te cu cuvintele învățate</button><button class="btn ghost wide" data-go="home">Acasă</button>`);
+ });
+};
+R.review=()=>{
+ const pool=Object.keys(st.learned).map(W).filter(Boolean);
+ if(pool.length<4){screen('Recapitulare','<div class="card"><p>Ai nevoie de cel puțin 4 cuvinte învățate pentru recapitulare.</p><button class="btn" data-go="daily">Sesiunea zilnică</button></div>');return}
+ const ws=shuffle(pool).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
+ const m=screen('Recapitulare','<div class="card" id="q"></div>');
+ runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i%4])),(s)=>{screen('Recapitulare',`<div class="card"><div class="big">${s}/${ws.length}</div><p class="muted">Recapitularea zilnică fixează cuvintele în memoria de lungă durată.</p></div><button class="btn wide" data-go="review">Încă o rundă</button><button class="btn ghost wide" data-go="home">Acasă</button>`)});
+};
+
+/* ---------- Domenii ---------- */
+function topicStats(id){const ws=TW[id]||[];return{n:ws.length,l:ws.filter(w=>st.learned[w.en]).length}}
+R.domains=()=>{
+ const groups=[...new Set(TOPICS.map(t=>t.g))];
+ const m=screen('Vocabular pe domenii',`<p class="muted">Cuvinte de specialitate, cu pronunție verificată, la fel ca sesiunea zilnică. Fiecare sesiune de domeniu contează și pentru seria de zile.</p>
+ ${groups.map(g=>`<div class="eyebrow">${esc(g)}</div><div class="list">${TOPICS.filter(t=>t.g===g).map(t=>{const s=topicStats(t.id);return`<button class="li" data-go="topic" data-arg="${esc(t.id)}"><span class="t"><b>${esc(t.t)}</b><span>${esc(t.d||'')}${t.d?' · ':''}${s.l} din ${s.n} învățate</span></span><span class="mini"><i style="width:${s.n?s.l/s.n*100:0}%"></i></span></button>`}).join('')}</div>`).join('')}
+ <div class="card"><div class="eyebrow">Subiectul tău</div><h3>Vrei alt domeniu?</h3><p class="small muted">Scrie orice subiect (de exemplu: instalații electrice, aeroport, medic, mașini) și Claude îți pregătește 10 cuvinte. Poți cere oricând încă 10.</p>
+ <div id="nt"></div></div>`);
+ const nt=m.querySelector('#nt');
+ if(!sampleFn){nt.innerHTML='<div class="note">Funcționează când aplicația e deschisă în Claude.</div>';return}
+ nt.innerHTML=`<form class="typef"><input type="text" id="topicname" maxlength="60" placeholder="Subiectul, în română sau engleză"><button class="btn">Creează</button></form><div id="gst"></div>`;
+ nt.querySelector('form').onsubmit=e=>{e.preventDefault();const name=nt.querySelector('input').value.trim();if(!name)return;
+  const t={id:'c'+Date.now().toString(36),g:'Subiectul tău',t:name,d:''};st.customTopics.push(t);attachTopic(t);save();
+  generate({topic:t.id},nt.querySelector('#gst'),()=>go('topic',t.id))};
+};
+R.topic=id=>{
+ const t=TOPICS.find(x=>x.id===id);if(!t){go('domains');return}
+ const ws=TW[id]||[];const s=topicStats(id);const left=s.n-s.l;
+ const m=screen(esc(t.t),`<div class="card"><div class="eyebrow">${esc(t.g)}</div><h2>${esc(t.t)}</h2>
+  <div class="prog"><span style="width:${s.n?s.l/s.n*100:0}%"></span></div><p class="small muted">${s.l} din ${s.n} cuvinte învățate</p>
+  ${left?`<button class="btn wide" id="learn">Învață ${Math.min(10,left)} cuvinte noi</button>`:s.n?'<div class="verdict ok">Ai învățat toate cuvintele de aici.</div>':''}
+  ${s.n>=4?`<button class="btn ghost wide" id="tst">Test pe domeniu</button>`:''}
+  <div id="gen"></div></div>
+  ${s.n?`<div class="card"><div class="eyebrow">Toate cuvintele · apasă ca să auzi</div><div class="list">${ws.map((w,i)=>`<button class="li" data-i="${i}"><span class="tick ${st.learned[w.en]?'done':''}">${st.learned[w.en]?'✓':''}</span><span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div></div>`:''}`);
+ const lb=m.querySelector('#learn');if(lb)lb.onclick=()=>startSession(id);
+ const tb=m.querySelector('#tst');if(tb)tb.onclick=()=>topicTest(id);
+ m.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>say(ws[+b.dataset.i].en));
+ genButton(m.querySelector('#gen'),{topic:id},()=>go('topic',id));
+};
+function topicTest(id){
+ const t=TOPICS.find(x=>x.id===id);const ws=TW[id];const learned=ws.filter(w=>st.learned[w.en]);
+ const pool=shuffle(learned.length>=4?learned:ws).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
+ const m=screen(esc(t.t),'<div class="card" id="q"></div>');
+ runQuiz(m.querySelector('#q'),pool.map((w,i)=>qWord(w,modes[i%4])),s=>{
+  screen(esc(t.t),`<div class="card"><div class="eyebrow">Test pe domeniu</div><div class="big">${s}/${pool.length}</div><p class="muted">${learned.length>=4?'Din cuvintele învățate aici.':'Din toate cuvintele domeniului: unele nu le-ai învățat încă.'}</p></div>
+   <button class="btn wide" data-go="topic" data-arg="${esc(id)}">Înapoi la domeniu</button>`)});
+}
+function genButton(host,ctx,onDone){
+ if(!host)return;
+ if(!sampleFn){host.innerHTML='<p class="small muted">Cuvinte noi generate de Claude: disponibil când aplicația e deschisă în Claude.</p>';return}
+ host.innerHTML=`<button class="btn ghost wide" id="gb">Generează 10 cuvinte noi cu Claude</button><div id="gst"></div>`;
+ host.querySelector('#gb').onclick=()=>{host.querySelector('#gb').disabled=true;generate(ctx,host.querySelector('#gst'),onDone,()=>{host.querySelector('#gb').disabled=false})};
+}
+async function generate(ctx,out,onDone,onFail){
+ const t=ctx.topic?TOPICS.find(x=>x.id===ctx.topic):null;const lv=st.level||'B1';
+ const about=t?`din domeniul „${t.t}”${t.g!=='Subiectul tău'?' ('+t.g+(t.d?': '+t.d:'')+')':''}, termeni folosiți efectiv de profesioniști, potriviți pentru un elev de nivel ${lv}`:`de vocabular general, nivel ${ctx.level} (CEFR), cuvinte foarte folosite în conversație`;
+ const avoid=ALLW.map(w=>w.en).join(', ');
+ const prompt=`Ești profesor de engleză pentru vorbitori de limba română. Generează exact 10 cuvinte sau expresii englezești ${about}.
+Pentru fiecare dă: "en" = termenul în engleză (fără articol, litere mici în afară de acronime), "ro" = traducerea în română, așa cum o folosesc specialiștii români (scurt), "ex" = o propoziție exemplu naturală în engleză, maxim 12 cuvinte, fără ghilimele.
+Nu folosi niciunul dintre aceste cuvinte, sunt deja în aplicație: ${avoid}
+Răspunde doar cu un array JSON, de forma: [{"en":"...","ro":"...","ex":"..."}]`;
+ out.innerHTML='<p class="small muted">Claude pregătește cuvintele…</p>';
+ try{
+  const arr=await sampleFn.json(prompt,{cache:false});let added=0;
+  if(Array.isArray(arr))for(const x of arr){
+   if(!x||typeof x.en!=='string'||typeof x.ro!=='string'||typeof x.ex!=='string')continue;
+   const w={en:x.en.trim().slice(0,60),ro:x.ro.trim().slice(0,80),ex:x.ex.trim().slice(0,160)};if(!w.en||!w.ro||!w.ex)continue;
+   if(t)w.tp=t.id;else w.lv=ctx.level;
+   if(attachWord(w)){st.custom.push(w);added++}}
+  save();
+  if(added){out.innerHTML=`<div class="verdict ok">Am adăugat ${added} cuvinte noi.</div>`;setTimeout(onDone,600)}
+  else{out.innerHTML='<div class="verdict bad">Nu am primit cuvinte noi. Încearcă din nou.</div>';onFail&&onFail()}
+ }catch(e){
+  const msg={not_granted:'Nu ai permis aplicației să folosească Claude.',rate_limited:'Prea multe cereri acum. Încearcă peste câteva minute.',sampling_disabled:'Claude nu e disponibil pentru acest cont.',invalid_json:'Răspunsul nu a venit în formatul corect. Încearcă din nou.'}[e&&e.code]||'Nu am putut genera acum. Încearcă din nou.';
+  out.innerHTML=`<div class="verdict bad">${msg}</div>`;onFail&&onFail()}
+}
+
+/* ---------- Pronunție ---------- */
+R.pronList=()=>{
+ screen('Pronunție',`<p class="muted">Fiecare exercițiu trece mai departe doar când pronunți corect.</p><div class="list">${PRON.map(c=>{const d=st.pronDone[c.id];return`<button class="li" data-go="pronDrill" data-arg="${c.id}"><span class="tick ${d?'done':''}">${d?'✓':''}</span><span class="t"><b>${c.t}</b><span>${c.items.slice(0,3).join(' · ')}</span></span></button>`}).join('')}</div>`);
+};
+R.pronDrill=id=>{
+ const c=PRON.find(x=>x.id===id);let i=0;
+ const m=screen(c.t,`<div class="note">${c.tip}</div><div class="prog"><span id="pg" style="width:0"></span></div><div class="card" id="pr"></div><button class="btn wide" id="nx" disabled>Pronunță corect ca să continui</button>`);
+ const nx=m.querySelector('#nx');
+ function step(){
+  if(i>=c.items.length){st.pronDone[c.id]=today();save();screen(c.t,`<div class="card"><h2>Ai trecut toate cele ${c.items.length} exerciții!</h2><p class="muted">Repetă mâine încă o dată. Sunetele se fixează prin repetiție zilnică.</p></div><button class="btn wide" data-go="pronList">Alt exercițiu</button>`);return}
+  m.querySelector('#pg').style.width=(i/c.items.length*100)+'%';nx.disabled=true;nx.textContent='Pronunță corect ca să continui';
+  pron(m.querySelector('#pr'),c.items[i],{onPass:()=>{nx.disabled=false;nx.textContent=i+1<c.items.length?'Următorul':'Termină';nx.focus()}});
+  setTimeout(()=>say(c.items[i]),250);
+ }
+ nx.onclick=()=>{i++;step()};step();
+};
+
+/* ---------- Texte de memorat ---------- */
+R.texts=()=>{
+ screen('Texte de memorat',`<div class="note">Cum funcționează: 1) asculți tot textul; 2) îl repeți propoziție cu propoziție; 3) îl spui din memorie, fără text. Treci la următoarea propoziție doar dacă e corectă.</div>
+ <div class="list">${TEXTS.map(t=>`<button class="li" data-go="text" data-arg="${t.id}"><span class="tick ${st.textsDone[t.id]?'done':''}">${st.textsDone[t.id]?'✓':''}</span><span class="t"><b>${t.t}</b><span>${t.lines.length} propoziții</span></span><span class="lv">${t.lv}</span></button>`).join('')}</div>`);
+};
+R.text=id=>{
+ const tx=TEXTS.find(t=>t.id===id);
+ const m=screen(tx.t,`<div class="card"><div class="eyebrow">Pasul 1 · Ascultă</div><div id="lines">${tx.lines.map((l,i)=>`<p data-i="${i}">${esc(l)}</p>`).join('')}</div>
+  <div class="row"><button class="btn ghost" id="all">${IC.spk} Tot textul</button><button class="btn ghost" id="alls">${IC.slow} Rar</button></div></div>
+  <button class="btn wide" id="go2">Pasul 2 · Repetă propoziție cu propoziție</button>
+  <button class="btn ghost wide" id="go3">Pasul 3 · Spune din memorie</button>`);
+ const hl=async rate=>{for(let i=0;i<tx.lines.length;i++){m.querySelectorAll('#lines p').forEach(p=>p.style.background='');const p=m.querySelector(`#lines p[data-i="${i}"]`);if(!p)return;p.style.background='var(--accent-soft)';await say(tx.lines[i],rate);await new Promise(r=>setTimeout(r,400))}m.querySelectorAll('#lines p').forEach(p=>p.style.background='')};
+ m.querySelector('#all').onclick=()=>hl(.95);m.querySelector('#alls').onclick=()=>hl(.7);
+ m.querySelector('#go2').onclick=()=>textDrill(tx,false);m.querySelector('#go3').onclick=()=>textDrill(tx,true);
+};
+function textDrill(tx,memory){
+ let i=0;
+ const m=screen(tx.t,`<div class="eyebrow">${memory?'Pasul 3 · Din memorie':'Pasul 2 · Repetă'}</div><div class="prog"><span id="pg"></span></div><div class="card" id="pr"></div><button class="btn wide" id="nx" disabled>Spune corect ca să continui</button>`);
+ const nx=m.querySelector('#nx');
+ function step(){
+  if(i>=tx.lines.length){if(memory)st.textsDone[tx.id]=today();save();
+   screen(tx.t,`<div class="card"><h2>${memory?'Ai spus tot textul din memorie!':'Ai repetat tot textul.'}</h2><p class="muted">${memory?'Spune-l încă o dată mâine, fără să te uiți.':'Acum încearcă din memorie.'}</p></div>${memory?'':`<button class="btn wide" id="mm">Pasul 3 · Din memorie</button>`}<button class="btn ghost wide" data-go="texts">Alte texte</button>`);
+   const mm=document.getElementById('mm');if(mm)mm.onclick=()=>textDrill(tx,true);return}
+  m.querySelector('#pg').style.width=(i/tx.lines.length*100)+'%';nx.disabled=true;nx.textContent='Spune corect ca să continui';
+  const line=tx.lines[i];const hint='Începe cu: „'+line.split(' ').slice(0,2).join(' ')+' …”';
+  pron(m.querySelector('#pr'),line,{hideText:memory,hint,onPass:()=>{nx.disabled=false;nx.textContent=i+1<tx.lines.length?'Următoarea propoziție':'Termină';nx.focus()}});
+  if(!memory)setTimeout(()=>say(line),250);
+ }
+ nx.onclick=()=>{i++;step()};step();
+}
+
+/* ---------- Vorbit liber ---------- */
+let sampleFn=null;
+(async()=>{try{if(window.claude&&claude.use)sampleFn=await claude.use('sample')}catch(e){sampleFn=null}})();
+R.speak=()=>{
+ const lv=st.level||'A2';const list=[...(SPEAK[lv]||[]),...(SPEAK[LEVELS[Math.max(0,LEVELS.indexOf(lv)-1)]]||[])];
+ let topic=list[Math.random()*list.length|0];
+ const m=screen('Vorbit liber',`<div class="card"><div class="eyebrow">Subiectul tău</div><div class="qp" id="tp"></div>
+  <div class="row"><button class="btn ghost" id="lt">${IC.spk} Ascultă</button><button class="btn ghost" id="nt">Alt subiect</button></div></div>
+  <div class="card"><p class="small muted">Vorbește 30–60 de secunde. ${SR?'Apasă microfonul și vorbește; textul apare mai jos. Dacă microfonul nu merge, folosește microfonul tastaturii.':'Folosește microfonul tastaturii (setată pe engleză) în câmpul de mai jos.'}</p>
+  ${SR?`<div class="pron"><button class="mic" id="mk">${IC.mic}</button><div class="mic-l" id="ml">Apasă ca să începi</div></div>`:''}
+  <textarea id="ans" placeholder="Răspunsul tău în engleză apare aici (poți și scrie)"></textarea>
+  <button class="btn wide" id="chk">Corectează-mă</button></div>
+  <div class="card" id="out" hidden></div>`);
+ const tp=m.querySelector('#tp'),ans=m.querySelector('#ans'),out=m.querySelector('#out');
+ const setT=()=>{tp.textContent=topic};setT();
+ m.querySelector('#lt').onclick=()=>say(topic);
+ m.querySelector('#nt').onclick=()=>{topic=list[Math.random()*list.length|0];setT();out.hidden=true};
+ const mk=m.querySelector('#mk');let rec=null;
+ if(mk)mk.onclick=()=>{
+  if(rec){rec.stop();return}
+  if(micState==='blocked'){m.querySelector('#ml').textContent='Microfonul e blocat aici. Folosește microfonul tastaturii.';ans.focus();return}
+  try{rec=new SR()}catch(e){return}rec.lang='en-US';rec.continuous=true;rec.interimResults=true;const base=ans.value?ans.value+' ':'';
+  rec.onresult=e=>{let s='';for(const r of e.results)s+=r[0].transcript;ans.value=base+s};
+  rec.onerror=e=>{if(['not-allowed','service-not-allowed'].includes(e.error)){micState='blocked';m.querySelector('#ml').textContent='Microfonul e blocat aici. Folosește microfonul tastaturii.'}};
+  rec.onend=()=>{rec=null;mk.classList.remove('on');if(micState!=='blocked')m.querySelector('#ml').textContent='Apasă ca să continui'};
+  try{rec.start();mk.classList.add('on');m.querySelector('#ml').textContent='Te ascult… apasă din nou ca să oprești'}catch(e){}
+ };
+ m.querySelector('#chk').onclick=async()=>{
+  const a=ans.value.trim();if(!a){ans.focus();return}
+  const words=a.split(/\s+/).length;out.hidden=false;
+  if(!sampleFn){out.innerHTML=`<h3>Ai spus ${words} cuvinte</h3><p class="muted">Corectarea automată funcționează când aplicația e deschisă în Claude. Până atunci, citește-ți răspunsul cu voce tare de două ori.</p>`;return}
+  out.innerHTML='<h3>Corectura</h3><div class="ai muted">Mă gândesc…</div>';const box=out.querySelector('.ai');
+  const prompt=`Ești profesor de engleză pentru un vorbitor de română, nivel ${lv}. Elevul a răspuns ORAL (transcriere automată, ignoră lipsa punctuației și majusculele) la întrebarea: "${topic}".\n\nRăspunsul elevului:\n"""${a.slice(0,3000)}"""\n\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nCUVINTE NOI DE FOLOSIT:\n- cuvânt englezesc = traducere (3 cuvinte potrivite nivelului)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
+  try{const r=await sampleFn(prompt,{cache:false,modelTier:'default',onText:({text})=>{box.classList.remove('muted');box.textContent=text}});box.textContent=r.text;
+   const mt=r.text.match(/VERSIUNEA CORECTĂ:\s*\n([\s\S]*?)\n\s*GREȘELI/);if(mt){const b=document.createElement('button');b.className='btn ghost';b.innerHTML=IC.spk+' Ascultă versiunea corectă';const fixed=mt[1].trim();b.onclick=()=>say(fixed);out.appendChild(b)}}
+  catch(e){box.textContent=e.text||'';const msg={not_granted:'Corectarea nu a fost permisă. Poți exersa în continuare citind cu voce tare.',rate_limited:'Prea multe cereri acum. Încearcă din nou peste câteva minute.',sampling_disabled:'Corectarea nu e disponibilă pentru acest cont.'}[e.code]||'Nu am putut corecta acum. Încearcă din nou.';
+   if(e.code!=='cancelled'){const p=document.createElement('p');p.className='muted';p.textContent=msg;out.appendChild(p)}}
+ };
+};
+
+/* ---------- Gramatică ---------- */
+R.gramList=()=>{
+ screen('Gramatică',`<p class="muted">Doar ce îți trebuie ca să vorbești corect. Regula, exemple ascultate, 5 exerciții, apoi o spui cu voce tare.</p><div class="list">${GRAMMAR.map(g=>{const s=st.grammar[g.id];return`<button class="li" data-go="gram" data-arg="${g.id}"><span class="tick ${s!=null?'done':''}">${s!=null?s:''}</span><span class="t"><b>${g.t}</b><span>${s!=null?'Ultimul scor: '+s+'/5':'Neîncepută'}</span></span><span class="lv">${g.lv}</span></button>`}).join('')}</div>`);
+};
+R.gram=id=>{
+ const g=GRAMMAR.find(x=>x.id===id);
+ const m=screen(g.t,`<div class="card"><div class="eyebrow">Regula</div><p class="rule">${esc(g.rule)}</p></div>
+  <div class="card"><div class="eyebrow">Exemple</div><div class="list">${g.ex.map((e,i)=>`<button class="li" data-e="${i}"><span class="tick">${IC.spk}</span><span class="t"><b>${esc(e)}</b></span></button>`).join('')}</div></div>
+  <button class="btn wide" id="st">Fac exercițiile</button>`);
+ m.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>say(g.ex[+b.dataset.e]));
+ m.querySelector('#st').onclick=()=>{
+  const m2=screen(g.t,'<div class="card" id="q"></div>');
+  const fill=(p,c)=>{const parts=c==='(nimic)'?['']:c.split(' … ');let k=0;return p.replace(/___/g,()=>parts[k++]??'').replace(/\s+/g,' ').trim()};
+  const qs=g.q.map(([p,c,o])=>mc(esc(p).replace(/___/g,'<b>___</b>'),c,o,{sayAfter:fill(p,c)}));
+  runQuiz(m2.querySelector('#q'),qs,(s)=>{
+   st.grammar[g.id]=s;save();let k=0;
+   const m3=screen(g.t,`<div class="card"><div class="big">${s}/5</div><p class="muted">${s>=4?'Foarte bine.':'Recitește regula și mai încearcă o dată.'}</p></div>
+    <div class="card"><h3>Acum spune exemplele cu voce tare</h3><div id="pr"></div></div><button class="btn wide" id="nx" disabled>Spune corect ca să continui</button>`);
+   const nx=m3.querySelector('#nx');
+   const step=()=>{if(k>=g.ex.length){nx.textContent='Gata, înapoi la lecții';nx.disabled=false;nx.onclick=()=>go('gramList');return}
+    nx.disabled=true;nx.textContent='Spune corect ca să continui';pron(m3.querySelector('#pr'),g.ex[k],{onPass:()=>{nx.disabled=false;nx.textContent=k+1<g.ex.length?'Următorul exemplu':'Termină';nx.focus()}})};
+   nx.onclick=()=>{k++;step()};step();
+  });
+ };
+};
+
+/* ---------- Jocuri ---------- */
+function gamePool(){const l=Object.keys(st.learned).map(W).filter(Boolean);return l.length>=8?l:[...l,...WORDS[st.level]].filter((w,i,a)=>a.indexOf(w)===i)}
+R.games=()=>{
+ screen('Jocuri',`<p class="muted">${learnedCount()>=8?'Jocurile folosesc cuvintele pe care le-ai învățat.':'Până înveți 8 cuvinte, jocurile folosesc lista nivelului tău.'}</p><div class="grid">
+  <button class="tile" data-go="gMatch"><h3>Perechi</h3><p>Leagă cuvântul englezesc de traducere. Contra cronometru.</p></button>
+  <button class="tile" data-go="gListen"><h3>Ascultă și alege</h3><p>Auzi cuvântul, alegi ce înseamnă.</p></button>
+  <button class="tile" data-go="gBuild"><h3>Construiește propoziția</h3><p>Pune cuvintele în ordine, apoi o spui.</p></button>
+  <button class="tile" data-go="gDict"><h3>Dictare</h3><p>Auzi și scrii corect.</p></button></div>`);
+};
+R.gMatch=()=>{
+ const ws=shuffle(gamePool()).slice(0,6);const L=shuffle(ws),Rr=shuffle(ws);let sel=null,left=6,miss=0;const t0=Date.now();
+ const m=screen('Perechi',`<p class="muted">Apasă un cuvânt în engleză, apoi traducerea lui.</p><div class="match" id="mt">${L.map((w,i)=>`<button class="opt" data-s="en" data-w="${esc(w.en)}" style="grid-column:1;grid-row:${i+1}">${esc(w.en)}</button>`).join('')}${Rr.map((w,i)=>`<button class="opt" data-s="ro" data-w="${esc(w.en)}" style="grid-column:2;grid-row:${i+1}">${esc(w.ro)}</button>`).join('')}</div><div id="res"></div>`);
+ m.querySelectorAll('.match .opt').forEach(b=>b.onclick=()=>{
+  if(b.classList.contains('gone'))return;
+  if(b.dataset.s==='en'){m.querySelectorAll('[data-s=en]').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');sel=b;say(b.dataset.w);return}
+  if(!sel)return;
+  if(sel.dataset.w===b.dataset.w){sel.classList.remove('sel');sel.classList.add('gone');b.classList.add('gone');sel.disabled=b.disabled=true;sel=null;left--;
+   if(!left){const s=Math.round((Date.now()-t0)/1000);m.querySelector('#res').innerHTML=`<div class="card"><h2>${s} secunde, ${miss} greșeli</h2><button class="btn wide" data-go="gMatch">Încă o rundă</button></div>`}}
+  else{miss++;b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),500)}
+ });
+};
+R.gListen=()=>{const ws=shuffle(gamePool()).slice(0,10);const m=screen('Ascultă și alege','<div class="card" id="q"></div>');runQuiz(m.querySelector('#q'),ws.map(w=>qWord(w,'listen')),s=>endGame('Ascultă și alege',s,ws.length,'gListen'))};
+R.gDict=()=>{const ws=shuffle(gamePool()).slice(0,10);const m=screen('Dictare','<div class="card" id="q"></div>');runQuiz(m.querySelector('#q'),ws.map(w=>qWord(w,'dict')),s=>endGame('Dictare',s,ws.length,'gDict'))};
+function endGame(t,s,n,again){screen(t,`<div class="card"><div class="big">${s}/${n}</div><p class="muted">${s/n>=.8?'Foarte bine!':'Mai joacă o rundă, se fixează.'}</p></div><button class="btn wide" data-go="${again}">Încă o rundă</button><button class="btn ghost wide" data-go="games">Alte jocuri</button>`)}
+R.gBuild=()=>{
+ const ws=shuffle(gamePool()).slice(0,5);let i=0,ok=0;
+ const m=screen('Construiește propoziția','<div class="card" id="g"></div>');const card=m.querySelector('#g');
+ function step(){
+  if(i>=ws.length){endGame('Construiește propoziția',ok,ws.length,'gBuild');return}
+  const sent=ws[i].ex;const toks=sent.split(' ');const order=shuffle(toks.map((t,k)=>k));const pick=[];
+  card.innerHTML=`<div class="prog"><span style="width:${i/ws.length*100}%"></span></div><div class="qn">Propoziția ${i+1} din ${ws.length} · cu <b>${esc(ws[i].en)}</b> (${esc(ws[i].ro)})</div>
+   <div class="slot" id="slot"></div><div class="bank" id="bank">${order.map(k=>`<button class="tok" data-k="${k}">${esc(toks[k])}</button>`).join('')}</div>
+   <div class="row"><button class="btn ghost" id="clr">Șterge</button><button class="btn" id="chk" disabled>Verifică</button></div><div class="fb"></div>`;
+  const slot=card.querySelector('#slot'),chk=card.querySelector('#chk');
+  const draw=()=>{slot.innerHTML=pick.map((k,j)=>`<button class="tok" data-j="${j}">${esc(toks[k])}</button>`).join('');card.querySelectorAll('#bank .tok').forEach(b=>b.classList.toggle('used',pick.includes(+b.dataset.k)));chk.disabled=pick.length!==toks.length;
+   slot.querySelectorAll('.tok').forEach(b=>b.onclick=()=>{pick.splice(+b.dataset.j,1);draw()})};
+  card.querySelectorAll('#bank .tok').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;if(!pick.includes(k)){pick.push(k);draw()}});
+  card.querySelector('#clr').onclick=()=>{pick.length=0;draw()};
+  chk.onclick=()=>{const built=pick.map(k=>toks[k]).join(' ');const good=norm(built)===norm(sent);if(good)ok++;
+   const fb=card.querySelector('.fb');chk.disabled=true;card.querySelectorAll('.tok').forEach(b=>b.disabled=true);
+   fb.innerHTML=`<div class="verdict ${good?'ok':'bad'}">${good?'Corect!':'Corect era: '+esc(sent)}</div><div id="sp"></div><button class="btn wide" id="nx">Următoarea</button>`;
+   say(sent);pron(fb.querySelector('#sp'),sent,{});fb.querySelector('#nx').onclick=()=>{i++;step()}};
+ }
+ step();
+};
+
+/* ---------- Test săptămânal ---------- */
+R.weekly=()=>{
+ const all=Object.entries(st.learned);const week=all.filter(([,v])=>daysAgo(v.d)<=6).map(([k])=>W(k)).filter(Boolean);
+ const pool=week.length>=10?week:all.map(([k])=>W(k)).filter(Boolean);
+ const hist=st.weekly.slice(-6).reverse();
+ if(pool.length<10){screen('Test săptămânal',`<div class="card"><h2>Mai ai nevoie de ${10-pool.length} cuvinte</h2><p class="muted">Testul se deblochează după primele 10 cuvinte învățate (o sesiune zilnică).</p><button class="btn" data-go="daily">Sesiunea de azi</button></div>`);return}
+ const m=screen('Test săptămânal',`<div class="card"><h2>${week.length>=10?'Cuvintele din ultimele 7 zile':'Toate cuvintele învățate'}</h2><p class="muted">15 întrebări: 5 traduceri, 5 de ascultare, 5 de scris. Fără indicii pe parcurs, vezi totul la final.</p><button class="btn wide" id="go">Încep testul</button></div>
+  ${hist.length?`<div class="card"><h3>Rezultate anterioare</h3><table class="tbl">${hist.map(h=>`<tr><td>${h.date}</td><td style="text-align:right"><b>${h.score}/${h.n}</b></td></tr>`).join('')}</table></div>`:''}`);
+ m.querySelector('#go').onclick=()=>{
+  const ws=shuffle(pool);const pick=[];for(let i=0;i<15;i++)pick.push(ws[i%ws.length]);
+  const modes=['en2ro','listen','type'];const qs=pick.map((w,i)=>qWord(w,modes[Math.floor(i/5)]));
+  const m2=screen('Test săptămânal','<div class="card" id="q"></div>');
+  runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{
+   st.weekly.push({date:today(),score:s,n:15});save();
+   const wl=[...new Set(wrong.map(q=>q.answer!=null&&q.type==='type'?q.answer:(q.sayAfter||q.audio)).filter(Boolean))];
+   screen('Rezultat test',`<div class="card"><div class="eyebrow">Testul săptămânii</div><div class="big">${s}/15</div><h2>${s>=13?'Excelent!':s>=9?'Bine.':'Mai repetă cuvintele săptămâna asta.'}</h2></div>
+    ${wl.length?`<div class="card"><h3>De repetat</h3><div class="list">${wl.map(en=>{const w=W(en);return w?`<button class="li" data-say="${esc(w.en)}"><span class="tick">${IC.spk}</span><span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span></button>`:''}).join('')}</div></div>`:''}
+    ${review}
+    <button class="btn wide" data-go="home">Acasă</button>`);
+   document.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
+  },{feedback:false});
+ };
+};
+
+/* ---------- Microfon și voce ---------- */
+const LIVE_URL='https://cazacubeniamin1988-dot.github.io/speakup/';
+R.voice=()=>{
+ const inClaude=!!(window.claude&&claude.use)&&window.top!==window;
+ const micOk=micState==='ok',micNo=micState==='blocked'||micState==='none';
+ const m=screen('Microfon și voce',`
+ <div class="card"><div class="eyebrow">Vocea profesorului</div><h3>Alege vocea care sună cel mai natural</h3>
+  <p class="small muted">Vocile vin din telefonul tău. Cele marcate „naturală” sună cel mai uman.</p>
+  <div class="list" id="vl"></div>
+  <label for="rt" class="small"><b>Viteză</b> <span id="rv"></span></label>
+  <input type="range" id="rt" min="0.7" max="1.15" step="0.05" style="width:100%">
+ </div>
+ <div class="card"><div class="eyebrow">Voci mai umane pe telefon</div>
+  <p class="small"><b>iPhone:</b> Setări → Accesibilitate → Conținut vorbit → Voci → Engleză → descarcă o voce <b>Premium</b> sau <b>Îmbunătățită</b> (de exemplu Ava, Zoe sau Evan). Apoi revino aici și alege-o.</p>
+  <p class="small"><b>Android:</b> Setări → Sistem → Limbi → Ieșire text în vorbire → Motor Google → Instalează date vocale → Engleză (SUA). Alege o voce și descarc-o.</p></div>
+ <div class="card"><div class="eyebrow">Verificarea pronunției</div>
+  <h3>${micOk?'Microfonul aplicației funcționează':micNo?'Aici microfonul aplicației e blocat':'Microfonul nu a fost încă încercat'}</h3>
+  <p class="small">Verificarea reală se face când <b>aplicația</b> te ascultă: recunoașterea vocală compară exact ce ai spus cu cuvântul corect, cuvânt cu cuvânt, și îți arată claritatea pronunției.</p>
+  <p class="small">În fereastra Claude, telefonul nu dă voie paginii să folosească microfonul. ${LIVE_URL?'Deschide aplicația în Chrome (Android) sau Safari (iPhone), de la adresa de mai jos, și acolo microfonul funcționează.':'Ca să meargă, aplicația trebuie deschisă direct în Chrome (Android) sau Safari (iPhone), de la o adresă web proprie.'}</p>
+  ${LIVE_URL?`<div class="typef"><input type="text" id="lu" readonly value="${esc(LIVE_URL)}"><button class="btn" id="cp">Copiază</button></div><a class="btn ghost wide" href="${esc(LIVE_URL)}" target="_blank" rel="noopener">Deschide în browser</a>`:''}
+  <p class="small muted">Progresul se salvează separat în fiecare loc unde deschizi aplicația.</p>
+  ${SR&&!micNo?`<button class="btn ghost" id="mt">Testează microfonul</button><div id="mr"></div>`:''}</div>`);
+ const vl=m.querySelector('#vl');
+ const draw=()=>{if(!voices.length){vl.innerHTML='<p class="muted small">Telefonul nu a încărcat încă vocile. Revino peste câteva secunde.</p>';return}
+  vl.innerHTML=voices.slice(0,12).map((v,i)=>{const nat=vScore(v)>=40;return`<button class="li" data-v="${i}"><span class="tick ${voice===v?'done':''}">${voice===v?'✓':''}</span><span class="t"><b>${esc(v.name.replace(/Microsoft |Google |\(.*?\)/g,'').trim()||v.name)}</b><span>${esc(v.lang)}${nat?' · naturală':''}</span></span>${IC.spk}</button>`}).join('');
+  vl.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{voice=voices[+b.dataset.v];st.voice=voice.voiceURI;save();say("Hello! Let's practise English together. Great job today.");draw()})};
+ draw();if(!voices.length)setTimeout(()=>{loadVoices();draw()},1200);
+ const rt=m.querySelector('#rt'),rv=m.querySelector('#rv');rt.value=st.rate||1;rv.textContent=Math.round((st.rate||1)*100)+'%';
+ rt.oninput=()=>{st.rate=+rt.value;rv.textContent=Math.round(st.rate*100)+'%'};rt.onchange=()=>{save();say('This is how fast I will speak.')};
+ const cp=m.querySelector('#cp');if(cp)cp.onclick=()=>{navigator.clipboard?.writeText(LIVE_URL).then(()=>cp.textContent='Copiat',()=>{m.querySelector('#lu').select()})};
+ const mt=m.querySelector('#mt');if(mt)mt.onclick=async()=>{const mr=m.querySelector('#mr');mr.textContent='Spune: hello';try{const a=await listen();mr.innerHTML=`<div class="verdict ok">Funcționează. Am auzit: „${esc(a[0])}”</div>`}catch(e){if(['not-allowed','service-not-allowed','audio-capture'].includes(e))micState='blocked';mr.innerHTML=`<div class="verdict bad">${micState==='blocked'?'Microfonul e blocat aici.':'Nu am auzit nimic, mai încearcă.'}</div>`}};
+};
+
+/* ---------- Progres ---------- */
+R.progress=()=>{
+ const byLv=LEVELS.map(l=>[l,WORDS[l].filter(w=>st.learned[w.en]).length,WORDS[l].length]);
+ const top=st.style?Object.keys(st.style).sort((a,b)=>st.style[b]-st.style[a])[0]:null;
+ const m=screen('Progres',`
+ <div class="card"><div class="eyebrow">Nivel</div><h2>${st.level} · ${LNAME[st.level]}</h2>${st.placement?`<p class="muted small">Test de nivel: ${st.placement.score}/20, pe ${st.placement.date}</p>`:''}
+  <div class="row"><button class="btn ghost" data-go="placement">Refă testul de nivel</button><button class="btn ghost" data-go="pickLevel">Alege manual</button></div></div>
+ <button class="li" data-go="voice"><span class="tick">${IC.mic.replace('<svg ','<svg class="i" ')}</span><span class="t"><b>Microfon și voce</b><span>Alege o voce mai naturală, viteza, verificarea pronunției</span></span></button>
+ <div class="card"><div class="eyebrow">Cuvinte pe niveluri</div><div class="bars">${byLv.map(([l,a,b])=>`<div class="b"><span>${l}</span><i><span style="width:${a/b*100}%"></span></i><b>${a}</b></div>`).join('')}</div><p class="small muted">${ALLW.length} cuvinte în total în aplicație acum.</p></div>
+ <div class="card"><div class="eyebrow">Domenii</div><div class="bars wide">${TOPICS.map(t=>{const s=topicStats(t.id);return`<div class="b"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(t.t)}</span><i><span style="width:${s.n?s.l/s.n*100:0}%;background:var(--ok)"></span></i><b>${s.l}</b></div>`}).join('')}</div></div>
+ <div class="card"><div class="eyebrow">Stil de învățare</div><h3>${top?STYLES[top].n:'Necompletat'}</h3><div class="row"><button class="btn ghost" data-go="${top?'styleResult':'styleIntro'}">${top?'Vezi recomandările':'Fă testul'}</button>${top?'<button class="btn ghost" data-go="styleTest">Refă</button>':''}</div></div>
+ <div class="card"><div class="eyebrow">Teste săptămânale</div>${st.weekly.length?`<table class="tbl">${st.weekly.slice().reverse().map(h=>`<tr><td>${h.date}</td><td style="text-align:right"><b>${h.score}/${h.n}</b></td></tr>`).join('')}</table>`:'<p class="muted">Niciun test încă.</p>'}</div>
+ <div class="card"><div class="eyebrow">Profil</div><p>Nume: <b>${esc(st.name)}</b></p><button class="btn ghost" id="rst">Șterge tot progresul</button><div id="cf"></div></div>`);
+ m.querySelector('#rst').onclick=()=>{m.querySelector('#cf').innerHTML=`<div class="confirm"><b>Sigur? Se șterg toate cuvintele, scorurile și seria de zile.</b><div class="row"><button class="btn ghost" id="no">Renunț</button><button class="btn" id="yes" style="background:var(--bad);color:#fff">Șterge</button></div></div>`;
+  m.querySelector('#no').onclick=()=>m.querySelector('#cf').innerHTML='';m.querySelector('#yes').onclick=()=>{st=fresh();save();go('welcome')}};
+};
+
+go('home');
+</script></body></html>
