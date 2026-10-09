@@ -1,23 +1,33 @@
-<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13212A"><meta name="apple-mobile-web-app-capable" content="yes"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
+<!doctype html><html lang="ro"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#14213D"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Speak Up Engleză</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><style>
 /* Layout: o singură coloană de telefon, ecrane care se schimbă; microfonul rotund e centrul fiecărui exercițiu de vorbit */
+/* Layout: aplicație de telefon cu bară de file jos; fiecare categorie are culoarea ei, în tema șantierului (galben de avertizare + bleumarin) */
 :root{
-  --bg:#EEF2F1; --surface:#FFFFFF; --ink:#13212A; --muted:#5A6B72; --line:#D6DFDD;
-  --accent:#1E4FD6; --accent-soft:#E2E9FB; --on-accent:#FFFFFF;
-  --ok:#11804B; --ok-soft:#DDF2E6; --bad:#C2352B; --bad-soft:#FBE3E0; --mark:#FFD84D;
+  --bg:#F1F4F8; --surface:#FFFFFF; --ink:#14213D; --muted:#5B6782; --line:#DCE3EC;
+  --accent:#2457E6; --accent-soft:#E3EBFD; --on-accent:#FFFFFF;
+  --ok:#0F8A50; --ok-soft:#DCF4E6; --bad:#D2382C; --bad-soft:#FCE4E1; --mark:#FFC629;
+  --navy:#14213D; --on-navy:#FFFFFF;
+  --c-learn:#2457E6; --c-speak:#F06A2E; --c-play:#0E9F9A; --c-gram:#8A55D9; --c-test:#D63A6A; --c-diag:#E0A100; --c-text:#1F9D55;
+  --sh:0 1px 2px rgba(20,33,61,.06),0 6px 18px rgba(20,33,61,.07);
   --display:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif;
   --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --r:14px;
+  --r:18px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E1418; --surface:#172027; --ink:#E7EEF0; --muted:#94A4AB; --line:#29353D;
-  --accent:#7DA0FF; --accent-soft:#1D2A47; --on-accent:#0E1418;
-  --ok:#47C485; --ok-soft:#163327; --bad:#F27A6E; --bad-soft:#3A1F1C; --mark:#FFD84D; color-scheme:dark}}
+  --bg:#0C1220; --surface:#151E30; --ink:#EAF0F8; --muted:#9AA8C0; --line:#26324A;
+  --accent:#7FA2FF; --accent-soft:#1C2A4D; --on-accent:#0C1220;
+  --ok:#4CCB8A; --ok-soft:#143326; --bad:#F2806F; --bad-soft:#3A1E1C; --mark:#FFC629;
+  --navy:#1B2A4C; --on-navy:#FFFFFF;
+  --c-learn:#7FA2FF; --c-speak:#FF8A57; --c-play:#3CC9C3; --c-gram:#B48CF2; --c-test:#F06C95; --c-diag:#FFC629; --c-text:#4CCB8A;
+  --sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E1418; --surface:#172027; --ink:#E7EEF0; --muted:#94A4AB; --line:#29353D;
-  --accent:#7DA0FF; --accent-soft:#1D2A47; --on-accent:#0E1418;
-  --ok:#47C485; --ok-soft:#163327; --bad:#F27A6E; --bad-soft:#3A1F1C; --mark:#FFD84D; color-scheme:dark}
+  --bg:#0C1220; --surface:#151E30; --ink:#EAF0F8; --muted:#9AA8C0; --line:#26324A;
+  --accent:#7FA2FF; --accent-soft:#1C2A4D; --on-accent:#0C1220;
+  --ok:#4CCB8A; --ok-soft:#143326; --bad:#F2806F; --bad-soft:#3A1E1C; --mark:#FFC629;
+  --navy:#1B2A4C; --on-navy:#FFFFFF;
+  --c-learn:#7FA2FF; --c-speak:#FF8A57; --c-play:#3CC9C3; --c-gram:#B48CF2; --c-test:#F06C95; --c-diag:#FFC629; --c-text:#4CCB8A;
+  --sh:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:0 40px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;padding-inline:16px;padding-block:0 110px}
 #app{max-width:560px;margin:0 auto}
 h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 h1{font-size:2rem;font-weight:800;letter-spacing:-.02em}
@@ -31,11 +41,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .back{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:40px;height:40px;font-size:1.2rem;display:grid;place-items:center}
 .chip{font-family:var(--display);font-weight:800;background:var(--ink);color:var(--bg);border-radius:8px;padding:3px 9px;font-size:.85rem;letter-spacing:.04em}
 .screen{display:flex;flex-direction:column;gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--sh)}
 .muted{color:var(--muted)}
 .small{font-size:.9rem}
 .eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--muted)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 18px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:48px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:13px 18px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:48px;transition:transform .12s}
+.btn:active,.tile:active,.li:active{transform:scale(.98)}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
 .btn.wide{width:100%}
@@ -55,11 +66,43 @@ svg.i{width:20px;height:20px;flex:none}
 .dots i{width:22px;height:8px;border-radius:4px;background:currentColor;opacity:.25}
 .dots i.on{opacity:1}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:118px}
-.tile h3{font-size:1.05rem}
-.tile p{font-size:.85rem;color:var(--muted);line-height:1.35}
-.tile .ico{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
-.tile.flag{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.tile{--c:var(--accent);background:color-mix(in srgb,var(--c) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 28%,var(--line));border-radius:var(--r);padding:16px;text-align:left;display:flex;flex-direction:column;gap:8px;min-height:128px;position:relative;overflow:hidden}
+.tile h3{font-size:1.06rem}
+.tile p{font-size:.84rem;color:var(--muted);line-height:1.35}
+.tile .ico{width:40px;height:40px;border-radius:12px;background:var(--c);color:#fff;display:grid;place-items:center;box-shadow:0 4px 10px color-mix(in srgb,var(--c) 35%,transparent)}
+.tile .ico svg{width:22px;height:22px}
+.tile .pill{position:absolute;top:12px;right:12px;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--c);color:#fff}
+.tile.flag{border-color:var(--c);box-shadow:0 0 0 1.5px var(--c) inset}
+.tile.wide{grid-column:1/-1;min-height:0;flex-direction:row;align-items:center;gap:14px}
+.tile.wide .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.t-learn{--c:var(--c-learn)}.t-speak{--c:var(--c-speak)}.t-play{--c:var(--c-play)}.t-gram{--c:var(--c-gram)}.t-test{--c:var(--c-test)}.t-diag{--c:var(--c-diag)}.t-text{--c:var(--c-text)}
+.t-diag .ico{color:#14213D}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px}
+.sec h2{font-size:1.2rem}
+/* card principal */
+.hero{background:var(--navy);color:var(--on-navy);border-radius:22px;padding:20px 18px 18px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;box-shadow:var(--sh)}
+.hero::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:repeating-linear-gradient(-45deg,var(--mark) 0 12px,#14213D 12px 24px)}
+.hero .hi{display:flex;align-items:center;gap:12px;margin-top:4px}
+.hero .lvbadge{width:52px;height:52px;border-radius:14px;background:var(--mark);color:#14213D;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.4rem;flex:none}
+.hero h1{font-size:1.6rem}
+.hero .sub{opacity:.8;font-size:.9rem}
+.hero .xpbar{background:rgba(255,255,255,.18)}
+.hero .hstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hero .hs{background:rgba(255,255,255,.08);border-radius:12px;padding:10px;display:flex;flex-direction:column}
+.hero .hs b{font-family:var(--display);font-size:1.45rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.hero .hs span{font-size:.75rem;opacity:.8;line-height:1.2}
+.hero .today2{background:rgba(255,255,255,.08);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.hero .dots i{background:var(--mark)}
+.hero .btn{background:var(--mark);color:#14213D}
+.hero .rankbtn{background:none;border:0;color:inherit;text-align:left;padding:0;display:flex;flex-direction:column;gap:6px}
+/* bara de file */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center}
+.tabs .in{display:grid;grid-template-columns:repeat(5,1fr);width:100%;max-width:560px}
+.tabs button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:.7rem;font-weight:700;color:var(--muted);border-radius:12px}
+.tabs button svg{width:24px;height:24px}
+.tabs button.on{color:var(--ink)}
+.tabs button.on .tico{background:var(--mark);color:#14213D}
+.tabs .tico{width:44px;height:28px;border-radius:999px;display:grid;place-items:center}
 .banner{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:.92rem}
 /* quiz */
 .prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
@@ -68,7 +111,7 @@ svg.i{width:20px;height:20px;flex:none}
 .qp{font-size:1.25rem;font-family:var(--display);font-weight:600;line-height:1.3}
 .qp b{background:linear-gradient(transparent 58%,var(--mark) 58%);color:var(--ink);padding:0 2px}
 .opts{display:flex;flex-direction:column;gap:9px}
-.opt{text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;min-height:50px}
+.opt{text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;min-height:52px;font-weight:600;box-shadow:0 1px 2px rgba(20,33,61,.05)}
 @media (hover:hover){.opt:hover:not([disabled]){border-color:var(--muted)}}
 .opt.mine{border-color:var(--ink);border-width:2px;font-weight:700}
 .tnav{display:flex;justify-content:space-between;gap:10px}
@@ -168,7 +211,7 @@ textarea{min-height:130px;resize:vertical}
 .ill .beam,.ill-s .beam{fill:none;stroke:var(--bad);stroke-width:2.5;stroke-dasharray:6 4}
 .ill .tx,.ill-s .tx{font:800 15px var(--display);fill:#13212A;letter-spacing:.08em}
 .picbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;width:max-content;max-width:min(440px,calc(100% - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.95rem;line-height:1.35}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:50;width:max-content;max-width:min(440px,calc(100% - 32px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:.95rem;line-height:1.35}
 .toast.lvl{background:var(--accent);color:var(--on-accent)}
 .toast.badge{border-left:6px solid var(--mark)}
 .rank{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;width:100%}
@@ -186,7 +229,7 @@ textarea{min-height:130px;resize:vertical}
 .linkbtn{background:none;border:0;color:var(--accent);text-decoration:underline;padding:4px}
 /* list items */
 .list{display:flex;flex-direction:column;gap:8px}
-.li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 14px;text-align:left;width:100%}
+.li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px;text-align:left;width:100%;box-shadow:0 1px 2px rgba(20,33,61,.05)}
 .li .t{flex:1;min-width:0}
 .li .t b{display:block;font-family:var(--display);font-weight:600}
 .li .t span{font-size:.85rem;color:var(--muted)}
@@ -2406,13 +2449,16 @@ const app=document.getElementById('app');
 /* Istoric de navigare: „Înapoi” duce la ecranul anterior, pas cu pas, nu direct acasă */
 const NAV=[];let cur=null,rendering=false,subScreen=false;
 const topLevel=(()=>{try{return window.top===window}catch(e){return false}})();
-function screen(title,html,{back=true}={}){
+const TABS=[['home','Acasă','home'],['learnHub','Învață','book'],['speakHub','Vorbește','talk'],['games','Exersează','game'],['progress','Eu','chart']];
+function screen(title,html,{back=true,tab=null}={}){
  stopVoice();if(!rendering)subScreen=true;
+ if(tab)back=false;
  const canBack=back&&(NAV.length||subScreen||(cur&&cur[0]!=='home'));
- app.innerHTML=`<header class="bar">${canBack?`<button class="back" data-back aria-label="Înapoi">←</button>`:''}<div class="bar-t">${title}</div>${canBack&&NAV.length>1?`<button class="back" data-go="home" aria-label="Acasă" title="Acasă">${IC.home}</button>`:''}${st.level?`<span class="chip" title="${LNAME[st.level]}">${st.level}</span>`:''}</header><main class="screen">${html}</main>`;
+ app.innerHTML=`<header class="bar">${canBack?`<button class="back" data-back aria-label="Înapoi">←</button>`:''}<div class="bar-t">${title}</div>${canBack&&NAV.length>1?`<button class="back" data-go="home" aria-label="Acasă" title="Acasă">${IC.home}</button>`:''}${st.level?`<span class="chip" title="${LNAME[st.level]}">${st.level}</span>`:''}</header><main class="screen">${html}</main>${tab?`<nav class="tabs" aria-label="Navigare"><div class="in">${TABS.map(([r,l,ic])=>`<button data-tab="${r}" class="${tab===r?'on':''}" aria-current="${tab===r?'page':'false'}"><span class="tico">${IC[ic]}</span>${l}</button>`).join('')}</div></nav>`:''}`;
  window.scrollTo(0,0);return app.querySelector('main');
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-back]');if(b){e.preventDefault();back();return}
+ const tb=e.target.closest('[data-tab]');if(tb){e.preventDefault();NAV.length=0;cur=['home'];if(tb.dataset.tab==='home')go('home');else go(tb.dataset.tab);return}
  const g=e.target.closest('[data-go]');if(!g)return;e.preventDefault();go(g.dataset.go,g.dataset.arg)});
 function render(r,arg){rendering=true;subScreen=false;try{(R[r]||R.home)(arg)}finally{rendering=false}}
 function go(r,arg){
@@ -2504,35 +2550,73 @@ R.styleResult=()=>{
 /* ---------- Acasă ---------- */
 function learnedCount(){return Object.keys(st.learned).length}
 function weekDots(){const out=[];for(let k=6;k>=0;k--){const d=new Date();d.setDate(d.getDate()-k);out.push(st.sessions[dstr(d)]!=null)}return out}
+const tile=(cls,goTo,arg,ico,title,desc,pill='',extra='')=>`<button class="tile ${cls} ${extra}" data-go="${goTo}"${arg?` data-arg="${arg}"`:''}>${pill?`<span class="pill">${pill}</span>`:''}<span class="ico">${ico}</span><h3>${title}</h3><p>${desc}</p></button>`;
+const tileW=(cls,goTo,arg,ico,title,desc,pill='')=>`<button class="tile wide ${cls}" data-go="${goTo}"${arg?` data-arg="${arg}"`:''}><span class="ico">${ico}</span><span class="tx"><h3>${title}</h3><p>${desc}</p></span>${pill?`<span class="lv">${pill}</span>`:''}</button>`;
+const ICD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+const ICR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
 R.home=()=>{
  if(!st.name){go('welcome');return}
  if(!st.level){go('pickLevel');return}
  const t=st.today&&st.today.date===today()?st.today:null;
  const doneToday=st.sessions[today()]!=null;
  const streak=(st.lastDay===today()||daysAgo(st.lastDay||'2000-01-01')===1)?st.streak:0;
- const isWeekend=[0,6].includes(new Date().getDay());
- const m=screen('Speak Up',`
- <div class="hello"><div class="eyebrow">${LNAME[st.level]} · ${st.level}</div><h1>Salut, ${esc(st.name)}!</h1></div>
- ${(!SR)?`<div class="banner">Browserul acesta nu are recunoaștere vocală. Pentru pronunție folosește microfonul tastaturii sau deschide aplicația în Chrome.</div>`:''}
- <div class="stats"><div class="stat"><b>${streak}</b><span>zile la rând</span></div><div class="stat"><b>${learnedCount()}</b><span>cuvinte învățate</span></div><div class="stat"><b>${st.pron||0}</b><span>pronunții corecte</span></div></div>
- ${(()=>{const L=levelInfo();const nb=Object.keys(st.badges||{}).length;return`<button class="rank" data-go="rewards"><div class="top"><span class="lvbadge">${L.n}</span><span class="t" style="flex:1;min-width:0"><span class="eyebrow">Gradul tău</span><b style="display:block;font-family:var(--display);font-size:1.15rem">${esc(L.name)}</b></span><span class="small muted">${nb} insigne</span></div><div class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></div><span class="small muted">${st.xp||0} XP · încă ${L.to-(st.xp||0)} XP până la nivelul ${L.n+1}</span></button>`})()}
- <div class="card today"><div class="eyebrow" style="color:inherit;opacity:.8">Sesiunea de azi</div>
-  <h2>${doneToday?'Gata pe azi. Bravo!':t?`Ai ajuns la cuvântul ${Math.min(t.idx+1,10)} din 10`:'10 cuvinte noi te așteaptă'}</h2>
-  <div class="dots" aria-label="Ultimele 7 zile">${weekDots().map(o=>`<i class="${o?'on':''}"></i>`).join('')}</div>
-  <button class="btn wide" data-go="daily">${doneToday?'Recapitulare sau încă 10':t?'Continuă':'Începe sesiunea'}</button></div>
- <button class="domcard" data-go="domains"><div class="eyebrow">Vocabular pe domenii</div><h2>Construcții, business, hotelier</h2>
-  <p class="small muted">${TOPICS.reduce((a,t)=>a+(TW[t.id]||[]).length,0)} termeni de specialitate, plus orice subiect vrei tu.</p>
-  <div class="tags">${TOPICS.filter(t=>t.g==='Construcții').slice(0,4).map(t=>`<span>${esc(t.t)}</span>`).join('')}<span>+ ${TOPICS.length-4}</span></div></button>
+ const isWeekend=[0,6].includes(new Date().getDay());const L=levelInfo();const nb=Object.keys(st.badges||{}).length;
+ const h=new Date().getHours();const hi=h<11?'Bună dimineața':h<18?'Bună ziua':'Bună seara';
+ const totalTerms=TOPICS.reduce((a,x)=>a+(TW[x.id]||[]).length,0);
+ screen('Speak Up',`
+ <section class="hero">
+  <button class="rankbtn" data-go="rewards"><span class="hi"><span class="lvbadge">${L.n}</span><span style="min-width:0"><span class="sub">${hi},</span><h1>${esc(st.name)}</h1><span class="sub">${esc(L.name)} · ${st.level} ${LNAME[st.level]}</span></span></span>
+   <span class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></span><span class="sub small">${st.xp||0} XP · încă ${L.to-(st.xp||0)} până la nivelul ${L.n+1} · ${nb} insigne</span></button>
+  <div class="hstats"><div class="hs"><b>${streak}</b><span>zile la rând</span></div><div class="hs"><b>${learnedCount()}</b><span>cuvinte</span></div><div class="hs"><b>${st.pron||0}</b><span>pronunții</span></div></div>
+  <div class="today2"><span class="sub small" style="text-transform:uppercase;letter-spacing:.08em;font-weight:700">Sesiunea de azi</span>
+   <b style="font-family:var(--display);font-size:1.2rem">${doneToday?'Gata pe azi. Bravo!':t?`Ai ajuns la cuvântul ${Math.min(t.idx+1,10)} din 10`:'10 cuvinte noi te așteaptă'}</b>
+   <div class="dots" aria-label="Ultimele 7 zile">${weekDots().map(o=>`<i class="${o?'on':''}"></i>`).join('')}</div>
+   <button class="btn wide" data-go="daily">${doneToday?'Recapitulare sau încă 10':t?'Continuă':'Începe sesiunea'}</button></div>
+ </section>
+ ${(!SR)?`<div class="banner">Aici aplicația nu te poate asculta direct. Pentru verificarea pronunției deschide adresa web în Safari (vezi Eu → Microfon și voce).</div>`:''}
+ <div class="sec"><h2>Învață</h2><button class="linkbtn" data-tab="learnHub">Toate</button></div>
  <div class="grid">
-  <button class="tile" data-go="pronList"><span class="ico">${IC.wave}</span><h3>Pronunție</h3><p>Sunete grele. Treci doar dacă pronunți corect.</p></button>
-  <button class="tile" data-go="texts"><span class="ico">${IC.film}</span><h3>Texte de memorat</h3><p>1–2 minute. Asculți, repeți, apoi spui din memorie.</p></button>
-  <button class="tile" data-go="speak" data-arg="site"><span class="ico">${IC.talk}</span><h3>Ziua mea pe șantier</h3><p>Vorbești liber; vezi termenii folosiți, claritatea și corecturile.</p></button>
-  <button class="tile" data-go="gramList"><span class="ico">${IC.book}</span><h3>Gramatică</h3><p>Reguli scurte, explicate în română.</p></button>
-  <button class="tile" data-go="games"><span class="ico">${IC.game}</span><h3>Jocuri</h3><p>Perechi, ascultare, propoziții, dictare.</p></button>
-  <button class="tile ${isWeekend?'flag':''}" data-go="weekly"><span class="ico">${IC.test}</span><h3>Test săptămânal</h3><p>${isWeekend?'E weekend: azi e ziua testului.':'Recomandat sâmbătă sau duminică.'}</p></button>
+  ${tileW('t-learn','domains','',IC.book,'Vocabular pe domenii',`${totalTerms} termeni: apă-canal, construcții, business, hotelier`)}
+  ${tile('t-diag','diagrams','',ICD,'Scheme cu termeni','Atingi elementul, se face verde și îl auzi',`${DIAGRAMS.length}`)}
+  ${tile('t-text','texts','',IC.film,'Texte de memorat','Asculți, repeți, spui din memorie')}
  </div>
- <button class="li" data-go="voice"><span class="tick">${IC.spk}</span><span class="t"><b>Microfon și voce</b><span>Voce mai naturală, verificarea pronunției</span></span></button>
- <button class="li" data-go="progress"><span class="tick">${IC.chart}</span><span class="t"><b>Progres și setări</b><span>Rezultate, nivel, stil de învățare</span></span></button>`,{back:false});
+ <div class="sec"><h2>Vorbește</h2><button class="linkbtn" data-tab="speakHub">Toate</button></div>
+ <div class="grid">
+  ${tile('t-speak','speak','site',IC.talk,'Ziua mea pe șantier','Vorbești liber, vezi termenii și claritatea')}
+  ${tile('t-speak','pronList','',IC.wave,'Pronunție','Sunete grele, treci doar dacă e corect')}
+ </div>
+ <div class="sec"><h2>Exersează</h2><button class="linkbtn" data-tab="games">Toate</button></div>
+ <div class="grid">
+  ${tile('t-play','games','',IC.game,'Jocuri','Perechi, imagini, dictare, propoziții')}
+  ${tile('t-gram','gramList','',IC.book,'Gramatică','Reguli scurte, în română')}
+ </div>
+ <div class="sec"><h2>Verifică-te</h2></div>
+ <div class="grid">
+  ${tile('t-test','weekly','',IC.test,'Test săptămânal',isWeekend?'E weekend: azi e ziua testului.':'Recomandat în weekend',isWeekend?'Azi':'',isWeekend?'flag':'')}
+  ${tile('t-test','review','',ICR,'Recapitulare','25 de cuvinte, cele greșite revin des')}
+ </div>`,{tab:'home'});
+};
+R.learnHub=()=>{
+ const totalTerms=TOPICS.reduce((a,x)=>a+(TW[x.id]||[]).length,0);
+ screen('Învață',`<p class="muted">Alege ce vrei să înveți azi. Progresul se salvează la fiecare pas.</p>
+ <div class="grid">
+  ${tileW('t-learn','daily','',IC.book,'Sesiunea zilnică','10 cuvinte noi, cu pronunție și verificare')}
+  ${tileW('t-learn','domains','',IC.book,'Vocabular pe domenii',`${totalTerms} termeni pe secțiuni, cu căutare și fișe`)}
+  ${tileW('t-diag','diagrams','',ICD,'Scheme cu termeni',DIAGRAMS.map(d=>d.t.split(' (')[0]).slice(0,4).join(', ')+'…')}
+  ${tileW('t-text','texts','',IC.film,'Texte de memorat','Șantier, recepție, telefon, restaurant')}
+  ${tileW('t-gram','gramList','',IC.book,'Gramatică','6 lecții esențiale pentru vorbit')}
+ </div>`,{tab:'learnHub'});
+};
+R.speakHub=()=>{
+ screen('Vorbește',`<p class="muted">${SR?'Aplicația te ascultă și îți arată ce a înțeles.':'Pentru ca aplicația să te asculte direct, deschide adresa web în Safari.'}</p>
+ <div class="grid">
+  ${tileW('t-speak','speak','site',IC.talk,'Ziua mea pe șantier','Povestești liber; vezi termenii folosiți și claritatea')}
+  ${tileW('t-diag','diagrams','',ICD,'Explică o schemă','Alegi schema, apoi „Explică schema vorbind”')}
+  ${tileW('t-speak','speak','general',IC.talk,'Subiect general','Întrebări de conversație pe nivelul tău')}
+  ${tileW('t-speak','pronList','',IC.wave,'Pronunție','TH, W/V, I scurt/lung, -ed, fraze uzuale')}
+  ${tileW('t-text','texts','',IC.film,'Texte de memorat','Repeți propoziție cu propoziție, apoi din memorie')}
+  ${tileW('t-learn','voice','',IC.spk,'Microfon și voce','Voce mai naturală, viteză, verificarea pronunției')}
+ </div>`,{tab:'speakHub'});
 };
 
 /* ---------- Sesiunea zilnică ---------- */
@@ -2872,13 +2956,15 @@ R.gram=id=>{
 /* ---------- Jocuri ---------- */
 function gamePool(){const l=Object.keys(st.learned).map(W).filter(Boolean);return l.length>=8?l:[...l,...WORDS[st.level]].filter((w,i,a)=>a.indexOf(w)===i)}
 R.games=()=>{
- screen('Jocuri',`<p class="muted">${learnedCount()>=8?'Jocurile folosesc cuvintele pe care le-ai învățat.':'Până înveți 8 cuvinte, jocurile folosesc lista nivelului tău.'}</p><div class="grid">
-  <button class="tile flag" data-go="practice" data-arg="all" style="grid-column:1/-1"><h3>Exersează tot ce ai învățat</h3><p>Scriere în engleză, traducere în română, pronunție sau test complet, cu toate cuvintele învățate.</p></button>
-  <button class="tile" data-go="gMatch"><h3>Perechi</h3><p>Leagă cuvântul englezesc de traducere. Contra cronometru.</p></button>
-  <button class="tile" data-go="gListen"><h3>Ascultă și alege</h3><p>Auzi cuvântul, alegi ce înseamnă.</p></button>
-  <button class="tile" data-go="gBuild"><h3>Construiește propoziția</h3><p>Pune cuvintele în ordine, apoi o spui.</p></button>
-  <button class="tile" data-go="gDict"><h3>Dictare</h3><p>Auzi și scrii corect.</p></button>
-  <button class="tile flag" data-go="gPics" style="grid-column:1/-1">${pic('excavator','ill-s')}<h3>Ce vezi în imagine?</h3><p>Desene de pe șantier: țevi, fitinguri, utilaje, scule. Alegi cuvântul englezesc corect.</p></button></div>`);
+ screen('Exersează',`<p class="muted">${learnedCount()>=8?'Folosește cuvintele pe care le-ai învățat.':'Până înveți 8 cuvinte, jocurile folosesc lista nivelului tău.'}</p><div class="grid">
+  ${tileW('t-play','practice','all',IC.test,'Exersează tot ce ai învățat','Scriere, traducere, pronunție sau test complet')}
+  ${tile('t-diag','gPics','',ICD,'Ce vezi în imagine?','Desene de pe șantier')}
+  ${tile('t-play','gMatch','',IC.game,'Perechi','Engleză ↔ română, contra cronometru')}
+  ${tile('t-play','gListen','',IC.spk,'Ascultă și alege','Auzi și alegi ce înseamnă')}
+  ${tile('t-play','gBuild','',IC.book,'Construiește propoziția','Ordonezi cuvintele, apoi o spui')}
+  ${tile('t-play','gDict','',IC.test,'Dictare','Auzi și scrii corect')}
+  ${tile('t-test','review','',ICR,'Recapitulare','25 de cuvinte amestecate')}
+ </div>`,{tab:'games'});
 };
 R.gPics=()=>{
  const keys=shuffle(Object.keys(PIC).filter(k=>W(k)));const pickK=keys.slice(0,10);
@@ -3199,7 +3285,9 @@ R.voice=()=>{
 R.progress=()=>{
  const byLv=LEVELS.map(l=>[l,WORDS[l].filter(w=>st.learned[w.en]).length,WORDS[l].length]);
  const top=st.style?Object.keys(st.style).sort((a,b)=>st.style[b]-st.style[a])[0]:null;
- const m=screen('Progres',`
+ const L=levelInfo();
+ const m=screen('Eu',`
+ <button class="hero" data-go="rewards" style="text-align:left;border:0"><span class="hi"><span class="lvbadge">${L.n}</span><span><span class="sub">Gradul tău</span><h1>${esc(L.name)}</h1><span class="sub">${st.xp||0} XP · ${Object.keys(st.badges||{}).length} insigne · vezi toate</span></span></span><span class="xpbar"><span style="width:${Math.round(L.pct*100)}%"></span></span></button>
  <div class="card"><div class="eyebrow">Nivel</div><h2>${st.level} · ${LNAME[st.level]}</h2>${st.placement?`<p class="muted small">Test de nivel: ${st.placement.score}/20, pe ${st.placement.date}</p>`:''}
   <div class="row"><button class="btn ghost" data-go="placement">Refă testul de nivel</button><button class="btn ghost" data-go="pickLevel">Alege manual</button></div></div>
  <button class="li" data-go="voice"><span class="tick">${IC.mic.replace('<svg ','<svg class="i" ')}</span><span class="t"><b>Microfon și voce</b><span>Alege o voce mai naturală, viteza, verificarea pronunției</span></span></button>
@@ -3211,7 +3299,7 @@ R.progress=()=>{
   <p class="small">${cloudRef?'<b>Salvare automată în contul tău Claude: activă.</b> Dacă închizi aplicația sau schimbi telefonul, progresul revine când o deschizi din nou în Claude.':'Progresul se salvează automat pe acest telefon, în browser. Ca să nu-l pierzi niciodată, păstrează un <b>cod de salvare</b>.'}</p>
   <p class="small muted">Cu codul de salvare muți progresul între aplicația din Claude și cea din browser, sau pe alt telefon.</p>
   <div class="row"><button class="btn ghost" id="exp">Arată codul de salvare</button><button class="btn ghost" id="imp">Restaurează din cod</button></div><div id="codebox"></div></div>
- <div class="card"><div class="eyebrow">Profil</div><p>Nume: <b>${esc(st.name)}</b></p><button class="btn ghost" id="rst">Șterge tot progresul</button><div id="cf"></div></div>`);
+ <div class="card"><div class="eyebrow">Profil</div><p>Nume: <b>${esc(st.name)}</b></p><button class="btn ghost" id="rst">Șterge tot progresul</button><div id="cf"></div></div>`,{tab:'progress'});
  m.querySelector('#exp').onclick=()=>{const c=exportCode();const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codeout" readonly style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="cpc">Copiază codul</button><p class="small muted">Păstrează-l în Note sau trimite-l pe e-mail ție însuți.</p>`;const ta=cb.querySelector('#codeout');ta.value=c;
   cb.querySelector('#cpc').onclick=()=>{const done=()=>cb.querySelector('#cpc').textContent='Copiat';try{navigator.clipboard.writeText(c).then(done,()=>{ta.select();done()})}catch(e){ta.select()}}};
  m.querySelector('#imp').onclick=()=>{const cb=m.querySelector('#codebox');cb.innerHTML=`<textarea id="codein" placeholder="Lipește aici codul care începe cu SPEAKUP1:" style="min-height:90px;font-size:.75rem"></textarea><button class="btn wide" id="doimp">Restaurează progresul</button><div id="impres"></div>`;
