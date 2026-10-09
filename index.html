@@ -2158,6 +2158,7 @@ const IC={
  film:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>',
  test:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg>',
  chart:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ home:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
  wave:'<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 7v10M21 12h0"/></svg>'
 };
 
@@ -2346,13 +2347,36 @@ function runQuiz(host,qs,onDone,{feedback=true}={}){
 
 /* ================= NAVIGARE ================= */
 const app=document.getElementById('app');
+/* Istoric de navigare: „Înapoi” duce la ecranul anterior, pas cu pas, nu direct acasă */
+const NAV=[];let cur=null,rendering=false,subScreen=false;
+const topLevel=(()=>{try{return window.top===window}catch(e){return false}})();
 function screen(title,html,{back=true}={}){
- stopVoice();
- app.innerHTML=`<header class="bar">${back?`<button class="back" data-go="home" aria-label="Înapoi la început">←</button>`:''}<div class="bar-t">${title}</div>${st.level?`<span class="chip" title="${LNAME[st.level]}">${st.level}</span>`:''}</header><main class="screen">${html}</main>`;
+ stopVoice();if(!rendering)subScreen=true;
+ const canBack=back&&(NAV.length||subScreen||(cur&&cur[0]!=='home'));
+ app.innerHTML=`<header class="bar">${canBack?`<button class="back" data-back aria-label="Înapoi">←</button>`:''}<div class="bar-t">${title}</div>${canBack&&NAV.length>1?`<button class="back" data-go="home" aria-label="Acasă" title="Acasă">${IC.home}</button>`:''}${st.level?`<span class="chip" title="${LNAME[st.level]}">${st.level}</span>`:''}</header><main class="screen">${html}</main>`;
  window.scrollTo(0,0);return app.querySelector('main');
 }
-document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(!g)return;e.preventDefault();go(g.dataset.go,g.dataset.arg)});
-function go(r,arg){(R[r]||R.home)(arg)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-back]');if(b){e.preventDefault();back();return}
+ const g=e.target.closest('[data-go]');if(!g)return;e.preventDefault();go(g.dataset.go,g.dataset.arg)});
+function render(r,arg){rendering=true;subScreen=false;try{(R[r]||R.home)(arg)}finally{rendering=false}}
+function go(r,arg){
+ if(r==='home'||!R[r]){NAV.length=0;cur=['home'];render('home');if(topLevel)try{history.replaceState({d:0},'')}catch(e){}return}
+ /* redirecționare din interiorul unui ecran (ex. sesiunea zilnică → cuvântul curent): înlocuiește, nu adaugă */
+ if(rendering||(cur&&cur[0]==='word'&&r==='word')){cur=[r,arg];render(r,arg);return}
+ const same=cur&&cur[0]===r&&cur[1]===arg;
+ if(cur&&!same)NAV.push(cur);cur=[r,arg];render(r,arg);
+ if(topLevel&&!same)try{history.pushState({d:NAV.length},'')}catch(e){}
+}
+function back(fromBrowser=false){
+ stopVoice();
+ /* Dacă ești într-un exercițiu sau rezultat, întâi revii la ecranul care l-a pornit */
+ if(subScreen&&cur&&cur[0]!=='home'){render(cur[0],cur[1]);if(topLevel&&fromBrowser)try{history.pushState({d:NAV.length},'')}catch(e){}return}
+ const p=NAV.pop();if(!p||p[0]==='home'){NAV.length=0;cur=['home'];render('home');return}
+ cur=p;render(p[0],p[1]);
+ if(topLevel&&!fromBrowser){ignorePop=true;try{history.back()}catch(e){ignorePop=false}}
+}
+let ignorePop=false;
+window.addEventListener('popstate',()=>{if(ignorePop){ignorePop=false;return}back(true)});
 const R={};
 
 /* ---------- Bun venit ---------- */
