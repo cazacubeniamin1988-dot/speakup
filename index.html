@@ -2068,7 +2068,7 @@ const BADGES=[
  {id:'pipes',t:'Maestrul fitingurilor',d:'Toți termenii de țevi și fitinguri',ok:()=>topicDone('pipes')},
  {id:'safety',t:'Siguranța pe primul loc',d:'Toți termenii de siguranță',ok:()=>topicDone('safety')},
  {id:'topic1',t:'Primul domeniu complet',d:'Termină orice domeniu',ok:()=>TOPICS.some(t=>topicDone(t.id))},
- {id:'week13',t:'Nota 10 la test',d:'Cel puțin 13/15 la testul săptămânal',ok:()=>st.weekly.some(h=>h.score>=13)},
+ {id:'week13',t:'Nota 10 la test',d:'Cel puțin 85% la testul săptămânal',ok:()=>st.weekly.some(h=>h.score>=Math.ceil((h.n||15)*.85))},
  {id:'text1',t:'Din memorie',d:'Primul text spus din memorie',ok:()=>Object.keys(st.textsDone).length>=1},
  {id:'textall',t:'Povestitor',d:'Toate textele spuse din memorie',ok:()=>TEXTS.every(t=>st.textsDone[t.id])},
  {id:'gram',t:'Gramatică la zi',d:'Toate lecțiile cu minim 4/5',ok:()=>GRAMMAR.every(g=>(st.grammar[g.id]||0)>=4)},
@@ -2210,16 +2210,26 @@ function pron(el,target,{onPass,hideText=false,hint=''}={}){
 function mc(prompt,correct,others,extra={}){const o=shuffle([correct,...others]);return{type:'mc',prompt,options:o,answer:o.indexOf(correct),...extra}}
 function distract(w,n=3,field='ro'){const key=x=>x.tp||x.lv;const same=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)===key(w)));const rest=shuffle(ALLW.filter(x=>x[field]!==w[field]&&key(x)!==key(w)));const out=[];for(const x of [...same,...rest]){if(out.length>=n)break;if(!out.includes(x[field]))out.push(x[field])}return out}
 function qWord(w,mode){
- if(mode==='listen')return mc('Ce ai auzit? Alege traducerea.',w.ro,distract(w),{audio:w.en});
- if(mode==='type')return{type:'type',prompt:`Scrie în engleză: <b>${esc(w.ro)}</b>`,answer:w.en,sayAfter:w.en};
- if(mode==='dict')return{type:'type',prompt:'Scrie ce auzi.',audio:w.en,answer:w.en,sayAfter:w.en};
- if(mode==='ro2en')return mc(`Cum se spune în engleză <b>${esc(w.ro)}</b>?`,w.en,distract(w,3,'en'),{sayAfter:w.en});
- return mc(`Ce înseamnă <b>${esc(w.en)}</b>?`,w.ro,distract(w),{sayAfter:w.en});
+ if(mode==='listen')return mc('Ce ai auzit? Alege traducerea.',w.ro,distract(w),{audio:w.en,kind:'Ascultare'});
+ if(mode==='type')return{type:'type',kind:'Scriere',prompt:`Scrie în engleză: <b>${esc(w.ro)}</b>`,answer:w.en,sayAfter:w.en};
+ if(mode==='en2roType')return{type:'typeRo',kind:'Traducere',prompt:`Scrie în română ce înseamnă <b>${esc(w.en)}</b>`,answer:w.ro,sayAfter:w.en};
+ if(mode==='pron')return{type:'pron',kind:'Pronunție',prompt:`Pronunță corect: <b>${esc(w.en)}</b><div class="small muted">${esc(w.ro)}</div>`,target:w.en};
+ if(mode==='dict')return{type:'type',kind:'Dictare',prompt:'Scrie ce auzi.',audio:w.en,answer:w.en,sayAfter:w.en};
+ if(mode==='ro2en')return mc(`Cum se spune în engleză <b>${esc(w.ro)}</b>?`,w.en,distract(w,3,'en'),{sayAfter:w.en,kind:'Traducere'});
+ return mc(`Ce înseamnă <b>${esc(w.en)}</b>?`,w.ro,distract(w),{sayAfter:w.en,kind:'Traducere'});
 }
+/* Test amestecat: traducere, scriere, traducere scrisă, pronunție, ascultare */
+function mixQs(words,modes=['en2ro','type','en2roType','pron','listen','ro2en']){const ws=shuffle(words);return ws.map((w,i)=>qWord(w,modes[i%modes.length]))}
+/* Verificarea răspunsurilor: engleza scrisă strict, româna fără diacritice și cu mici greșeli de tastare */
+const fold=x=>String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
+function roVariants(ro){const out=new Set([fold(ro)]);for(const b of ro.split(/[;,]/).map(x=>x.trim()).filter(Boolean)){out.add(fold(b));out.add(fold(b.replace(/\(.*?\)/g,'')));const inner=b.match(/\((.*?)\)/);if(inner)out.add(fold(inner[1]))}return[...out].filter(Boolean).map(x=>x.replace(/^(a |a se |a-si |a-si )/,''))}
+function okRo(v,ro){const f=fold(v).replace(/^(a |a se )/,'');if(!f)return false;return roVariants(ro).some(y=>y===f||(y.length>4&&sim(y,f)>=.85))}
+function isOkQ(q,a){if(a==null)return false;if(q.type==='type')return norm(a)===norm(q.answer);if(q.type==='typeRo')return okRo(a,q.answer);if(q.type==='pron')return a===true;return a===q.answer}
+const correctText=q=>q.type==='pron'?q.target:(q.type==='type'||q.type==='typeRo')?q.answer:q.options[q.answer];
 /* Mod test: fără indicii, cu „Înapoi”, scor calculat la final */
 function runTest(host,qs,onDone){
  let i=0;const ans=qs.map(()=>null);
- const isOk=(q,a)=>a!=null&&(q.type==='type'?norm(a)===norm(q.answer):a===q.answer);
+ const isOk=isOkQ;
  function step(){
   const q=qs[i],a=ans[i],last=i===qs.length-1;
   host.innerHTML=`<div class="prog"><span style="width:${i/qs.length*100}%"></span></div>
@@ -2246,34 +2256,39 @@ function runTest(host,qs,onDone){
  step();
 }
 function reviewHTML(qs,ans,isOk){
- const txt=(q,a)=>a==null?'—':q.type==='type'?a:q.options[a];
- const correct=q=>q.type==='type'?q.answer:q.options[q.answer];
+ const txt=(q,a)=>a==null?'—':q.type==='pron'?(a?'pronunțat corect':'nu a ieșit'):(q.type==='type'||q.type==='typeRo')?a:q.options[a];
  return `<div class="card"><h3>Răspunsurile tale</h3><div class="rev">${qs.map((q,k)=>{const ok=isOk(q,ans[k]);
-  return `<div class="ri ${ok?'ok':'bad'}"><div class="rn">${k+1}. ${ok?'✓':'✗'}</div><div class="rb"><div class="rq">${q.prompt}${q.audio?`<div class="small muted">Ai auzit: „${esc(q.audio)}”</div>`:''}</div>
-   ${ok?`<div class="ra ok">${esc(correct(q))}</div>`:`<div class="ra bad">Tu: ${esc(txt(q,ans[k]))}</div><div class="ra ok">Corect: ${esc(correct(q))}</div>`}</div></div>`}).join('')}</div></div>`;
+  return `<div class="ri ${ok?'ok':'bad'}"><div class="rn">${k+1}. ${ok?'✓':'✗'}</div><div class="rb">${q.kind?`<div class="eyebrow">${q.kind}</div>`:''}<div class="rq">${q.prompt}${q.audio?`<div class="small muted">Ai auzit: „${esc(q.audio)}”</div>`:''}</div>
+   ${ok?`<div class="ra ok">${esc(correctText(q))}</div>`:`<div class="ra bad">Tu: ${esc(txt(q,ans[k]))}</div><div class="ra ok">Corect: ${esc(correctText(q))}</div>`}</div></div>`}).join('')}</div></div>`;
 }
 function runQuiz(host,qs,onDone,{feedback=true}={}){
  if(!feedback)return runTest(host,qs,onDone);
- let i=0,score=0;const wrong=[];
+ /* Mod exercițiu: răspunsul corect apare imediat (verde/roșu), fără întoarcere */
+ let i=0;const ans=qs.map(()=>null);
  function step(){
-  if(i>=qs.length){onDone(score,wrong);return}
-  const q=qs[i];
+  if(i>=qs.length){let score=0;const wrong=[];qs.forEach((q,k)=>{if(isOkQ(q,ans[k]))score++;else wrong.push(q)});onDone(score,wrong,reviewHTML(qs,ans,isOkQ));return}
+  const q=qs[i];const typed=q.type==='type'||q.type==='typeRo';
   host.innerHTML=`<div class="prog"><span style="width:${i/qs.length*100}%"></span></div>
-   <div class="qn">Întrebarea ${i+1} din ${qs.length}</div>
+   <div class="row" style="justify-content:space-between"><span class="qn">Întrebarea ${i+1} din ${qs.length}</span>${q.kind?`<span class="lv">${q.kind}</span>`:''}</div>
    ${q.audio?`<div><button class="btn ghost" data-a="aud">${IC.spk} Ascultă din nou</button></div>`:''}
    <div class="qp">${q.prompt}</div>
-   ${q.type==='type'?`<form class="typef"><input type="text" id="qt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrie în engleză"><button class="btn">Verifică</button></form>`
+   ${typed?`<form class="typef"><input type="text" id="qt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${q.type==='typeRo'?'Scrie în română':'Scrie în engleză'}"><button class="btn">Verifică</button></form>`
+     :q.type==='pron'?`<div id="qpron"></div><button class="linkbtn" data-a="giveup">Nu reușesc acum, mai departe</button>`
      :`<div class="opts">${q.options.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div>`}
    <div class="fb" aria-live="polite"></div>`;
   if(q.audio){host.querySelector('[data-a=aud]').onclick=()=>say(q.audio);setTimeout(()=>say(q.audio),250)}
-  const fb=host.querySelector('.fb');
-  const finish=(ok,ct)=>{if(ok)score++;else wrong.push(q);
-   if(!feedback){setTimeout(()=>{i++;step()},280);return}
-   fb.innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':'Răspunsul corect: '+esc(ct)}</div><button class="btn wide" data-a="next">${i+1<qs.length?'Mai departe':'Vezi rezultatul'}</button>`;
+  const fb=host.querySelector('.fb');let done=false;
+  const finish=a=>{if(done)return;done=true;ans[i]=a;const ok=isOkQ(q,a);const ct=correctText(q);
+   fb.innerHTML=`<div class="verdict ${ok?'ok':'bad'}">${ok?'Corect!':'Greșit'}</div>
+    ${typed?(ok?`<div class="ra ok">${esc(a)}${norm(a)!==norm(ct)?' · forma completă: '+esc(ct):''}</div>`:`<div class="ra bad">Tu: ${esc(a)}</div><div class="ra ok">Corect: ${esc(ct)}</div>`):''}
+    ${q.type==='pron'&&!ok?`<div class="ra ok">Corect: ${esc(ct)}</div>`:''}
+    <button class="btn wide" data-a="next">${i+1<qs.length?'Mai departe':'Vezi rezultatul'}</button>`;
+   const gu=host.querySelector('[data-a=giveup]');if(gu)gu.remove();
    const n=fb.querySelector('[data-a=next]');n.onclick=()=>{stopVoice();i++;step()};n.focus({preventScroll:true});n.scrollIntoView({block:'nearest',behavior:'smooth'})};
-  if(q.type==='type'){const f=host.querySelector('form');setTimeout(()=>f.querySelector('input').focus(),60);
-   f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');if(!inp.value.trim())return;inp.disabled=true;f.querySelector('button').disabled=true;const ok=norm(inp.value)===norm(q.answer);finish(ok,q.answer);if(q.sayAfter&&feedback)say(q.sayAfter)}}
-  else host.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;host.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(feedback&&+x.dataset.k===q.answer)x.classList.add('right')});if(k!==q.answer&&feedback)b.classList.add('wrong');if(!feedback)b.classList.add('sel');finish(k===q.answer,q.options[q.answer]);if(q.sayAfter&&feedback)say(q.sayAfter)});
+  if(typed){const f=host.querySelector('form');setTimeout(()=>f.querySelector('input').focus(),60);
+   f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');if(!inp.value.trim())return;inp.disabled=true;f.querySelector('button').disabled=true;finish(inp.value.trim());if(q.sayAfter)say(q.sayAfter)}}
+  else if(q.type==='pron'){pron(host.querySelector('#qpron'),q.target,{onPass:skipped=>finish(!skipped)});host.querySelector('[data-a=giveup]').onclick=()=>{finish(false);say(q.target)}}
+  else host.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;host.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===q.answer)x.classList.add('right')});if(k!==q.answer)b.classList.add('wrong');finish(k);if(q.sayAfter)say(q.sayAfter)});
  }
  step();
 }
@@ -2380,7 +2395,7 @@ R.home=()=>{
  <div class="grid">
   <button class="tile" data-go="pronList"><span class="ico">${IC.wave}</span><h3>Pronunție</h3><p>Sunete grele. Treci doar dacă pronunți corect.</p></button>
   <button class="tile" data-go="texts"><span class="ico">${IC.film}</span><h3>Texte de memorat</h3><p>1–2 minute. Asculți, repeți, apoi spui din memorie.</p></button>
-  <button class="tile" data-go="speak"><span class="ico">${IC.talk}</span><h3>Vorbit liber</h3><p>Răspunzi la o întrebare și primești corecturi.</p></button>
+  <button class="tile" data-go="speak" data-arg="site"><span class="ico">${IC.talk}</span><h3>Ziua mea pe șantier</h3><p>Vorbești liber; vezi termenii folosiți, claritatea și corecturile.</p></button>
   <button class="tile" data-go="gramList"><span class="ico">${IC.book}</span><h3>Gramatică</h3><p>Reguli scurte, explicate în română.</p></button>
   <button class="tile" data-go="games"><span class="ico">${IC.game}</span><h3>Jocuri</h3><p>Perechi, ascultare, propoziții, dictare.</p></button>
   <button class="tile ${isWeekend?'flag':''}" data-go="weekly"><span class="ico">${IC.test}</span><h3>Test săptămânal</h3><p>${isWeekend?'E weekend: azi e ziua testului.':'Recomandat sâmbătă sau duminică.'}</p></button>
@@ -2399,7 +2414,7 @@ R.daily=()=>{
  if(st.today&&st.today.date===today()&&st.today.phase!=='done'){go(st.today.phase==='quiz'?'dailyQuiz':'dailyLearn');return}
  if(st.sessions[today()]!=null){
   const m=screen('Sesiunea de azi',`<div class="card"><h2>Ai terminat sesiunea de azi</h2><p class="muted">Scor la verificare: ${st.sessions[today()]}/10. Revino mâine pentru încă 10 cuvinte.</p>
-   <button class="btn wide" id="rev">Recapitulare: 10 cuvinte vechi</button><button class="btn ghost wide" id="more">Încă 10 cuvinte noi (bonus)</button></div>`);
+   <button class="btn wide" id="rev">Recapitulare: 25 de cuvinte</button><button class="btn ghost wide" id="more">Încă 10 cuvinte noi (bonus)</button></div>`);
   m.querySelector('#rev').onclick=()=>go('review');
   m.querySelector('#more').onclick=()=>{startSession()};return}
  startSession();
@@ -2437,9 +2452,9 @@ R.dailyLearn=()=>{
  nb.onclick=()=>{if(advanced)return;advanced=true;t.idx++;save();go('dailyLearn')};
 };
 R.dailyQuiz=()=>{
- const t=st.today;const ws=shuffle(t.words.map(W));const modes=['en2ro','en2ro','en2ro','listen','listen','listen','type','type','ro2en','ro2en'];
+ const t=st.today;const ws=shuffle(t.words.map(W));const modes=['en2ro','listen','type','en2roType','pron','en2ro','type','en2roType','pron','ro2en'];
  const m=screen('Verificare',`<div class="card" id="q"></div>`);
- runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i])),(score)=>{
+ runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i%modes.length])),(score,wrong,review)=>{
   const d=today();t.words.forEach(en=>{if(!st.learned[en])st.learned[en]={d}});
   st.sessions[d]=Math.max(st.sessions[d]||0,score);
   if(st.lastDay!==d){st.streak=(st.lastDay&&daysAgo(st.lastDay)===1)?st.streak+1:1;st.lastDay=d}
@@ -2447,15 +2462,17 @@ R.dailyQuiz=()=>{
   screen('Sesiune terminată',`<div class="card"><div class="eyebrow">Verificare</div><div class="big">${score}/${n}</div><h2>${r>=.8?'Excelent!':r>=.5?'Bine, mai exersează puțin.':'Repetă cuvintele în jocuri.'}</h2>
    <p class="muted">Ai ${learnedCount()} cuvinte învățate. Serie: ${st.streak} ${st.streak===1?'zi':'zile'} la rând.</p></div>
    ${fromTopic?`<button class="btn wide" data-go="topic" data-arg="${esc(t.src)}">Înapoi la domeniu</button>`:''}
-   <button class="btn ${fromTopic?'ghost ':''}wide" data-go="games">Joacă-te cu cuvintele învățate</button><button class="btn ghost wide" data-go="home">Acasă</button>`);
+   <button class="btn ${fromTopic?'ghost ':''}wide" data-go="games">Joacă-te cu cuvintele învățate</button><button class="btn ghost wide" data-go="home">Acasă</button>
+   ${review}`);
  });
 };
 R.review=()=>{
  const pool=Object.keys(st.learned).map(W).filter(Boolean);
  if(pool.length<4){screen('Recapitulare','<div class="card"><p>Ai nevoie de cel puțin 4 cuvinte învățate pentru recapitulare.</p><button class="btn" data-go="daily">Sesiunea zilnică</button></div>');return}
- const ws=shuffle(pool).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
- const m=screen('Recapitulare','<div class="card" id="q"></div>');
- runQuiz(m.querySelector('#q'),ws.map((w,i)=>qWord(w,modes[i%4])),(s)=>{addXP(s*2);screen('Recapitulare',`<div class="card"><div class="big">${s}/${ws.length}</div><p class="muted">Recapitularea zilnică fixează cuvintele în memoria de lungă durată.</p></div><button class="btn wide" data-go="review">Încă o rundă</button><button class="btn ghost wide" data-go="home">Acasă</button>`)});
+ /* Recapitulare: până la 25 de cuvinte, mai ales cele vechi și cele greșite înainte */
+ const miss=st.missed||{};const ws=shuffle(pool).sort((a,b)=>(miss[b.en]||0)-(miss[a.en]||0)).slice(0,25);
+ const m=screen(`Recapitulare (${ws.length})`,'<div class="card" id="q"></div>');
+ runQuiz(m.querySelector('#q'),mixQs(ws),(s,wrong,review)=>{noteMissed(wrong);addXP(s*2);screen('Recapitulare',`<div class="card"><div class="eyebrow">Recapitulare</div><div class="big">${s}/${ws.length}</div><p class="muted">Traducere, scriere și pronunție amestecate. Cuvintele greșite revin mai des la următoarea recapitulare.</p></div><button class="btn wide" data-go="review">Încă o recapitulare</button><button class="btn ghost wide" data-go="home">Acasă</button>${review}`)});
 };
 
 /* ---------- Domenii ---------- */
@@ -2479,7 +2496,7 @@ R.topic=id=>{
  const m=screen(esc(t.t),`<div class="card"><div class="eyebrow">${esc(t.g)}</div><h2>${esc(t.t)}</h2>
   <div class="prog"><span style="width:${s.n?s.l/s.n*100:0}%"></span></div><p class="small muted">${s.l} din ${s.n} cuvinte învățate</p>
   ${left?`<button class="btn wide" id="learn">Învață ${Math.min(10,left)} cuvinte noi</button>`:s.n?'<div class="verdict ok">Ai învățat toate cuvintele de aici.</div>':''}
-  ${s.n>=4?`<button class="btn ghost wide" id="tst">Test pe domeniu</button>`:''}
+  ${s.n?`<button class="btn ghost wide" id="tst">Exersează: scriere, traducere, pronunție, test</button>`:''}
   <div id="gen"></div></div>
   ${s.n?`<div class="card"><div class="eyebrow">Toți termenii (${s.n})</div>
    <input type="text" id="tsearch" placeholder="Caută în română sau engleză, de ex. diriginte" autocomplete="off">
@@ -2527,14 +2544,27 @@ R.word=arg=>{
   if(!st.learned[w.en]){ok.disabled=false;ok.textContent='Marchează ca învățat'}}});
  ok.onclick=mark;
 };
-function topicTest(id){
- const t=TOPICS.find(x=>x.id===id);const ws=TW[id];const learned=ws.filter(w=>st.learned[w.en]);
- const pool=shuffle(learned.length>=4?learned:ws).slice(0,10);const modes=['en2ro','listen','type','ro2en'];
- const m=screen(esc(t.t),'<div class="card" id="q"></div>');
- runQuiz(m.querySelector('#q'),pool.map((w,i)=>qWord(w,modes[i%4])),s=>{
-  addXP(s*2);screen(esc(t.t),`<div class="card"><div class="eyebrow">Test pe domeniu</div><div class="big">${s}/${pool.length}</div><p class="muted">${learned.length>=4?'Din cuvintele învățate aici.':'Din toate cuvintele domeniului: unele nu le-ai învățat încă.'}</p></div>
-   <button class="btn wide" data-go="topic" data-arg="${esc(id)}">Înapoi la domeniu</button>`)});
-}
+function topicTest(id){go('practice',id)}
+/* Exersare pe secțiune: alegi tipul de exercițiu */
+const PMODES=[['type','Scriere','Vezi în română, scrii în engleză'],['en2roType','Traducere','Vezi în engleză, scrii în română'],['pron','Pronunție','Spui fiecare termen, aplicația te ascultă'],['listen','Ascultare','Auzi termenul, alegi ce înseamnă'],['mix','Test complet','Toate tipurile amestecate']];
+R.practice=id=>{
+ const isAll=id==='all';const t=isAll?{t:'Tot ce ai învățat'}:TOPICS.find(x=>x.id===id);if(!t){go('domains');return}
+ const ws=isAll?Object.keys(st.learned).map(W).filter(Boolean):TW[id];const learned=isAll?ws:ws.filter(w=>st.learned[w.en]);
+ const useLearned=learned.length>=4;const pool=useLearned?learned:ws.slice(0,10);
+ if(pool.length<1){screen('Exersează','<div class="card"><p>Încă nu ai cuvinte de exersat aici.</p><button class="btn" data-go="daily">Sesiunea de azi</button></div>');return}
+ const m=screen('Exersează: '+esc(t.t),`<div class="card"><h2>${esc(t.t)}</h2><p class="small muted">${useLearned?`Din cei ${learned.length} termeni învățați aici.`:'Ai învățat încă puțini termeni aici, așa că exersezi primii 10 din listă.'} Vezi imediat dacă ai răspuns corect.</p></div>
+  <div class="list">${PMODES.map(([k,n,d])=>`<button class="li" data-m="${k}"><span class="t"><b>${n}</b><span>${d}</span></span><span class="lv">${k==='mix'?Math.min(15,pool.length):Math.min(10,pool.length)}</span></button>`).join('')}</div>
+  ${isAll?'':`<button class="btn ghost wide" data-go="topic" data-arg="${esc(id)}">Înapoi la secțiune</button>`}`);
+ m.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const mode=b.dataset.m;const n=mode==='mix'?15:10;
+  const pick=shuffle(pool).sort((a,c)=>((st.missed||{})[c.en]||0)-((st.missed||{})[a.en]||0)).slice(0,Math.min(n,pool.length));
+  const qs=mode==='mix'?mixQs(pick):pick.map(w=>qWord(w,mode));const name=PMODES.find(x=>x[0]===mode)[1];
+  const m2=screen(name+': '+esc(t.t),'<div class="card" id="q"></div>');
+  runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{noteMissed(wrong);addXP(s*2);
+   screen(name,`<div class="card"><div class="eyebrow">${name} · ${esc(t.t)}</div><div class="big">${s}/${qs.length}</div><p class="muted">${s/qs.length>=.8?'Foarte bine!':'Termenii greșiți îți vor apărea mai des.'}</p></div>
+    <button class="btn wide" data-go="practice" data-arg="${esc(id)}">Alt exercițiu</button>${review}`)})});
+};
+/* Ține minte ce ai greșit, ca să revină mai des */
+function noteMissed(wrong){st.missed=st.missed||{};for(const q of wrong){const en=q.type==='type'?q.answer:q.type==='pron'?q.target:(q.sayAfter||q.audio);if(en&&W(en))st.missed[en]=(st.missed[en]||0)+1}save()}
 function genButton(host,ctx,onDone){
  if(!host)return;
  if(!sampleFn){host.innerHTML='<p class="small muted">Cuvinte noi generate de Claude: disponibil când aplicația e deschisă în Claude.</p>';return}
@@ -2616,39 +2646,63 @@ function textDrill(tx,memory){
 /* ---------- Vorbit liber ---------- */
 let sampleFn=null;
 (async()=>{try{if(window.claude&&claude.use)sampleFn=await claude.use('sample')}catch(e){sampleFn=null}})();
-R.speak=()=>{
- const lv=st.level||'A2';const list=[...(SPEAK[lv]||[]),...(SPEAK[LEVELS[Math.max(0,LEVELS.indexOf(lv)-1)]]||[])];
+const SITE_TOPICS=['Describe what you did on site today.','Explain how you installed a house connection today.','Talk about the problems you had on site this week.','Describe the safety meeting this morning.','Explain to the site supervisor what you finished today and what you will do tomorrow.','Describe how you lay a sewer pipe, step by step.','Explain how you do a pressure test on a new water pipe.','Tell the client why the work is delayed and when you will finish.'];
+/* Termenii tehnici (din toate secțiunile) găsiți într-un text vorbit */
+function findTerms(text){const t=' '+norm(text)+' ';const found=[];const seen=new Set();
+ const terms=[...new Set(TOPICS.flatMap(x=>TW[x.id]||[]))].filter(w=>norm(w.en).length>2).sort((a,b)=>b.en.length-a.en.length);
+ let rest=t;for(const w of terms){const k=' '+norm(w.en)+' ';if(rest.includes(k)&&!seen.has(w.en)){seen.add(w.en);found.push(w);rest=rest.split(k).join(' | ')}}
+ return found}
+R.speak=arg=>{
+ const site=arg!=='general';const lv=st.level||'A2';
+ const list=site?SITE_TOPICS:[...(SPEAK[lv]||[]),...(SPEAK[LEVELS[Math.max(0,LEVELS.indexOf(lv)-1)]]||[])];
  let topic=list[Math.random()*list.length|0];
- const m=screen('Vorbit liber',`<div class="card"><div class="eyebrow">Subiectul tău</div><div class="qp" id="tp"></div>
-  <div class="row"><button class="btn ghost" id="lt">${IC.spk} Ascultă</button><button class="btn ghost" id="nt">Alt subiect</button></div></div>
-  <div class="card"><p class="small muted">Vorbește 30–60 de secunde. ${SR?'Apasă microfonul și vorbește; textul apare mai jos. Dacă microfonul nu merge, folosește microfonul tastaturii.':'Folosește microfonul tastaturii (setată pe engleză) în câmpul de mai jos.'}</p>
+ const m=screen(site?'Ziua mea pe șantier':'Vorbit liber',`
+  <div class="row"><button class="btn ${site?'':'ghost'}" data-go="speak" data-arg="site">Ziua mea pe șantier</button><button class="btn ${site?'ghost':''}" data-go="speak" data-arg="general">Subiect general</button></div>
+  <div class="card"><div class="eyebrow">Subiectul tău</div><div class="qp" id="tp"></div>
+  <div class="row"><button class="btn ghost" id="lt">${IC.spk} Ascultă</button><button class="btn ghost" id="nt">Alt subiect</button></div>
+  ${site?'<p class="small muted">Povestește liber, 1–2 minute, folosind termenii învățați. La final vezi ce termeni tehnici ai folosit, cât de clar ai pronunțat și ce ai greșit.</p>':''}</div>
+  <div class="card"><p class="small muted">${SR?'Apasă microfonul și vorbește. Aplicația scrie ce aude. Apasă din nou ca să te oprești.':'Aici microfonul aplicației nu e disponibil: folosește microfonul tastaturii (setată pe engleză) în câmpul de mai jos.'}</p>
   ${SR?`<div class="pron"><button class="mic" id="mk">${IC.mic}</button><div class="mic-l" id="ml">Apasă ca să începi</div></div>`:''}
-  <textarea id="ans" placeholder="Răspunsul tău în engleză apare aici (poți și scrie)"></textarea>
-  <button class="btn wide" id="chk">Corectează-mă</button></div>
+  <textarea id="ans" placeholder="Ce spui apare aici (poți și scrie)"></textarea>
+  <div class="row"><button class="btn ghost" id="clr">Șterge</button><button class="btn" id="chk">Analizează</button></div></div>
+  <div class="card" id="loc" hidden></div>
   <div class="card" id="out" hidden></div>`);
- const tp=m.querySelector('#tp'),ans=m.querySelector('#ans'),out=m.querySelector('#out');
+ const tp=m.querySelector('#tp'),ans=m.querySelector('#ans'),out=m.querySelector('#out'),loc=m.querySelector('#loc');
  const setT=()=>{tp.textContent=topic};setT();
  m.querySelector('#lt').onclick=()=>say(topic);
- m.querySelector('#nt').onclick=()=>{topic=list[Math.random()*list.length|0];setT();out.hidden=true};
+ m.querySelector('#nt').onclick=()=>{topic=list[Math.random()*list.length|0];setT();out.hidden=true;loc.hidden=true};
+ let segs=[],t0=0,talkMs=0;
+ m.querySelector('#clr').onclick=()=>{ans.value='';segs=[];talkMs=0;out.hidden=true;loc.hidden=true};
  const mk=m.querySelector('#mk');let rec=null;
  if(mk)mk.onclick=()=>{
   if(rec){rec.stop();return}
   if(micState==='blocked'){m.querySelector('#ml').textContent='Microfonul e blocat aici. Folosește microfonul tastaturii.';ans.focus();return}
-  try{rec=new SR()}catch(e){return}rec.lang='en-US';rec.continuous=true;rec.interimResults=true;const base=ans.value?ans.value+' ':'';
-  rec.onresult=e=>{let s='';for(const r of e.results)s+=r[0].transcript;ans.value=base+s};
+  try{rec=new SR()}catch(e){return}rec.lang='en-US';rec.continuous=true;rec.interimResults=true;rec.maxAlternatives=1;const base=ans.value?ans.value.trim()+' ':'';const baseSegs=segs.length;t0=Date.now();
+  rec.onresult=e=>{let txt='';const fin=[];for(const r of e.results){txt+=r[0].transcript;if(r.isFinal)fin.push({text:r[0].transcript.trim(),conf:r[0].confidence||0})}ans.value=base+txt;segs=segs.slice(0,baseSegs).concat(fin)};
   rec.onerror=e=>{if(['not-allowed','service-not-allowed'].includes(e.error)){micState='blocked';m.querySelector('#ml').textContent='Microfonul e blocat aici. Folosește microfonul tastaturii.'}};
-  rec.onend=()=>{rec=null;mk.classList.remove('on');if(micState!=='blocked')m.querySelector('#ml').textContent='Apasă ca să continui'};
+  rec.onend=()=>{talkMs+=Date.now()-t0;rec=null;mk.classList.remove('on');if(micState!=='blocked'){micState='ok';m.querySelector('#ml').textContent='Apasă ca să continui'}};
   try{rec.start();mk.classList.add('on');m.querySelector('#ml').textContent='Te ascult… apasă din nou ca să oprești'}catch(e){}
  };
  m.querySelector('#chk').onclick=async()=>{
-  const a=ans.value.trim();if(!a){ans.focus();return}
-  const words=a.split(/\s+/).length;out.hidden=false;
-  if(!sampleFn){out.innerHTML=`<h3>Ai spus ${words} cuvinte</h3><p class="muted">Corectarea automată funcționează când aplicația e deschisă în Claude. Până atunci, citește-ți răspunsul cu voce tare de două ori.</p>`;return}
-  out.innerHTML='<h3>Corectura</h3><div class="ai muted">Mă gândesc…</div>';const box=out.querySelector('.ai');
-  const prompt=`Ești profesor de engleză pentru un vorbitor de română, nivel ${lv}. Elevul a răspuns ORAL (transcriere automată, ignoră lipsa punctuației și majusculele) la întrebarea: "${topic}".\n\nRăspunsul elevului:\n"""${a.slice(0,3000)}"""\n\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nCUVINTE NOI DE FOLOSIT:\n- cuvânt englezesc = traducere (3 cuvinte potrivite nivelului)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
+  if(rec)rec.stop();const a=ans.value.trim();if(!a){ans.focus();return}
+  const words=a.split(/\s+/).length;const terms=findTerms(a);
+  const known=[...new Set(norm(a).split(' '))].filter(x=>st.learned[x]).length;
+  const cs=segs.filter(x=>x.conf>0);const avg=cs.length?cs.reduce((p,x)=>p+x.conf,0)/cs.length:0;const low=cs.filter(x=>x.conf<.6);
+  const wpm=talkMs>5000?Math.round(words/(talkMs/60000)):0;
+  loc.hidden=false;loc.innerHTML=`<div class="eyebrow">Analiza aplicației</div>
+   <div class="stats"><div class="stat"><b>${words}</b><span>cuvinte spuse</span></div><div class="stat"><b>${terms.length}</b><span>termeni tehnici</span></div><div class="stat"><b>${avg?Math.round(avg*100)+'%':'—'}</b><span>claritate pronunție</span></div></div>
+   ${wpm?`<p class="small muted">Ritm: ${wpm} cuvinte pe minut${wpm<70?' (încet, e normal la început)':wpm>150?' (repede: încetinește puțin)':' (bun)'}.</p>`:''}
+   ${terms.length?`<h3>Termeni tehnici folosiți</h3><div class="list">${terms.map(w=>`<button class="li" data-say="${esc(w.en)}">${pic(w.en,'ill-s')}<span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span>${IC.spk}</button>`).join('')}</div>`:'<p class="small">Nu am recunoscut termeni tehnici din listele tale. Încearcă să folosești câțiva: trench, manhole, pipe laying, pressure test…</p>'}
+   ${low.length?`<h3>De spus mai clar</h3><p class="small muted">Aplicația a înțeles greu aceste părți. Ascultă-le și repetă-le.</p><div class="list">${low.slice(0,6).map(x=>`<button class="li" data-say="${esc(x.text)}"><span class="t"><b>${esc(x.text)}</b><span>claritate ${Math.round(x.conf*100)}%</span></span>${IC.spk}</button>`).join('')}</div>`:avg?'<p class="small">Toate frazele au fost clare. Bravo!</p>':'<p class="small muted">Claritatea apare când vorbești la microfonul aplicației (pe adresa web, în Safari sau Chrome).</p>'}
+   <p class="small muted">${known} dintre cuvintele învățate de tine apar în ce ai spus.</p>`;
+  loc.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
+  addXP(Math.min(30,5+terms.length*3));
+  if(!sampleFn){out.hidden=false;out.innerHTML='<p class="small muted">Corectura completă (greșeli de gramatică și folosirea termenilor) apare când aplicația e deschisă în Claude.</p>';return}
+  out.hidden=false;out.innerHTML='<h3>Corectura profesorului</h3><div class="ai muted">Mă gândesc…</div>';const box=out.querySelector('.ai');
+  const prompt=`Ești profesor de engleză pentru un inginer român din construcții (rețele de apă, canalizare, gaze), nivel ${lv}. Elevul a vorbit ORAL (transcriere automată: ignoră punctuația și majusculele; cuvintele greșit transcrise pot fi pronunție neclară) despre: "${topic}".\n\nCe a spus:\n"""${a.slice(0,4000)}"""\n\nTermeni tehnici recunoscuți: ${terms.map(w=>w.en).join(', ')||'niciunul'}.\n${low.length?'Fraze înțelese greu de recunoașterea vocală (posibil pronunție neclară): '+low.map(x=>'"'+x.text+'"').join('; ')+'\n':''}\nRăspunde în română, scurt, în acest format exact, text simplu fără markdown:\nNOTĂ: x/10 (o propoziție de ce)\nVERSIUNEA CORECTĂ:\n(textul elevului corectat, în engleză, cu termenii tehnici corecți, păstrând ideile lui)\nGREȘELI:\n- greșeala → corect: explicație scurtă (maxim 5)\nTERMENI TEHNICI:\n- spune dacă a folosit corect termenii de șantier și ce termen englezesc ar fi fost mai potrivit (maxim 4)\nPRONUNȚIE:\n- cuvinte care probabil au fost pronunțate neclar, cu sfat scurt (maxim 3; scrie "fără observații" dacă nu e cazul)\nÎNCEARCĂ ACUM: o întrebare de continuare în engleză.`;
   try{const r=await sampleFn(prompt,{cache:false,modelTier:'default',onText:({text})=>{box.classList.remove('muted');box.textContent=text}});box.textContent=r.text;addXP(15);
    const mt=r.text.match(/VERSIUNEA CORECTĂ:\s*\n([\s\S]*?)\n\s*GREȘELI/);if(mt){const b=document.createElement('button');b.className='btn ghost';b.innerHTML=IC.spk+' Ascultă versiunea corectă';const fixed=mt[1].trim();b.onclick=()=>say(fixed);out.appendChild(b)}}
-  catch(e){box.textContent=e.text||'';const msg={not_granted:'Corectarea nu a fost permisă. Poți exersa în continuare citind cu voce tare.',rate_limited:'Prea multe cereri acum. Încearcă din nou peste câteva minute.',sampling_disabled:'Corectarea nu e disponibilă pentru acest cont.'}[e.code]||'Nu am putut corecta acum. Încearcă din nou.';
+  catch(e){box.textContent=e.text||'';const msg={not_granted:'Corectarea nu a fost permisă. Analiza aplicației de mai sus rămâne valabilă.',rate_limited:'Prea multe cereri acum. Încearcă din nou peste câteva minute.',sampling_disabled:'Corectarea nu e disponibilă pentru acest cont.'}[e.code]||'Nu am putut corecta acum. Încearcă din nou.';
    if(e.code!=='cancelled'){const p=document.createElement('p');p.className='muted';p.textContent=msg;out.appendChild(p)}}
  };
 };
@@ -2683,6 +2737,7 @@ R.gram=id=>{
 function gamePool(){const l=Object.keys(st.learned).map(W).filter(Boolean);return l.length>=8?l:[...l,...WORDS[st.level]].filter((w,i,a)=>a.indexOf(w)===i)}
 R.games=()=>{
  screen('Jocuri',`<p class="muted">${learnedCount()>=8?'Jocurile folosesc cuvintele pe care le-ai învățat.':'Până înveți 8 cuvinte, jocurile folosesc lista nivelului tău.'}</p><div class="grid">
+  <button class="tile flag" data-go="practice" data-arg="all" style="grid-column:1/-1"><h3>Exersează tot ce ai învățat</h3><p>Scriere în engleză, traducere în română, pronunție sau test complet, cu toate cuvintele învățate.</p></button>
   <button class="tile" data-go="gMatch"><h3>Perechi</h3><p>Leagă cuvântul englezesc de traducere. Contra cronometru.</p></button>
   <button class="tile" data-go="gListen"><h3>Ascultă și alege</h3><p>Auzi cuvântul, alegi ce înseamnă.</p></button>
   <button class="tile" data-go="gBuild"><h3>Construiește propoziția</h3><p>Pune cuvintele în ordine, apoi o spui.</p></button>
@@ -2744,21 +2799,21 @@ R.weekly=()=>{
  const pool=week.length>=10?week:all.map(([k])=>W(k)).filter(Boolean);
  const hist=st.weekly.slice(-6).reverse();
  if(pool.length<10){screen('Test săptămânal',`<div class="card"><h2>Mai ai nevoie de ${10-pool.length} cuvinte</h2><p class="muted">Testul se deblochează după primele 10 cuvinte învățate (o sesiune zilnică).</p><button class="btn" data-go="daily">Sesiunea de azi</button></div>`);return}
- const m=screen('Test săptămânal',`<div class="card"><h2>${week.length>=10?'Cuvintele din ultimele 7 zile':'Toate cuvintele învățate'}</h2><p class="muted">15 întrebări: 5 traduceri, 5 de ascultare, 5 de scris. Fără indicii pe parcurs, vezi totul la final.</p><button class="btn wide" id="go">Încep testul</button></div>
+ const m=screen('Test săptămânal',`<div class="card"><h2>${week.length>=10?'Cuvintele din ultimele 7 zile':'Toate cuvintele învățate'}</h2><p class="muted">16 întrebări: traducere, scriere în engleză, traducere scrisă în română și pronunție. Vezi imediat dacă ai răspuns corect.</p><button class="btn wide" id="go">Încep testul</button></div>
   ${hist.length?`<div class="card"><h3>Rezultate anterioare</h3><table class="tbl">${hist.map(h=>`<tr><td>${h.date}</td><td style="text-align:right"><b>${h.score}/${h.n}</b></td></tr>`).join('')}</table></div>`:''}`);
  m.querySelector('#go').onclick=()=>{
-  const ws=shuffle(pool);const pick=[];for(let i=0;i<15;i++)pick.push(ws[i%ws.length]);
-  const modes=['en2ro','listen','type'];const qs=pick.map((w,i)=>qWord(w,modes[Math.floor(i/5)]));
+  const ws=shuffle(pool).sort((a,b)=>((st.missed||{})[b.en]||0)-((st.missed||{})[a.en]||0));const pick=[];for(let i=0;i<16;i++)pick.push(ws[i%ws.length]);
+  const qs=mixQs(pick,['en2ro','type','en2roType','pron']);
   const m2=screen('Test săptămânal','<div class="card" id="q"></div>');
   runQuiz(m2.querySelector('#q'),qs,(s,wrong,review)=>{
-   st.weekly.push({date:today(),score:s,n:15});save();setTimeout(()=>addXP(s*3),300);
-   const wl=[...new Set(wrong.map(q=>q.answer!=null&&q.type==='type'?q.answer:(q.sayAfter||q.audio)).filter(Boolean))];
-   screen('Rezultat test',`<div class="card"><div class="eyebrow">Testul săptămânii</div><div class="big">${s}/15</div><h2>${s>=13?'Excelent!':s>=9?'Bine.':'Mai repetă cuvintele săptămâna asta.'}</h2></div>
+   noteMissed(wrong);st.weekly.push({date:today(),score:s,n:16});save();setTimeout(()=>addXP(s*3),300);
+   const wl=[...new Set(wrong.map(q=>q.type==='type'?q.answer:q.type==='pron'?q.target:(q.sayAfter||q.audio)).filter(Boolean))];
+   screen('Rezultat test',`<div class="card"><div class="eyebrow">Testul săptămânii</div><div class="big">${s}/16</div><h2>${s>=14?'Excelent!':s>=10?'Bine.':'Mai repetă cuvintele săptămâna asta.'}</h2></div>
     ${wl.length?`<div class="card"><h3>De repetat</h3><div class="list">${wl.map(en=>{const w=W(en);return w?`<button class="li" data-say="${esc(w.en)}"><span class="tick">${IC.spk}</span><span class="t"><b>${esc(w.en)}</b><span>${esc(w.ro)}</span></span></button>`:''}).join('')}</div></div>`:''}
     ${review}
     <button class="btn wide" data-go="home">Acasă</button>`);
    document.querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>say(b.dataset.say));
-  },{feedback:false});
+  });
  };
 };
 
