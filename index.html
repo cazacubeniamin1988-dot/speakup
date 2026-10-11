@@ -2373,12 +2373,13 @@ const BADV=/compact|eloquence|novelty|bells|bad news|bahh|boing|bubbles|cellos|w
 function vScore(v){let s=0;const n=v.name;
  if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=20;if(/premium/i.test(n))s+=55;if(/enhanced|siri/i.test(n))s+=45;if(/google/i.test(n))s+=35;
  if(/ava|samantha|aria|jenny|guy|zoe|evan|nathan|allison|susan|serena|daniel|libby|sonia|ryan|michelle|emma|andrew|brian/i.test(n))s+=10;
+ if(/\b(ava|zoe|samantha|allison|susan|nicky|aria|jenny|michelle|emma|serena|libby|sonia|karen|moira|tessa|victoria|joelle|noelle|kate|female)\b/i.test(n))s+=40;if(/\b(guy|evan|nathan|daniel|ryan|andrew|brian|aaron|alex|tom|oliver|arthur|gordon|rishi|eric|christopher|davis|tony|male)\b/i.test(n))s-=40;
  if(/en[-_]US/i.test(v.lang))s+=6;else if(/en[-_]GB/i.test(v.lang))s+=5;if(v.localService===false)s+=3;return s}
-function loadVoices(){if(!('speechSynthesis' in window))return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
+function loadVoices(){if(!('speechSynthesis' in window))return;if(st&&!st.vfem){st.vfem=1;st.voice=null;try{save()}catch(e){}}voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
 /* ---------- Vocea AI (ElevenLabs prin serverul propriu). Fără server configurat: vocea telefonului, ca înainte ---------- */
 const AI_DEFAULT_URL='';
-const AI_VOICES=[['brian','Brian','cald, rezonant, de profesor'],['eric','Eric','calm și foarte clar'],['chris','Chris','natural, prietenos'],['bill','Bill','prietenos, de povestitor']];
+const AI_VOICES=[['sarah','Sarah','femeie, caldă și sigură pe ea (implicit)'],['matilda','Matilda','femeie, profesionistă, voce plăcută'],['jessica','Jessica','femeie tânără, americană, veselă'],['laura','Laura','femeie tânără, entuziastă'],['brian','Brian','bărbat, cald, rezonant'],['eric','Eric','bărbat, calm și clar']];
 let ai=(()=>{try{return JSON.parse(localStorage.getItem('benglish_ai'))||{}}catch(e){return{}}})();
 const aiSave=()=>{try{localStorage.setItem('benglish_ai',JSON.stringify(ai))}catch(e){}};
 const aiUrl=()=>String(ai.url||AI_DEFAULT_URL||'').replace(/\/+$/,'');
@@ -2394,7 +2395,7 @@ function aiUnlock(){if(aiUnlocked||!aEl)return;aiUnlocked=true;try{aEl.src=SILEN
 async function aiHash(s){try{const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return'h'+h+'_'+s.length}}
 const aiMemo=new Map();
 function aiBlob(text){
- const v=ai.voice||'brian';const k=v+'|'+text;if(aiMemo.has(k))return aiMemo.get(k);
+ const v=ai.voice||'sarah';const k=v+'|'+text;if(aiMemo.has(k))return aiMemo.get(k);
  const p=(async()=>{
   const id='https://benglish-tts.cache/'+await aiHash(k);let c=null;try{c=await caches.open('benglish-tts')}catch(e){}
   const hit=c&&await c.match(id);if(hit)return URL.createObjectURL(await hit.blob());
@@ -3541,7 +3542,7 @@ R.voice=()=>{
   ${SR&&!micNo?`<button class="btn ghost" id="mt">Testează microfonul</button><div id="mr"></div>`:''}</div>`);
  {const u=m.querySelector('#aiu'),k=m.querySelector('#aik'),on=m.querySelector('#aion'),vv=m.querySelector('#aiv'),r=m.querySelector('#air');
   u.value=ai.url||AI_DEFAULT_URL||'';k.value=ai.key||'';on.checked=ai.on!==false;
-  const drawV=()=>{vv.innerHTML=AI_VOICES.map(([id,n,d])=>`<button class="li" data-av="${id}"><span class="tick ${(ai.voice||'brian')===id?'done':''}">${(ai.voice||'brian')===id?'✓':''}</span><span class="t"><b>${n}</b><span>${d}</span></span>${IC.spk}</button>`).join('');
+  const drawV=()=>{vv.innerHTML=AI_VOICES.map(([id,n,d])=>`<button class="li" data-av="${id}"><span class="tick ${(ai.voice||'sarah')===id?'done':''}">${(ai.voice||'sarah')===id?'✓':''}</span><span class="t"><b>${n}</b><span>${d}</span></span>${IC.spk}</button>`).join('');
    vv.querySelectorAll('[data-av]').forEach(b=>b.onclick=()=>{ai.voice=b.dataset.av;aiSave();drawV();if(aiOn())say("Hi, I'm your English teacher. Let's practise together, one word at a time.")})};drawV();
   on.onchange=()=>{ai.on=on.checked;aiSave()};
   m.querySelector('#ais').onclick=async()=>{ai.url=u.value.trim();ai.key=k.value.trim();ai.on=on.checked;aiSave();

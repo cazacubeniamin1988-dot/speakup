@@ -12,7 +12,11 @@
  *   – păstrează fiecare înregistrare generată, ca același text să nu se plătească de două ori.
  */
 const VOICES = {
-  brian: 'nPczCjzI2devNBz1zQrb', // cald, rezonant, matur – implicit
+  sarah:   'EXAVITQu4vr4xnSDxMaL', // femeie, caldă, sigură – implicit
+  matilda: 'XrExE9yKIg1WjnnlVkGX', // femeie, profesionistă
+  jessica: 'cgSgspJ2msm6clMCkdW9', // femeie tânără, americană
+  laura:   'FGY2WhTYpPnrIDTdsKH5', // femeie tânără, entuziastă
+  brian: 'nPczCjzI2devNBz1zQrb', // bărbat, cald, rezonant
   eric:  'cjVigY5qzO86Huf0OWal', // calm, clar, ~40 de ani
   chris: 'iP95p4xoKVk53GoZ742B', // natural, prietenos
   bill:  'pqHfZKP75CvOlQylNhV4', // prietenos, de povestitor
@@ -53,7 +57,7 @@ export default {
 
     let body; try { body = await req.json(); } catch (e) { return json({ error: 'bad_json' }, 400, h); }
     const text = String(body.text || '').replace(/\s+/g, ' ').trim();
-    const voice = VOICES[body.voice] ? body.voice : 'brian';
+    const voice = VOICES[body.voice] ? body.voice : 'sarah';
     if (!text) return json({ error: 'empty' }, 400, h);
     if (text.length > MAX_TEXT) return json({ error: 'too_long', max: MAX_TEXT }, 413, h);
 
