@@ -2406,7 +2406,7 @@ function aiBlob(text){
  aiMemo.set(k,p);p.catch(()=>aiMemo.delete(k));
  if(aiMemo.size>300){const first=aiMemo.keys().next().value;aiMemo.get(first).then(u=>URL.revokeObjectURL(u),()=>{});aiMemo.delete(first)}
  return p}
-const aiPrefetch=(...ts)=>{if(aiOn()&&navigator.onLine!==false)ts.filter(Boolean).forEach(t=>aiBlob(String(t).trim()).catch(()=>{}))};
+const aiPrefetch=(...ts)=>{if(aiOn()&&navigator.onLine!==false)ts.filter(Boolean).forEach(t=>aiBlob(String(t).trim()).catch(()=>{}));else if(typeof prePrefetch==='function')prePrefetch(...ts)};
 async function aiSay(t,rate){
  const my=++aiSeq;try{speechSynthesis.cancel()}catch(e){}
  const u=await aiBlob(t);if(my!==aiSeq)return;
@@ -2414,10 +2414,35 @@ async function aiSay(t,rate){
  await new Promise((res,rej)=>{let done=false;const end=()=>{if(!done){done=true;res()}};aEl.onended=end;aEl.onpause=end;aEl.onerror=()=>{if(!done){done=true;rej(new Error('play'))}};
   const p=aEl.play();if(p&&p.catch)p.catch(e=>{if(!done){done=true;rej(e)}})});
 }
+/* Vocea Benglish: voce neurală naturală (femeie, accent american), înregistrată dinainte pentru cuvinte, propoziții și discursuri */
+const PRE_HOST=(typeof location!=='undefined'&&location.hostname)||'';
+const PRE_BASE=/github\.io$/.test(PRE_HOST)||/^(localhost|127\.0\.0\.1)$/.test(PRE_HOST)?'audio/':'https://cazacubeniamin1988-dot.github.io/speakup/audio/';
+let preSet=null,preLoading=null;
+const preNorm=t=>String(t).replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ').trim().toLowerCase();
+function preHash(s){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0,ch;i<s.length;i++){ch=s.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507);h1^=Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507);h2^=Math.imul(h1^(h1>>>13),3266489909);return(h2>>>0).toString(16).padStart(8,'0')+(h1>>>0).toString(16).padStart(8,'0')}
+function preLoad(){if(preSet)return Promise.resolve();if(preLoading)return preLoading;if(typeof fetch!=='function'){preSet=new Set();return Promise.resolve()}
+ preLoading=fetch(PRE_BASE+'index.txt').then(r=>r.ok?r.text():'').then(t=>{preSet=new Set(t.split(/\s+/).filter(Boolean))}).catch(()=>{preLoading=null});return preLoading}
+const preOn=()=>ai.pre!==false;
+const preHas=t=>preOn()&&!!preSet&&!!aEl&&preSet.has(preHash(preNorm(t)));
+const preMemo=new Map();
+function preBlob(t){const h=preHash(preNorm(t));if(preMemo.has(h))return preMemo.get(h);
+ const p=fetch(PRE_BASE+h.slice(0,2)+'/'+h+'.mp3').then(r=>{if(!r.ok)throw new Error('pre_'+r.status);return r.blob()}).then(b=>URL.createObjectURL(b));
+ preMemo.set(h,p);p.catch(()=>preMemo.delete(h));
+ if(preMemo.size>200){const f=preMemo.keys().next().value;preMemo.get(f).then(u=>URL.revokeObjectURL(u),()=>{});preMemo.delete(f)}return p}
+const prePrefetch=(...ts)=>ts.filter(Boolean).forEach(t=>{if(preHas(t))preBlob(t).catch(()=>{})});
+async function playSrc(getUrl,rate){
+ const my=++aiSeq;try{speechSynthesis.cancel()}catch(e){}
+ const u=await getUrl();if(my!==aiSeq)return;
+ aEl.pause();aEl.src=u;aEl.playbackRate=Math.max(.6,Math.min(1.4,(rate/.95)*(st.rate||1)));
+ await new Promise((res,rej)=>{let done=false;const end=()=>{if(!done){done=true;res()}};aEl.onended=end;aEl.onpause=end;aEl.onerror=()=>{if(!done){done=true;rej(new Error('play'))}};
+  const p=aEl.play();if(p&&p.catch)p.catch(e=>{if(!done){done=true;rej(e)}})})}
+const preSay=(t,rate)=>playSrc(()=>preBlob(t),rate);
+preLoad();
 function sayTTS(t,rate=.95){return new Promise(res=>{if(!('speechSynthesis' in window))return res();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:'en-US';if(voice)u.voice=voice;u.rate=Math.max(.5,Math.min(1.3,rate*(st.rate||1)));u.pitch=1;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
 function say(t,rate=.95){t=String(t||'').trim();if(!t)return Promise.resolve();
- if(aiOn()&&aEl&&navigator.onLine!==false)return aiSay(t,rate).then(()=>{aiLastErr=''},e=>{aiLastErr=String(e&&e.message||e);if(/NotAllowed/i.test(aiLastErr))aiUnlocked=false;return sayTTS(t,rate)});
- return sayTTS(t,rate)}
+ const fall=()=>preHas(t)?preSay(t,rate).catch(()=>sayTTS(t,rate)):sayTTS(t,rate);
+ if(aiOn()&&aEl&&navigator.onLine!==false)return aiSay(t,rate).then(()=>{aiLastErr=''},e=>{aiLastErr=String(e&&e.message||e);if(/NotAllowed/i.test(aiLastErr))aiUnlocked=false;return fall()});
+ return fall()}
 async function sayAll(lines,rate=.95){for(const l of lines){await say(l,rate);await new Promise(r=>setTimeout(r,450))}}
 const stopVoice=()=>{aiSeq++;repTok++;try{aEl&&aEl.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}};
 /* Înregistrarea vocii tale (pentru comparat cu profesorul) */
@@ -3512,12 +3537,17 @@ R.rewards=()=>{
 };
 
 /* ---------- Microfon și voce ---------- */
+const PRE_TEST="Hi! I'm your English teacher. Let's practise together, one word at a time.";
 const LIVE_URL='https://cazacubeniamin1988-dot.github.io/speakup/';
 R.voice=()=>{
  const inClaude=!!(window.claude&&claude.use)&&window.top!==window;
  const micOk=micState==='ok',micNo=micState==='blocked'||micState==='none';
  const m=screen('Microfon și voce',`
- <div class="card" id="aic"><div class="eyebrow">Profesorul AI · ElevenLabs</div><h3>Voce umană, accent american</h3>
+ <div class="card"><div class="eyebrow">Vocea Benglish</div><h3>Voce naturală de profesoară americană</h3>
+  <p class="small muted">Cuvintele, propozițiile și discursurile au fost înregistrate dinainte cu o voce neurală naturală. Nu trebuie să configurezi nimic. Doar textele noi, generate pe loc, sunt citite de vocea telefonului.</p>
+  <label class="small" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="preon"> Folosește vocea Benglish (recomandat)</label>
+  <div class="row"><button class="btn ghost" id="pret">${IC.spk} Ascultă vocea</button></div><div class="small muted" id="prer"></div></div>
+ <div class="card" id="aic"><div class="eyebrow">Opțional · ElevenLabs</div><h3>Voce umană, accent american</h3>
   <p class="small muted">Vocea vine de la serverul tău securizat (cheia ElevenLabs stă doar acolo). Fiecare text se generează o singură dată, apoi se păstrează pe telefon și merge și fără internet. Dacă serverul nu răspunde, aplicația folosește automat vocea telefonului.</p>
   <label class="small"><b>Adresa serverului</b></label><input type="url" id="aiu" placeholder="https://benglish-tts.….workers.dev" autocapitalize="off" autocomplete="off" spellcheck="false">
   <label class="small"><b>Codul aplicației</b></label><input type="password" id="aik" placeholder="codul ales de tine (APP_KEY)" autocapitalize="off" autocomplete="off">
@@ -3540,6 +3570,9 @@ R.voice=()=>{
   ${LIVE_URL?`<div class="typef"><input type="text" id="lu" readonly value="${esc(LIVE_URL)}"><button class="btn" id="cp">Copiază</button></div><a class="btn ghost wide" href="${esc(LIVE_URL)}" target="_blank" rel="noopener">Deschide în browser</a>`:''}
   <p class="small muted">Progresul se salvează separat în fiecare loc unde deschizi aplicația.</p>
   ${SR&&!micNo?`<button class="btn ghost" id="mt">Testează microfonul</button><div id="mr"></div>`:''}</div>`);
+ {const po=m.querySelector('#preon'),pr=m.querySelector('#prer');po.checked=preOn();po.onchange=()=>{ai.pre=po.checked;aiSave()};
+  const info=()=>{pr.textContent=preSet?(preSet.size?preSet.size+' înregistrări disponibile.':'Înregistrările nu sunt încă disponibile aici.'):'Se încarcă lista de înregistrări…'};info();preLoad().then(info);
+  m.querySelector('#pret').onclick=async()=>{await preLoad();info();say(PRE_TEST)}}
  {const u=m.querySelector('#aiu'),k=m.querySelector('#aik'),on=m.querySelector('#aion'),vv=m.querySelector('#aiv'),r=m.querySelector('#air');
   u.value=ai.url||AI_DEFAULT_URL||'';k.value=ai.key||'';on.checked=ai.on!==false;
   const drawV=()=>{vv.innerHTML=AI_VOICES.map(([id,n,d])=>`<button class="li" data-av="${id}"><span class="tick ${(ai.voice||'sarah')===id?'done':''}">${(ai.voice||'sarah')===id?'✓':''}</span><span class="t"><b>${n}</b><span>${d}</span></span>${IC.spk}</button>`).join('');
