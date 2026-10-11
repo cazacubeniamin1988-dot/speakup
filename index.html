@@ -2370,12 +2370,12 @@ const pic=(en,cls='ill')=>PIC[en]?`<svg class="${cls}" viewBox="0 0 120 90" role
 let voice=null,voices=[];
 /* Cele mai naturale voci primesc scor mare; vocile „robot” sau de efect sunt scoase */
 const BADV=/compact|eloquence|novelty|bells|bad news|bahh|boing|bubbles|cellos|whisper|zarvox|trinoids|albert|jester|organ|superstar|wobble|fred|junior|ralph|kathy|grandma|grandpa|rocko|shelley|flo\b|reed|sandy|espeak/i;
-function vScore(v){let s=0;const n=v.name;
- if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=20;if(/premium/i.test(n))s+=55;if(/enhanced|siri/i.test(n))s+=45;if(/google/i.test(n))s+=35;
+function vScore(v){let s=0;const n=v.name+' '+(v.voiceURI||'');
+ if(/natural|neural/i.test(n))s+=60;if(/online/i.test(n))s+=20;if(/premium/i.test(n))s+=90;if(/enhanced|siri/i.test(n))s+=45;if(/google/i.test(n))s+=35;
  if(/ava|samantha|aria|jenny|guy|zoe|evan|nathan|allison|susan|serena|daniel|libby|sonia|ryan|michelle|emma|andrew|brian/i.test(n))s+=10;
  if(/\b(ava|zoe|samantha|allison|susan|nicky|aria|jenny|michelle|emma|serena|libby|sonia|karen|moira|tessa|victoria|joelle|noelle|kate|female)\b/i.test(n))s+=40;if(/\b(guy|evan|nathan|daniel|ryan|andrew|brian|aaron|alex|tom|oliver|arthur|gordon|rishi|eric|christopher|davis|tony|male)\b/i.test(n))s-=40;
  if(/en[-_]US/i.test(v.lang))s+=6;else if(/en[-_]GB/i.test(v.lang))s+=5;if(v.localService===false)s+=3;return s}
-function loadVoices(){if(!('speechSynthesis' in window))return;if(st&&!st.vfem){st.vfem=1;st.voice=null;try{save()}catch(e){}}voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
+function loadVoices(){if(!('speechSynthesis' in window))return;if(st&&(st.vfem||0)<2){st.vfem=2;st.voice=null;try{save()}catch(e){}}voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name+' '+(v.voiceURI||''))).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
 /* ---------- Vocea AI (ElevenLabs prin serverul propriu). Fără server configurat: vocea telefonului, ca înainte ---------- */
 const AI_DEFAULT_URL='';
@@ -3556,7 +3556,7 @@ R.voice=()=>{
   if(aiLastErr)r.innerHTML=`<p class="small muted">Ultima eroare a vocii AI: ${esc(aiLastErr)}</p>`;}
  const vl=m.querySelector('#vl');
  const draw=()=>{if(!voices.length){vl.innerHTML='<p class="muted small">Telefonul nu a încărcat încă vocile. Revino peste câteva secunde.</p>';return}
-  vl.innerHTML=voices.slice(0,12).map((v,i)=>{const nat=vScore(v)>=40;return`<button class="li" data-v="${i}"><span class="tick ${voice===v?'done':''}">${voice===v?'✓':''}</span><span class="t"><b>${esc(v.name.replace(/Microsoft |Google |\(.*?\)/g,'').trim()||v.name)}</b><span>${esc(v.lang)}${nat?' · naturală':''}</span></span>${IC.spk}</button>`}).join('');
+  vl.innerHTML=voices.slice(0,12).map((v,i)=>{const vu=v.name+' '+(v.voiceURI||'');const nat=vScore(v)>=40;const tier=/premium/i.test(vu)?'Premium':/enhanced/i.test(vu)?'Îmbunătățită':'';return`<button class="li" data-v="${i}"><span class="tick ${voice===v?'done':''}">${voice===v?'✓':''}</span><span class="t"><b>${esc(v.name.replace(/Microsoft |Google |\(.*?\)/g,'').trim()||v.name)}</b><span>${esc(v.lang)}${tier?' · <b>'+tier+'</b>':nat?' · naturală':''}</span></span>${IC.spk}</button>`}).join('');
   vl.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{voice=voices[+b.dataset.v];st.voice=voice.voiceURI;save();say("Hello! Let's practise English together. Great job today.");draw()})};
  draw();if(!voices.length)setTimeout(()=>{loadVoices();draw()},1200);
  const rt=m.querySelector('#rt'),rv=m.querySelector('#rv');rt.value=st.rate||1;rv.textContent=Math.round((st.rate||1)*100)+'%';
