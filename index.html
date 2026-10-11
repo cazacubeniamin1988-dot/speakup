@@ -131,7 +131,7 @@ svg.i{width:20px;height:20px;flex:none}
 .opt[disabled]{cursor:default}
 .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
 .typef{display:flex;gap:8px;flex-wrap:wrap}
-input[type=text],textarea,.typef input{flex:1;min-width:0;font:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+input[type=text],input[type=url],input[type=password],textarea,.typef input{flex:1;min-width:0;font:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
 textarea{min-height:130px;resize:vertical}
 .fb{display:flex;flex-direction:column;gap:10px}
 .verdict{border-radius:10px;padding:10px 12px;font-weight:700}
@@ -2376,9 +2376,71 @@ function vScore(v){let s=0;const n=v.name;
  if(/en[-_]US/i.test(v.lang))s+=6;else if(/en[-_]GB/i.test(v.lang))s+=5;if(v.localService===false)s+=3;return s}
 function loadVoices(){if(!('speechSynthesis' in window))return;voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));voice=voices.find(v=>v.voiceURI===st.voice)||voices[0]||null}
 if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
-function say(t,rate=.95){return new Promise(res=>{if(!('speechSynthesis' in window))return res();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:'en-US';if(voice)u.voice=voice;u.rate=Math.max(.5,Math.min(1.3,rate*(st.rate||1)));u.pitch=1;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
+/* ---------- Vocea AI (ElevenLabs prin serverul propriu). Fără server configurat: vocea telefonului, ca înainte ---------- */
+const AI_DEFAULT_URL='';
+const AI_VOICES=[['brian','Brian','cald, rezonant, de profesor'],['eric','Eric','calm și foarte clar'],['chris','Chris','natural, prietenos'],['bill','Bill','prietenos, de povestitor']];
+let ai=(()=>{try{return JSON.parse(localStorage.getItem('benglish_ai'))||{}}catch(e){return{}}})();
+const aiSave=()=>{try{localStorage.setItem('benglish_ai',JSON.stringify(ai))}catch(e){}};
+const aiUrl=()=>String(ai.url||AI_DEFAULT_URL||'').replace(/\/+$/,'');
+const aiOn=()=>ai.on!==false&&!!aiUrl()&&!!ai.key&&typeof fetch==='function';
+let aiLastErr='',aiSeq=0;
+const aEl=typeof Audio==='function'?new Audio():null;
+if(aEl){aEl.preload='auto';try{aEl.preservesPitch=true;aEl.mozPreservesPitch=true;aEl.webkitPreservesPitch=true}catch(e){}}
+/* iPhone: sunetul poate porni din cod doar după o primă atingere; „deblocăm” elementul audio la prima atingere */
+const SILENT='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+let aiUnlocked=false;
+function aiUnlock(){if(aiUnlocked||!aEl)return;aiUnlocked=true;try{aEl.src=SILENT;const p=aEl.play();if(p&&p.catch)p.catch(()=>{aiUnlocked=false})}catch(e){aiUnlocked=false}}
+['touchend','click'].forEach(ev=>document.addEventListener(ev,aiUnlock,{capture:true,passive:true}));
+async function aiHash(s){try{const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return'h'+h+'_'+s.length}}
+const aiMemo=new Map();
+function aiBlob(text){
+ const v=ai.voice||'brian';const k=v+'|'+text;if(aiMemo.has(k))return aiMemo.get(k);
+ const p=(async()=>{
+  const id='https://benglish-tts.cache/'+await aiHash(k);let c=null;try{c=await caches.open('benglish-tts')}catch(e){}
+  const hit=c&&await c.match(id);if(hit)return URL.createObjectURL(await hit.blob());
+  const r=await fetch(aiUrl()+'/tts',{method:'POST',headers:{'Content-Type':'application/json','X-App-Key':ai.key},body:JSON.stringify({text,voice:v})});
+  if(!r.ok){let e='';try{e=(await r.json()).error}catch(x){}throw new Error(e||('http_'+r.status))}
+  const b=await r.blob();if(c)try{await c.put(id,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))}catch(e){}
+  return URL.createObjectURL(b)})();
+ aiMemo.set(k,p);p.catch(()=>aiMemo.delete(k));
+ if(aiMemo.size>300){const first=aiMemo.keys().next().value;aiMemo.get(first).then(u=>URL.revokeObjectURL(u),()=>{});aiMemo.delete(first)}
+ return p}
+const aiPrefetch=(...ts)=>{if(aiOn()&&navigator.onLine!==false)ts.filter(Boolean).forEach(t=>aiBlob(String(t).trim()).catch(()=>{}))};
+async function aiSay(t,rate){
+ const my=++aiSeq;try{speechSynthesis.cancel()}catch(e){}
+ const u=await aiBlob(t);if(my!==aiSeq)return;
+ aEl.pause();aEl.src=u;aEl.playbackRate=Math.max(.6,Math.min(1.4,(rate/.95)*(st.rate||1)));
+ await new Promise((res,rej)=>{let done=false;const end=()=>{if(!done){done=true;res()}};aEl.onended=end;aEl.onpause=end;aEl.onerror=()=>{if(!done){done=true;rej(new Error('play'))}};
+  const p=aEl.play();if(p&&p.catch)p.catch(e=>{if(!done){done=true;rej(e)}})});
+}
+function sayTTS(t,rate=.95){return new Promise(res=>{if(!('speechSynthesis' in window))return res();speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:'en-US';if(voice)u.voice=voice;u.rate=Math.max(.5,Math.min(1.3,rate*(st.rate||1)));u.pitch=1;u.onend=res;u.onerror=res;speechSynthesis.speak(u)})}
+function say(t,rate=.95){t=String(t||'').trim();if(!t)return Promise.resolve();
+ if(aiOn()&&aEl&&navigator.onLine!==false)return aiSay(t,rate).then(()=>{aiLastErr=''},e=>{aiLastErr=String(e&&e.message||e);if(/NotAllowed/i.test(aiLastErr))aiUnlocked=false;return sayTTS(t,rate)});
+ return sayTTS(t,rate)}
 async function sayAll(lines,rate=.95){for(const l of lines){await say(l,rate);await new Promise(r=>setTimeout(r,450))}}
-const stopVoice=()=>{try{speechSynthesis.cancel()}catch(e){}};
+const stopVoice=()=>{aiSeq++;repTok++;try{aEl&&aEl.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}};
+/* Înregistrarea vocii tale (pentru comparat cu profesorul) */
+const canRecord=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&typeof MediaRecorder==='function');
+function recBox(el,target){
+ if(!canRecord){el.innerHTML='';return}
+ el.innerHTML=`<div class="row" style="justify-content:center"><button class="btn ghost" data-r="rec">● Înregistrează-mă</button><button class="btn ghost" data-r="me" hidden>${IC.spk} Vocea mea</button><button class="btn ghost" data-r="cmp" hidden>Compară</button></div><div class="small muted" data-r="st" style="text-align:center"></div>`;
+ const b=s=>el.querySelector(`[data-r="${s}"]`);let mr=null,stream=null,url=null,t0=0,timer=null;
+ const stop=()=>{if(mr&&mr.state!=='inactive')mr.stop()};
+ b('rec').onclick=async()=>{
+  if(mr&&mr.state==='recording'){stop();return}
+  stopVoice();try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){b('st').textContent='Nu am primit acces la microfon.';return}
+  const chunks=[];try{mr=new MediaRecorder(stream)}catch(e){b('st').textContent='Înregistrarea nu e disponibilă aici.';return}
+  mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+  mr.onstop=()=>{clearInterval(timer);stream.getTracks().forEach(t=>t.stop());if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(new Blob(chunks,{type:mr.mimeType||'audio/mp4'}));
+   b('rec').textContent='● Înregistrează din nou';b('me').hidden=false;b('cmp').hidden=false;b('st').textContent='Ascultă-te și compară cu profesorul.'};
+  mr.start();t0=Date.now();b('rec').textContent='■ Oprește';timer=setInterval(()=>{const s=Math.round((Date.now()-t0)/1000);b('st').textContent='Înregistrez… '+s+' s';if(s>=90)stop()},300)};
+ const playMe=()=>new Promise(res=>{if(!url||!aEl)return res();stopVoice();aEl.src=url;aEl.playbackRate=1;aEl.onended=res;aEl.onpause=res;aEl.onerror=res;const p=aEl.play();if(p&&p.catch)p.catch(res)});
+ b('me').onclick=()=>playMe();
+ b('cmp').onclick=async()=>{b('st').textContent='Profesorul…';await say(target);await new Promise(r=>setTimeout(r,500));b('st').textContent='Tu…';await playMe();b('st').textContent='Ce diferențe ai auzit? Înregistrează din nou dacă vrei.'};
+}
+let repTok=0;
+async function sayRepeat(t,n=3,rate=.95,onI){const my=++repTok;for(let i=0;i<n;i++){if(my!==repTok)break;onI&&onI(i);await say(t,rate);if(my!==repTok)break;await new Promise(r=>setTimeout(r,1400))}onI&&onI(-1)}
+
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let micState=SR?'unknown':'none';
 function listen(){return new Promise((res,rej)=>{if(!SR)return rej('nosupport');let r;try{r=new SR()}catch(e){return rej('nosupport')}r.lang='en-US';r.interimResults=false;r.maxAlternatives=5;let done=false;
@@ -2389,13 +2451,16 @@ function pron(el,target,{onPass,hideText=false,hint=''}={}){
  let tries=0,passed=false;const words=norm(target).split(' ').length;
  el.innerHTML=`<div class="pron">
   <div class="pron-target ${hideText?'hid':''}">${hideText?esc(hint):esc(target)}</div>
-  <div class="pron-btns"><button class="btn ghost" data-a="play">${IC.spk} Ascultă</button><button class="btn ghost" data-a="slow">${IC.slow} Rar</button></div>
+  <div class="pron-btns"><button class="btn ghost" data-a="play">${IC.spk} Ascultă</button><button class="btn ghost" data-a="slow">${IC.slow} Rar</button><button class="btn ghost" data-a="rep">↻ Repetă ×3</button></div>
   <button class="mic" data-a="mic" aria-label="Pronunță">${IC.mic}</button>
   <div class="mic-l">Apasă și spune în engleză</div>
+  <div class="recbox"></div>
   <div class="pron-res" aria-live="polite"></div></div>`;
  const res=el.querySelector('.pron-res'),mic=el.querySelector('.mic'),lab=el.querySelector('.mic-l');
  el.querySelector('[data-a=play]').onclick=()=>say(target);
  el.querySelector('[data-a=slow]').onclick=()=>say(target,.6);
+ {const rb=el.querySelector('[data-a=rep]');rb.onclick=()=>{if(rb.dataset.on){stopVoice();return}rb.dataset.on=1;sayRepeat(target,3,.9,i=>{if(i<0){delete rb.dataset.on;rb.textContent='↻ Repetă ×3'}else rb.textContent='■ '+(i+1)+'/3'})}}
+ recBox(el.querySelector('.recbox'),target);aiPrefetch(target);
  const need=words===1?1:.85;
  function judge(alts,mode='mic'){
   /* Strict: contează doar prima variantă auzită, nu alternativele; claritatea sub 55% nu trece */
@@ -2765,7 +2830,7 @@ R.dailyLearn=()=>{
   <div class="card" id="pr2" hidden></div>
   <button class="btn wide" id="next" disabled>Pronunță corect ca să treci mai departe</button>`);
  const exNow=exBlock(m,w,()=>{const p2=m.querySelector('#pr2');if(!p2.hidden)sayEx()});
- setTimeout(()=>say(w.en),300);
+ aiPrefetch(exNow());setTimeout(()=>say(w.en),300);
  const nb=m.querySelector('#next');let sayEx=()=>{};
  pron(m.querySelector('#pr'),w.en,{onPass:()=>{
    const p2=m.querySelector('#pr2');p2.hidden=false;
@@ -2862,7 +2927,7 @@ R.word=arg=>{
  <div class="row">${prev?`<button class="btn ghost" data-go="word" data-arg="${esc(id+'::'+prev.en)}">← ${esc(prev.en)}</button>`:''}${next?`<button class="btn ghost" data-go="word" data-arg="${esc(id+'::'+next.en)}">${esc(next.en)} →</button>`:''}</div>
  <button class="btn ghost wide" data-go="topic" data-arg="${esc(id)}">Înapoi la listă</button>`);
  let c2open=false;const exNow=exBlock(m,w,()=>{if(c2open)pron(m.querySelector('#pr2'),exNow(),{onPass:mark})});
- setTimeout(()=>say(w.en),300);
+ aiPrefetch(exNow());setTimeout(()=>say(w.en),300);
  const ok=m.querySelector('#ok');
  const mark=()=>{if(!st.learned[w.en]){st.learned[w.en]={d:today()};save();addXP(10)}ok.disabled=true;ok.textContent='Învățat ✓'};
  pron(m.querySelector('#pr'),w.en,{onPass:()=>{const c2=m.querySelector('#c2');c2.hidden=false;
@@ -3309,8 +3374,8 @@ function dspMark(line,terms){let h=esc(line);terms.slice().sort((a,b)=>b.length-
 function dspGet(id){return(DSPL[id]||DSPEECH[id]||[]).map(s=>Array.isArray(s.en)?{t:s.t,en:[s.en.join(' ')],ro:[s.ro.join(' ')]}:{t:s.t,en:s.en.split(/\n\s*\n/),ro:s.ro.split(/\n\s*\n/)})}
 const sentSplit=p=>p.match(/[^.!?]+[.!?]+["”']?|[^.!?]+$/g)||[p];
 let dspPlay=0;
-async function dspSpeak(paras,rate,onPara){const my=++dspPlay;for(let i=0;i<paras.length;i++){if(my!==dspPlay)return;onPara&&onPara(i);for(const s of sentSplit(paras[i])){if(my!==dspPlay)return;await say(s.trim(),rate)}await new Promise(r=>setTimeout(r,250))}onPara&&onPara(-1)}
-function dspStop(){dspPlay++;try{speechSynthesis.cancel()}catch(e){}}
+async function dspSpeak(paras,rate,onPara){const my=++dspPlay;for(let i=0;i<paras.length;i++){if(my!==dspPlay)return;onPara&&onPara(i);if(aiOn()){aiPrefetch(paras[i+1]);await say(paras[i],rate)}else for(const s of sentSplit(paras[i])){if(my!==dspPlay)return;await say(s.trim(),rate)}await new Promise(r=>setTimeout(r,350))}onPara&&onPara(-1)}
+function dspStop(){dspPlay++;stopVoice()}
 const mmss=ms=>{const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 R.dspeeches=id=>{
  const d=DIAGRAMS.find(x=>x.id===id),L=dspGet(id);if(!d){go('diagrams');return}
@@ -3451,7 +3516,14 @@ R.voice=()=>{
  const inClaude=!!(window.claude&&claude.use)&&window.top!==window;
  const micOk=micState==='ok',micNo=micState==='blocked'||micState==='none';
  const m=screen('Microfon și voce',`
- <div class="card"><div class="eyebrow">Vocea profesorului</div><h3>Alege vocea care sună cel mai natural</h3>
+ <div class="card" id="aic"><div class="eyebrow">Profesorul AI · ElevenLabs</div><h3>Voce umană, accent american</h3>
+  <p class="small muted">Vocea vine de la serverul tău securizat (cheia ElevenLabs stă doar acolo). Fiecare text se generează o singură dată, apoi se păstrează pe telefon și merge și fără internet. Dacă serverul nu răspunde, aplicația folosește automat vocea telefonului.</p>
+  <label class="small"><b>Adresa serverului</b></label><input type="url" id="aiu" placeholder="https://benglish-tts.….workers.dev" autocapitalize="off" autocomplete="off" spellcheck="false">
+  <label class="small"><b>Codul aplicației</b></label><input type="password" id="aik" placeholder="codul ales de tine (APP_KEY)" autocapitalize="off" autocomplete="off">
+  <div class="list" id="aiv" style="margin-top:8px"></div>
+  <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:8px"><input type="checkbox" id="aion"> Folosește vocea AI</label>
+  <div class="row"><button class="btn" id="ais">Salvează și testează</button></div><div id="air"></div></div>
+ <div class="card"><div class="eyebrow">Vocea telefonului (rezervă)</div><h3>Alege vocea care sună cel mai natural</h3>
   <p class="small muted">Vocile vin din telefonul tău. Cele marcate „naturală” sună cel mai uman.</p>
   <div class="list" id="vl"></div>
   <label for="rt" class="small"><b>Viteză</b> <span id="rv"></span></label>
@@ -3467,6 +3539,20 @@ R.voice=()=>{
   ${LIVE_URL?`<div class="typef"><input type="text" id="lu" readonly value="${esc(LIVE_URL)}"><button class="btn" id="cp">Copiază</button></div><a class="btn ghost wide" href="${esc(LIVE_URL)}" target="_blank" rel="noopener">Deschide în browser</a>`:''}
   <p class="small muted">Progresul se salvează separat în fiecare loc unde deschizi aplicația.</p>
   ${SR&&!micNo?`<button class="btn ghost" id="mt">Testează microfonul</button><div id="mr"></div>`:''}</div>`);
+ {const u=m.querySelector('#aiu'),k=m.querySelector('#aik'),on=m.querySelector('#aion'),vv=m.querySelector('#aiv'),r=m.querySelector('#air');
+  u.value=ai.url||AI_DEFAULT_URL||'';k.value=ai.key||'';on.checked=ai.on!==false;
+  const drawV=()=>{vv.innerHTML=AI_VOICES.map(([id,n,d])=>`<button class="li" data-av="${id}"><span class="tick ${(ai.voice||'brian')===id?'done':''}">${(ai.voice||'brian')===id?'✓':''}</span><span class="t"><b>${n}</b><span>${d}</span></span>${IC.spk}</button>`).join('');
+   vv.querySelectorAll('[data-av]').forEach(b=>b.onclick=()=>{ai.voice=b.dataset.av;aiSave();drawV();if(aiOn())say("Hi, I'm your English teacher. Let's practise together, one word at a time.")})};drawV();
+  on.onchange=()=>{ai.on=on.checked;aiSave()};
+  m.querySelector('#ais').onclick=async()=>{ai.url=u.value.trim();ai.key=k.value.trim();ai.on=on.checked;aiSave();
+   if(!aiUrl()||!ai.key){r.innerHTML='<div class="verdict bad">Completează adresa serverului și codul.</div>';return}
+   r.innerHTML='<p class="small muted">Verific serverul…</p>';
+   try{const x=await fetch(aiUrl()+'/health',{headers:{'X-App-Key':ai.key}});const j=await x.json().catch(()=>({}));
+    if(!x.ok)throw new Error(j.error||('http_'+x.status));
+    r.innerHTML=`<div class="verdict ok">Conectat. Azi ai folosit ${j.used||0} din ${j.limit} caractere noi.${j.cache?'':' Atenție: memoria serverului (KV) nu e legată.'}</div>`;
+    await say("Great! Your new teacher's voice is ready. Let's start.")}
+   catch(e){const m2={bad_app_key:'Codul aplicației nu e corect.',server_not_configured:'Serverul nu are încă cheile setate.'}[e.message]||'Nu am putut ajunge la server ('+esc(e.message)+'). Verifică adresa.';r.innerHTML=`<div class="verdict bad">${m2}</div>`}};
+  if(aiLastErr)r.innerHTML=`<p class="small muted">Ultima eroare a vocii AI: ${esc(aiLastErr)}</p>`;}
  const vl=m.querySelector('#vl');
  const draw=()=>{if(!voices.length){vl.innerHTML='<p class="muted small">Telefonul nu a încărcat încă vocile. Revino peste câteva secunde.</p>';return}
   vl.innerHTML=voices.slice(0,12).map((v,i)=>{const nat=vScore(v)>=40;return`<button class="li" data-v="${i}"><span class="tick ${voice===v?'done':''}">${voice===v?'✓':''}</span><span class="t"><b>${esc(v.name.replace(/Microsoft |Google |\(.*?\)/g,'').trim()||v.name)}</b><span>${esc(v.lang)}${nat?' · naturală':''}</span></span>${IC.spk}</button>`}).join('');
