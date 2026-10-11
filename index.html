@@ -2247,7 +2247,7 @@ async function cloudInit(){
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 /* Cod de salvare: progresul unui profil într-un text care se poate copia și lipi oriunde */
 const exportCode=()=>'SPEAKUP1:'+btoa(unescape(encodeURIComponent(JSON.stringify(st))));
-function decodeCode(c){c=String(c||'').trim().replace(/\s+/g,'');if(!c.startsWith('SPEAKUP1:'))throw new Error('format');const o=JSON.parse(decodeURIComponent(escape(atob(c.slice(9)))));if(!o||typeof o!=='object'||!('learned' in o))throw new Error('format');return o}
+function decodeCode(c){c=String(c||'').normalize('NFKC');const i=c.indexOf('SPEAKUP1:');let b=i>=0?c.slice(i+9):c;b=b.replace(/[^A-Za-z0-9+/=_-]/g,'').replace(/-/g,'+').replace(/_/g,'/').replace(/=+$/,'');const j=b.indexOf('eyJ');if(j>0)b=b.slice(j);if(!b.startsWith('eyJ'))throw new Error('format');while(b.length%4)b+='=';const o=JSON.parse(decodeURIComponent(escape(atob(b))));if(!o||typeof o!=='object'||!('learned' in o))throw new Error('format');return o}
 function importCode(c){const o=decodeCode(c);o.updated=Date.now();applyState(o)}
 function importAsNewProfile(c){const o=decodeCode(c);o.updated=Date.now();const id=newPid();profs.list.push({id,name:o.name||'Profil',color:profs.list.length%AV_COLORS.length});lsSet(pkey(id),o);useProfile(id);saveProfs();if(cloudOn())cloudSave();return o}
 const initials=n=>String(n||'?').trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase()||'?';
