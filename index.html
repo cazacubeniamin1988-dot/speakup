@@ -2433,7 +2433,8 @@ const prePrefetch=(...ts)=>ts.filter(Boolean).forEach(t=>{if(preHas(t))preBlob(t
 async function playSrc(getUrl,rate){
  const my=++aiSeq;try{speechSynthesis.cancel()}catch(e){}
  const u=await getUrl();if(my!==aiSeq)return;
- aEl.pause();aEl.src=u;aEl.playbackRate=Math.max(.6,Math.min(1.4,(rate/.95)*(st.rate||1)));
+ /* vocea înregistrată are deja ritm natural: viteza telefonului nu o mai încetinește; doar butoanele „rar” o fac puțin mai lentă */
+ aEl.pause();aEl.src=u;aEl.playbackRate=rate>=.9?1:Math.max(.8,rate/.95);
  await new Promise((res,rej)=>{let done=false;const end=()=>{if(!done){done=true;res()}};aEl.onended=end;aEl.onpause=end;aEl.onerror=()=>{if(!done){done=true;rej(new Error('play'))}};
   const p=aEl.play();if(p&&p.catch)p.catch(e=>{if(!done){done=true;rej(e)}})})}
 const preSay=(t,rate)=>playSrc(()=>preBlob(t),rate);
